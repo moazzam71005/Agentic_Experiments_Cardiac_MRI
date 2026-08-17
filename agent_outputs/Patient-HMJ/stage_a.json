@@ -1,0 +1,245 @@
+{
+  "patient_id": "Patient-HMJ",
+  "per_slice": [
+    {
+      "slice_idx": 0,
+      "offset_hz": -150.0,
+      "banding": {
+        "present": true,
+        "location": "none",
+        "severity": "moderate",
+        "overlaps_myocardium": false,
+        "overlaps_lv_pool": false
+      },
+      "homogeneity": 0.4405,
+      "cnr": 0.21,
+      "neural_score": 0.0088,
+      "vlm_verdict": null,
+      "composite_score": 0.3352,
+      "verdict": "suboptimal"
+    },
+    {
+      "slice_idx": 1,
+      "offset_hz": -125.0,
+      "banding": {
+        "present": true,
+        "location": "none",
+        "severity": "moderate",
+        "overlaps_myocardium": false,
+        "overlaps_lv_pool": false
+      },
+      "homogeneity": 0.4655,
+      "cnr": 0.877,
+      "neural_score": 0.0276,
+      "vlm_verdict": null,
+      "composite_score": 0.3471,
+      "verdict": "suboptimal"
+    },
+    {
+      "slice_idx": 2,
+      "offset_hz": -100.0,
+      "banding": {
+        "present": true,
+        "location": "none",
+        "severity": "moderate",
+        "overlaps_myocardium": false,
+        "overlaps_lv_pool": false
+      },
+      "homogeneity": 0.5625,
+      "cnr": 0.495,
+      "neural_score": 0.046,
+      "vlm_verdict": null,
+      "composite_score": 0.3849,
+      "verdict": "suboptimal"
+    },
+    {
+      "slice_idx": 3,
+      "offset_hz": -75.0,
+      "banding": {
+        "present": true,
+        "location": "none",
+        "severity": "moderate",
+        "overlaps_myocardium": false,
+        "overlaps_lv_pool": false
+      },
+      "homogeneity": 0.615,
+      "cnr": 0.627,
+      "neural_score": 0.1543,
+      "vlm_verdict": "optimal",
+      "composite_score": 0.4872,
+      "verdict": "suboptimal"
+    },
+    {
+      "slice_idx": 4,
+      "offset_hz": -50.0,
+      "banding": {
+        "present": true,
+        "location": "none",
+        "severity": "moderate",
+        "overlaps_myocardium": false,
+        "overlaps_lv_pool": false
+      },
+      "homogeneity": 0.7036,
+      "cnr": 0.952,
+      "neural_score": 0.2085,
+      "vlm_verdict": "optimal",
+      "composite_score": 0.5341,
+      "verdict": "suboptimal"
+    },
+    {
+      "slice_idx": 5,
+      "offset_hz": -25.0,
+      "banding": {
+        "present": true,
+        "location": "none",
+        "severity": "moderate",
+        "overlaps_myocardium": false,
+        "overlaps_lv_pool": false
+      },
+      "homogeneity": 0.5743,
+      "cnr": 1.059,
+      "neural_score": 0.0965,
+      "vlm_verdict": null,
+      "composite_score": 0.4056,
+      "verdict": "suboptimal"
+    },
+    {
+      "slice_idx": 6,
+      "offset_hz": 0.0,
+      "banding": {
+        "present": true,
+        "location": "lateral",
+        "severity": "moderate",
+        "overlaps_myocardium": false,
+        "overlaps_lv_pool": false
+      },
+      "homogeneity": 0.5865,
+      "cnr": 0.71,
+      "neural_score": 0.1724,
+      "vlm_verdict": "optimal",
+      "composite_score": 0.4632,
+      "verdict": "suboptimal"
+    },
+    {
+      "slice_idx": 7,
+      "offset_hz": 25.0,
+      "banding": {
+        "present": true,
+        "location": "lateral",
+        "severity": "moderate",
+        "overlaps_myocardium": true,
+        "overlaps_lv_pool": false
+      },
+      "homogeneity": 0.5744,
+      "cnr": 0.423,
+      "neural_score": 0.1128,
+      "vlm_verdict": null,
+      "composite_score": 0.1132,
+      "verdict": "reject"
+    },
+    {
+      "slice_idx": 8,
+      "offset_hz": 50.0,
+      "banding": {
+        "present": true,
+        "location": "lateral",
+        "severity": "moderate",
+        "overlaps_myocardium": false,
+        "overlaps_lv_pool": false
+      },
+      "homogeneity": 0.4484,
+      "cnr": 0.291,
+      "neural_score": 0.104,
+      "vlm_verdict": null,
+      "composite_score": 0.3557,
+      "verdict": "suboptimal"
+    },
+    {
+      "slice_idx": 9,
+      "offset_hz": 75.0,
+      "banding": {
+        "present": true,
+        "location": "lateral, inferior",
+        "severity": "moderate",
+        "overlaps_myocardium": false,
+        "overlaps_lv_pool": false
+      },
+      "homogeneity": 0.2558,
+      "cnr": 0.39,
+      "neural_score": 0.0209,
+      "vlm_verdict": null,
+      "composite_score": 0.26,
+      "verdict": "suboptimal"
+    },
+    {
+      "slice_idx": 10,
+      "offset_hz": 100.0,
+      "banding": {
+        "present": true,
+        "location": "lateral",
+        "severity": "moderate",
+        "overlaps_myocardium": false,
+        "overlaps_lv_pool": false
+      },
+      "homogeneity": 0.2457,
+      "cnr": 0.46,
+      "neural_score": 0.0133,
+      "vlm_verdict": null,
+      "composite_score": 0.26,
+      "verdict": "suboptimal"
+    },
+    {
+      "slice_idx": 11,
+      "offset_hz": 125.0,
+      "banding": {
+        "present": true,
+        "location": "lateral",
+        "severity": "moderate",
+        "overlaps_myocardium": false,
+        "overlaps_lv_pool": false
+      },
+      "homogeneity": 0.3139,
+      "cnr": 0.223,
+      "neural_score": 0.0275,
+      "vlm_verdict": null,
+      "composite_score": 0.299,
+      "verdict": "suboptimal"
+    },
+    {
+      "slice_idx": 12,
+      "offset_hz": 150.0,
+      "banding": {
+        "present": true,
+        "location": "none",
+        "severity": "moderate",
+        "overlaps_myocardium": false,
+        "overlaps_lv_pool": false
+      },
+      "homogeneity": 0.2732,
+      "cnr": -0.23,
+      "neural_score": 0.0075,
+      "vlm_verdict": null,
+      "composite_score": 0.2828,
+      "verdict": "suboptimal"
+    }
+  ],
+  "recommended_offset": {
+    "slice_idx": 4,
+    "offset_hz": -50.0,
+    "confidence": 1.0,
+    "confidence_label": "high"
+  },
+  "alternative_offsets": [],
+  "evidence_agreement": "full",
+  "disagreements": [],
+  "evidence_sources": [
+    "neural",
+    "segment",
+    "banding",
+    "consistency",
+    "quality",
+    "physics",
+    "vlm",
+    "retrieve"
+  ]
+}

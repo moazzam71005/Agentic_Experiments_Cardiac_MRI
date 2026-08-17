@@ -1,0 +1,27 @@
+patient_id,gt_image_no,pred_top1,pred_top3,top1_correct,top3_correct,mae,rank_gt,fold
+Patient-BEV,7,6,"[6, 7, 5]",0,1,1,2,1
+Patient-GJ,9,8,"[8, 7, 9]",0,1,1,3,1
+Patient-HMJ,8,8,"[8, 7, 9]",1,1,0,1,1
+Patient-IAM,8,6,"[6, 8, 7]",0,1,2,2,1
+Patient-MSR,10,12,"[12, 10, 9]",0,1,2,2,1
+Patient-WBC,8,8,"[8, 9, 7]",1,1,0,1,1
+Patient-BGT,7,7,"[7, 8, 6]",1,1,0,1,2
+Patient-BVE,6,7,"[7, 8, 9]",0,0,1,5,2
+Patient-DEM,9,7,"[7, 8, 10]",0,0,2,5,2
+Patient-KP,6,5,"[5, 3, 4]",0,0,1,4,2
+Patient-TL,9,7,"[7, 10, 8]",0,0,2,7,2
+Patient-CEA,7,9,"[9, 7, 6]",0,1,2,2,3
+Patient-CEJP,4,4,"[4, 2, 13]",1,1,0,1,3
+Patient-INA,11,13,"[13, 2, 10]",0,0,2,6,3
+Patient-MS,9,7,"[7, 9, 11]",0,1,2,2,3
+Patient-SK,8,9,"[9, 7, 8]",0,1,1,3,3
+Patient-OAF,9,8,"[8, 6, 7]",0,0,1,5,4
+Patient-PJ,8,7,"[7, 9, 10]",0,0,1,4,4
+Patient-RK,9,6,"[6, 7, 8]",0,0,3,4,4
+Patient-SWJ,7,6,"[6, 8, 9]",0,0,1,4,4
+Patient-WMR,8,3,"[3, 4, 9]",0,0,5,6,4
+Patient-FAJ,9,11,"[11, 10, 7]",0,0,2,6,5
+Patient-FEC,8,9,"[9, 8, 7]",0,1,1,2,5
+Patient-HRJ,7,13,"[13, 7, 8]",0,1,6,2,5
+Patient-MJ,7,7,"[7, 8, 5]",1,1,0,1,5
+Patient-RAK,7,11,"[11, 10, 7]",0,1,4,3,5

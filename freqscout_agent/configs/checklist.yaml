@@ -1,0 +1,60 @@
+# Agent Requirements Checklist
+# Each item must be satisfied before the agent may produce the final recommendation.
+# The gap-analysis loop queries which items are unsatisfied and plans tool calls accordingly.
+
+checklist:
+  - id: seg_done
+    description: "LV/myocardium segmentation mask obtained for the top-ranked slice."
+    required_tools: [segment]
+    required: true
+
+  - id: band_all_slices
+    description: "Banding detection run on all 13 offset images using the propagated mask."
+    required_tools: [banding]
+    required: true
+
+  - id: quality_all_slices
+    description: "Quality metrics (CoV, CNR, SNR) computed for all 13 offset images."
+    required_tools: [quality]
+    required: true
+
+  - id: neural_scored
+    description: "Neural ranker scores obtained for all slices."
+    required_tools: [neural]
+    required: true
+
+  - id: physics_attached
+    description: "Frequency offset Hz values attached from the Excel ground-truth file."
+    required_tools: [physics]
+    required: true
+
+  - id: vlm_described
+    description: "VLM description of banding/quality obtained for at least the top-3 candidates."
+    required_tools: [vlm]
+    required: true
+
+  - id: knowledge_retrieved
+    description: "Clinical knowledge retrieved for at least one query (banding location + quality)."
+    required_tools: [retrieve]
+    required: true
+
+  - id: cross_consistency
+    description: "Cross-source consistency check run (neural vs CV vs VLM concordance computed)."
+    required_tools: []
+    required: true
+
+  - id: alternatives_identified
+    description: "All acceptable alternative offsets (not just the best) identified and listed."
+    required_tools: []
+    required: true
+
+  - id: recommendation_justified
+    description: "Recommendation is backed by at least 2 independent evidence sources."
+    required_tools: []
+    required: true
+
+# Termination conditions
+termination:
+  all_required_satisfied: true          # hard stop when all required items satisfied
+  t_max_fallback: true                  # also terminate if t_max iterations reached
+  low_confidence_warn: true             # warn (but do not block) if confidence < threshold

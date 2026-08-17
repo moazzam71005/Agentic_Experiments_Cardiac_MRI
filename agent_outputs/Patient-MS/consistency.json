@@ -1,0 +1,8 @@
+{
+  "neural_top1": 8,
+  "cv_top1": 8,
+  "vlm_top1": 8,
+  "confidence": 1.0,
+  "confidence_label": "high",
+  "disagreements": []
+}

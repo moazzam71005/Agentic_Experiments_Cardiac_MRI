@@ -1,0 +1,6 @@
+Experiment,Top-1,Top-3,MAE,Eval
+Exp4  DINOv2 Stack-Transformer (LOOCV),0.19230769230769232,0.6153846153846154,1.7307692307692308,LOOCV
+Exp3  Siamese EfficientNet-B0,0.154,0.538,2.5,LOOCV
+Exp2  ResNet18 + ListNet,0.038,0.462,2.19,LOOCV
+Center slice (naive),0.269,0.577,1.31,all 26
+Random,0.08,0.239,,analytic

@@ -1,0 +1,248 @@
+{
+  "patient_id": "Patient-HRJ",
+  "per_slice": [
+    {
+      "slice_idx": 0,
+      "offset_hz": -150.0,
+      "banding": {
+        "present": true,
+        "location": "anterior",
+        "severity": "moderate",
+        "overlaps_myocardium": false,
+        "overlaps_lv_pool": false
+      },
+      "homogeneity": 0.6031,
+      "cnr": 1.284,
+      "neural_score": 0.015,
+      "vlm_verdict": null,
+      "composite_score": 0.3804,
+      "verdict": "suboptimal"
+    },
+    {
+      "slice_idx": 1,
+      "offset_hz": -125.0,
+      "banding": {
+        "present": true,
+        "location": "none",
+        "severity": "moderate",
+        "overlaps_myocardium": false,
+        "overlaps_lv_pool": false
+      },
+      "homogeneity": 0.6228,
+      "cnr": 1.423,
+      "neural_score": 0.2855,
+      "vlm_verdict": "reject",
+      "composite_score": 0.4368,
+      "verdict": "suboptimal"
+    },
+    {
+      "slice_idx": 2,
+      "offset_hz": -100.0,
+      "banding": {
+        "present": true,
+        "location": "lateral, inferior, septal",
+        "severity": "moderate",
+        "overlaps_myocardium": false,
+        "overlaps_lv_pool": false
+      },
+      "homogeneity": 0.5103,
+      "cnr": 1.464,
+      "neural_score": 0.0448,
+      "vlm_verdict": "acceptable",
+      "composite_score": 0.3597,
+      "verdict": "suboptimal"
+    },
+    {
+      "slice_idx": 3,
+      "offset_hz": -75.0,
+      "banding": {
+        "present": true,
+        "location": "anterior, lateral, inferior, septal",
+        "severity": "moderate",
+        "overlaps_myocardium": true,
+        "overlaps_lv_pool": false
+      },
+      "homogeneity": 0.4664,
+      "cnr": 1.521,
+      "neural_score": 0.2062,
+      "vlm_verdict": "optimal",
+      "composite_score": 0.1279,
+      "verdict": "reject"
+    },
+    {
+      "slice_idx": 4,
+      "offset_hz": -50.0,
+      "banding": {
+        "present": true,
+        "location": "lateral, inferior, septal",
+        "severity": "moderate",
+        "overlaps_myocardium": false,
+        "overlaps_lv_pool": false
+      },
+      "homogeneity": 0.4815,
+      "cnr": 1.561,
+      "neural_score": 0.1061,
+      "vlm_verdict": null,
+      "composite_score": 0.3658,
+      "verdict": "suboptimal"
+    },
+    {
+      "slice_idx": 5,
+      "offset_hz": -25.0,
+      "banding": {
+        "present": true,
+        "location": "lateral, inferior, septal",
+        "severity": "moderate",
+        "overlaps_myocardium": false,
+        "overlaps_lv_pool": true
+      },
+      "homogeneity": 0.5022,
+      "cnr": 0.997,
+      "neural_score": 0.0405,
+      "vlm_verdict": "optimal",
+      "composite_score": 0.1201,
+      "verdict": "reject"
+    },
+    {
+      "slice_idx": 6,
+      "offset_hz": 0.0,
+      "banding": {
+        "present": true,
+        "location": "anterior, septal",
+        "severity": "moderate",
+        "overlaps_myocardium": false,
+        "overlaps_lv_pool": false
+      },
+      "homogeneity": 0.4348,
+      "cnr": 1.229,
+      "neural_score": 0.0272,
+      "vlm_verdict": null,
+      "composite_score": 0.3271,
+      "verdict": "suboptimal"
+    },
+    {
+      "slice_idx": 7,
+      "offset_hz": 25.0,
+      "banding": {
+        "present": true,
+        "location": "inferior, septal",
+        "severity": "moderate",
+        "overlaps_myocardium": false,
+        "overlaps_lv_pool": false
+      },
+      "homogeneity": 0.4314,
+      "cnr": 1.244,
+      "neural_score": 0.0171,
+      "vlm_verdict": "optimal",
+      "composite_score": 0.3586,
+      "verdict": "suboptimal"
+    },
+    {
+      "slice_idx": 8,
+      "offset_hz": 50.0,
+      "banding": {
+        "present": true,
+        "location": "anterior, lateral, septal",
+        "severity": "moderate",
+        "overlaps_myocardium": false,
+        "overlaps_lv_pool": false
+      },
+      "homogeneity": 0.4449,
+      "cnr": 1.23,
+      "neural_score": 0.0328,
+      "vlm_verdict": null,
+      "composite_score": 0.3251,
+      "verdict": "suboptimal"
+    },
+    {
+      "slice_idx": 9,
+      "offset_hz": 75.0,
+      "banding": {
+        "present": true,
+        "location": "anterior, lateral, septal",
+        "severity": "moderate",
+        "overlaps_myocardium": false,
+        "overlaps_lv_pool": false
+      },
+      "homogeneity": 0.4666,
+      "cnr": 1.191,
+      "neural_score": 0.0124,
+      "vlm_verdict": null,
+      "composite_score": 0.3251,
+      "verdict": "suboptimal"
+    },
+    {
+      "slice_idx": 10,
+      "offset_hz": 100.0,
+      "banding": {
+        "present": true,
+        "location": "anterior, septal",
+        "severity": "moderate",
+        "overlaps_myocardium": false,
+        "overlaps_lv_pool": false
+      },
+      "homogeneity": 0.4816,
+      "cnr": 1.196,
+      "neural_score": 0.0307,
+      "vlm_verdict": null,
+      "composite_score": 0.3448,
+      "verdict": "suboptimal"
+    },
+    {
+      "slice_idx": 11,
+      "offset_hz": 125.0,
+      "banding": {
+        "present": true,
+        "location": "anterior, septal",
+        "severity": "moderate",
+        "overlaps_myocardium": false,
+        "overlaps_lv_pool": false
+      },
+      "homogeneity": 0.4847,
+      "cnr": 1.019,
+      "neural_score": 0.0412,
+      "vlm_verdict": null,
+      "composite_score": 0.3465,
+      "verdict": "suboptimal"
+    },
+    {
+      "slice_idx": 12,
+      "offset_hz": 150.0,
+      "banding": {
+        "present": true,
+        "location": "anterior, inferior, septal",
+        "severity": "moderate",
+        "overlaps_myocardium": false,
+        "overlaps_lv_pool": false
+      },
+      "homogeneity": 0.5564,
+      "cnr": 1.18,
+      "neural_score": 0.1407,
+      "vlm_verdict": "reject",
+      "composite_score": 0.3531,
+      "verdict": "suboptimal"
+    }
+  ],
+  "recommended_offset": {
+    "slice_idx": 1,
+    "offset_hz": -125.0,
+    "confidence": 0.4,
+    "confidence_label": "low"
+  },
+  "alternative_offsets": [],
+  "evidence_agreement": "conflicted",
+  "disagreements": [
+    "Neural ranker picks slice 1 (-125 Hz) but VLM rates slice 3 (-75 Hz) as optimal.",
+    "CV metrics favour slice 1 (-125 Hz) but VLM prefers slice 3 (-75 Hz)."
+  ],
+  "evidence_sources": [
+    "neural",
+    "segment",
+    "banding",
+    "consistency",
+    "quality",
+    "physics",
+    "vlm",
+    "retrieve"
+  ]
+}

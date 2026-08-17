@@ -1,0 +1,8 @@
+Experiment,Top-1 Acc,Top-3 Acc,MAE,Eval
+Exp3  Siamese EfficientNet-B0 (LOOCV),0.154,0.538,2.5,LOOCV n=26
+Exp3  Siamese EfficientNet-B0 (5-fold OOF),0.038,0.385,3.231,5-fold OOF
+Exp2  ResNet18  ListNet (LOOCV),0.038,0.462,2.192,LOOCV n=26
+Exp1  ResNet18  BCE  (5-fold mean),0.227,0.613,1.35,5-fold mean
+Center slice (naive),0.2692307692307692,0.5769230769230769,1.3076923076923077,all 26 patients
+Global-mode GT (naive),0.2692307692307692,0.6153846153846154,1.2692307692307692,all 26 patients
+Random (expected),0.07970555085939703,0.23911665257819104,,analytic

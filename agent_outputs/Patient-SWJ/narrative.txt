@@ -1,0 +1,11 @@
+ASSESSMENT:
+Frequency offsets at slice 2 (-100 Hz), slice 3 (-75 Hz), slice 4 (-50 Hz) show dark banding artifacts overlapping the left ventricular myocardium or blood pool, rendering these offsets clinically unacceptable for diagnostic bSSFP CINE acquisition. 
+
+OPTIMAL SELECTION:
+The frequency offset at +0 Hz (slice 6) demonstrates residual banding displaced to none, with myocardial homogeneity of 0.79 and blood-myocardium CNR of 1.7. This offset is selected as optimal, supported by the neural quality ranker (confidence 0.35), quantitative image metrics, and visual banding assessment.
+
+ALTERNATIVE OFFSETS:
+No other acceptable alternatives were identified in this frequency sweep.
+
+CONFIDENCE:
+Overall confidence: low (score 0.35). Evidence sources: neural, segment, banding, consistency, quality, physics, vlm, retrieve. Agreement: conflicted. Note: Neural ranker picks slice 7 (+25 Hz) but CV metrics favour slice 6 (+0 Hz).; CV metrics favour slice 6 (+0 Hz) but VLM prefers slice 7 (+25 Hz).

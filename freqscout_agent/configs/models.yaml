@@ -1,0 +1,68 @@
+# Model configuration for the Agentic Frequency Scouting System
+# Adjust paths and serving modes to your environment.
+
+vlm:
+  # Primary vision-language model for banding description and Stage-B narrative
+  # MedGemma-4B is gated (needs HF login + access request). Default to open Qwen2.5-VL.
+  provider: "hf"                        # "hf" | "ollama"
+  model_id: "Qwen/Qwen2.5-VL-7B-Instruct"
+  alt_model_id: "google/medgemma-4b-it"  # gated — only if HF_TOKEN + access granted
+  load_in_4bit: true
+  device_map: "auto"
+  max_new_tokens: 512
+  temperature_stageB: 0.25
+  temperature_stageA: 0.0
+
+text_reasoner:
+  # LLM used for gap analysis, consistency checks, Stage-A JSON generation
+  # Can reuse VLM text head or use a separate text model
+  provider: "hf"
+  model_id: "Qwen/Qwen2.5-7B-Instruct"
+  alt_model_id: "google/medgemma-4b-it"  # fallback (text-only mode)
+  load_in_4bit: true
+  device_map: "auto"
+  max_new_tokens: 1024
+  temperature: 0.0
+
+segmentation:
+  # Cardiac SAX segmentation model
+  provider: "lightweight_unet"          # "lightweight_unet" | "medsam" | "nnunet"
+  # lightweight_unet: our simple U-Net trained on ACDC-style data
+  # medsam: Meta's MedSAM (needs point/box prompt)
+  # nnunet: nnU-Net ACDC checkpoint (requires nnunet installation)
+  checkpoint: null                      # path to checkpoint; null = auto-download/init
+  input_size: [256, 256]
+  num_classes: 4                        # bg / RV / myo / LV-pool
+  device: "cpu"                         # segmentation is fast; use cpu to save GPU RAM
+
+neural_ranker:
+  # DINOv2-L stack-transformer ranker from Exp5/Exp6
+  dinov2_model: "facebook/dinov2-large"
+  checkpoint: null                      # path to .pt checkpoint; null = score-by-feature-norm
+  score_csv: "exp5_outputs/exp5_loocv_per_patient.csv"  # trained Exp5 LOOCV scores (preferred)
+  device: "cuda"                        # use GPU for DINOv2 inference
+  use_cached_features: true             # load pre-extracted features if available
+
+retrieval:
+  # Hybrid BM25 + dense retrieval knowledge base
+  dense_model: "sentence-transformers/all-MiniLM-L6-v2"
+  index_dir: "freqscout_agent/knowledge/index_store"
+  faiss_index_path: "freqscout_agent/knowledge/index_store/faiss.index"
+  bm25_index_path: "freqscout_agent/knowledge/index_store/bm25.pkl"
+  chunks_path: "freqscout_agent/knowledge/index_store/chunks.jsonl"
+  alpha: 0.5                            # BM25 weight; (1-alpha) for dense
+  top_k: 5                              # retrieved chunks per query
+  context_expansion: 1                  # +/- adjacent chunks to include
+
+agent:
+  t_max: 15                             # max reasoning loop iterations
+  min_evidence_tools: 3                 # must collect evidence from at least N tools
+  confidence_threshold: 0.6            # minimum confidence to finalise recommendation
+
+paths:
+  # Parent of Patient-* folders (or any ancestor — discovery uses rglob)
+  data_root: "Dr-Dataset"
+  excel_path: "1stcohortSAX (1).xlsx"
+  exp5_outputs: "exp5_outputs"
+  exp6_outputs: "exp6_outputs"
+  agent_outputs: "agent_outputs"

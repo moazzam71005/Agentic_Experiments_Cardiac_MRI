@@ -238,12 +238,27 @@ class VLMDescriptor:
         elif self.provider == "ollama":
             raw = self._ollama_call(img, roi, prompt)
         else:
-            raw = self._hf_call(img, roi, prompt)
+            try:
+                raw = self._hf_call(img, roi, prompt)
+            except Exception as exc:
+                logger.warning(
+                    "VLM inference failed for slice %d (%s). Using mock for this slice.",
+                    slice_idx, exc,
+                )
+                raw = self._mock_response(slice_idx, offset_hz)
 
         parsed = self._parse_response(raw, slice_idx, offset_hz, patient_id)
         return parsed
 
+    def _model_device(self):
+        import torch
+        try:
+            return self._model.device
+        except Exception:
+            return next(p.device for p in self._model.parameters() if p.device.type != "meta")
+
     def _hf_call(self, img: np.ndarray, roi: Optional[np.ndarray], prompt: str) -> str:
+        """Qwen2-VL / Qwen2.5-VL: chat template returns text; processor builds tensors."""
         import torch
         from PIL import Image
 
@@ -256,47 +271,66 @@ class VLMDescriptor:
                 return Image.fromarray(arr).convert("RGB")
             return Image.fromarray(arr)
 
-        pil_images = [arr_to_pil(img)]
+        # One image is more reliable on 8GB; ROI is optional extra
+        pil_full = arr_to_pil(img)
+        pil_images = [pil_full]
         if roi is not None:
             pil_images.append(arr_to_pil(roi))
 
+        user_content = [{"type": "image", "image": p} for p in pil_images]
+        user_content.append({"type": "text", "text": prompt})
         messages = [
             {"role": "system", "content": _SYSTEM_PROMPT},
-            {
-                "role": "user",
-                "content": [
-                    *[{"type": "image", "image": pil} for pil in pil_images],
-                    {"type": "text", "text": prompt},
-                ],
-            },
+            {"role": "user", "content": user_content},
         ]
 
-        try:
-            inputs = self._processor.apply_chat_template(
-                messages, add_generation_prompt=True, return_tensors="pt", return_dict=True
-            )
-        except Exception:
-            # Fallback for processors that don't support apply_chat_template
-            inputs = self._processor(
-                text=_SYSTEM_PROMPT + "\n\n" + prompt,
-                images=pil_images,
-                return_tensors="pt",
-            )
+        text = self._processor.apply_chat_template(
+            messages, tokenize=False, add_generation_prompt=True
+        )
+        if not isinstance(text, str):
+            # Some processors return token ids; decode back to string path
+            text = str(text)
 
-        inputs = {k: v.to(self._model.device) for k, v in inputs.items()}
+        proc_out = self._processor(
+            text=[text],
+            images=pil_images,
+            return_tensors="pt",
+            padding=True,
+        )
 
-        gen_kwargs: Dict[str, Any] = {"max_new_tokens": self.max_new_tokens}
+        device = self._model_device()
+        if hasattr(proc_out, "to"):
+            proc_out = proc_out.to(device)
+            inputs = dict(proc_out)
+        elif isinstance(proc_out, dict):
+            inputs = {
+                k: (v.to(device) if hasattr(v, "to") else v)
+                for k, v in proc_out.items()
+            }
+        else:
+            raise TypeError(f"Unexpected processor output type: {type(proc_out)}")
+
+        gen_kwargs: Dict[str, Any] = {
+            "max_new_tokens": self.max_new_tokens,
+            "do_sample": self.temperature > 0,
+        }
         if self.temperature > 0:
             gen_kwargs["temperature"] = self.temperature
-            gen_kwargs["do_sample"] = True
-        else:
-            gen_kwargs["do_sample"] = False
 
+        input_len = inputs["input_ids"].shape[1]
         with torch.no_grad():
             output = self._model.generate(**inputs, **gen_kwargs)
 
-        response = self._processor.decode(output[0], skip_special_tokens=True)
-        # Strip any leading echo of the prompt
+        new_tokens = output[0, input_len:]
+        decode = getattr(self._processor, "batch_decode", None)
+        if decode is not None:
+            response = self._processor.batch_decode(
+                new_tokens.unsqueeze(0), skip_special_tokens=True
+            )[0]
+        else:
+            tok = getattr(self._processor, "tokenizer", self._processor)
+            response = tok.decode(new_tokens, skip_special_tokens=True)
+
         if prompt[:30] in response:
             response = response[response.find(prompt[:30]) + len(prompt):]
         return response.strip()

@@ -1,0 +1,49 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+env/
+
+# Jupyter
+.ipynb_checkpoints/
+
+# Local secrets / tokens
+.env
+.hf_token
+*.pem
+
+# HuggingFace / torch caches (never commit)
+.cache/
+huggingface/
+*.safetensors
+
+# Large experiment artifacts
+*.pkl
+*.pt
+*.pth
+*.ckpt
+*.zip
+
+# Pipeline run outputs (keep locally; zip if you need to share)
+agent_outputs/
+agent_outputs_vlm/
+lora_data/
+lora_checkpoints/
+
+# Knowledge index rebuilds (regenerate with build_kb)
+freqscout_agent/knowledge/index_store/*.index
+freqscout_agent/knowledge/index_store/*.pkl
+freqscout_agent/knowledge/index_store/*.npy
+
+# OS / editor
+.DS_Store
+Thumbs.db
+*.swp
+.idea/
+.vscode/
+
+# Unrelated / local-only
+mitacs_projects_details.csv
+scraper.py

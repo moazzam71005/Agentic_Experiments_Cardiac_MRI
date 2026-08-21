@@ -29,6 +29,11 @@ huggingface/
 # Pipeline run outputs (keep locally; zip if you need to share)
 agent_outputs/
 agent_outputs_vlm/
+agent_outputs_exp8/
+exp8_seg_qc/
+exp8_seg_qc_preview.png
+exp8_burden_profile.png
+exp8_ablation_results.csv
 lora_data/
 lora_checkpoints/
 

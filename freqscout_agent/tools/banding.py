@@ -40,8 +40,10 @@ class BandingResult:
     band_present: bool              # True if any band detected anywhere
     bands_in_myocardium: bool       # True if a band overlaps the LV myocardium
     bands_in_lv_pool: bool          # True if a band overlaps the LV blood pool
-    severity: float                 # 0–1 global severity score
-    myo_overlap_fraction: float     # fraction of myocardium pixels that are dark
+    severity: float                 # 0–1 score; 0.4*global + 0.6*myo_overlap
+    myo_overlap_fraction: float     # fraction of myocardium pixels that are "banded"
+    band_depth_in_myo: float        # (mu_myo - min_in_band_region) / mu_myo; 0 if no myo band
+    banding_burden: float           # composite intra-myocardial banding metric (0=none, 1=severe)
     band_sectors: List[str]         # AHA sectors affected ("anterior","lateral",...)
     band_mask: np.ndarray           # H×W bool of detected band pixels
     band_pixel_fraction: float      # fraction of whole image that is banding
@@ -133,9 +135,17 @@ class BandingDetector:
         if gray.max() > 1.0:
             gray = gray / gray.max()
 
-        # Compute threshold relative to the overall image median
-        median_val = float(np.median(gray))
-        dark_thresh = median_val * self.dark_fraction
+        # Compute threshold relative to the overall image median.
+        # Also compute a myocardium-specific threshold if mask is available.
+        myo_mask_pre = self._align_mask(seg.myocardium_mask, gray.shape)
+        myo_pre_pixels = gray[myo_mask_pre]
+        if myo_pre_pixels.size >= 10:
+            # Threshold relative to myocardial median — physically correct for bSSFP
+            myo_median = float(np.median(myo_pre_pixels))
+            dark_thresh = myo_median * self.dark_fraction
+        else:
+            median_val = float(np.median(gray))
+            dark_thresh = median_val * self.dark_fraction
 
         # Binary dark mask
         dark = gray < dark_thresh
@@ -167,10 +177,28 @@ class BandingDetector:
         bands_in_myo = bool(myo_overlap_frac >= self.myo_overlap_threshold)
         bands_in_pool = bool(pool_overlap_frac >= self.myo_overlap_threshold)
 
-        # Severity: weighted combination of band_pixel_fraction and myo_overlap
+        # --- Intra-myocardial band depth ---
+        # How deep does the darkest banded pixel dip below the healthy myocardial mean?
+        band_depth_in_myo = 0.0
+        if bands_in_myo and myo_dark.any():
+            myo_all_pixels = gray[myo_mask]
+            mu_myo = float(myo_all_pixels.mean()) if myo_all_pixels.size > 0 else 0.0
+            min_banded = float(gray[myo_dark].min()) if myo_dark.any() else mu_myo
+            if mu_myo > 1e-6:
+                band_depth_in_myo = max(0.0, (mu_myo - min_banded) / mu_myo)
+
+        # --- Composite intra-myocardial banding burden (primary clinical metric) ---
+        # Combines overlap fraction (extent) and band depth (severity within myo)
+        banding_burden = float(
+            0.5 * min(myo_overlap_frac / 0.20, 1.0)
+            + 0.5 * min(band_depth_in_myo / 0.50, 1.0)
+        )
+        banding_burden = min(banding_burden, 1.0)
+
+        # Severity: weighted combination of global band fraction and myo burden
         severity = float(
-            0.4 * min(band_pixel_fraction / 0.15, 1.0)
-            + 0.6 * min(myo_overlap_frac / 0.25, 1.0)
+            0.3 * min(band_pixel_fraction / 0.15, 1.0)
+            + 0.7 * banding_burden
         )
         severity = min(severity, 1.0)
 
@@ -191,6 +219,8 @@ class BandingDetector:
             bands_in_lv_pool=bands_in_pool,
             severity=severity,
             myo_overlap_fraction=myo_overlap_frac,
+            band_depth_in_myo=band_depth_in_myo,
+            banding_burden=banding_burden,
             band_sectors=band_sectors,
             band_mask=band_mask,
             band_pixel_fraction=band_pixel_fraction,
@@ -199,6 +229,7 @@ class BandingDetector:
                 "slice_idx": slice_idx,
                 "offset_hz": offset_hz,
                 "dark_fraction_threshold": self.dark_fraction,
+                "seg_method": seg.provenance.get("method", "unknown"),
             },
         )
 

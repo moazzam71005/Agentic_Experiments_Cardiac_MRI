@@ -1,19 +1,18 @@
 """
 T1 ROI Segmenter
 ----------------
-Segments LV blood pool and myocardium on the ranker's cleanest (top-ranked) slice,
-derives AHA-style broad sectors (anterior / lateral / inferior / septal), and
-propagates the single mask to all 13 offset images.
+Segments LV blood pool and myocardium on the frequency-scout images and derives
+AHA-style broad sectors (anterior / lateral / inferior / septal).
 
-Design rationale: All 13 images are the same anatomical slice; only the banding
-position changes. So one mask, obtained from the artifact-free best slice, is
-valid for all offsets. This makes "is the band in the myocardium?" robust even
-on heavily banded slices.
+Segmentation strategy (in priority order):
+  1. LVSA U-Net (advchain UNet_64) — trained on Singapore cardiac SAX dataset.
+     Checkpoint: Unet_LVSA_best.pkl (see models.yaml → segmentation.checkpoint).
+     Runs a *consensus mask* across all N frequency-offset images (majority vote),
+     so banding artefacts on any single frame cannot corrupt the myocardium mask.
+  2. Intensity-based fallback — when no checkpoint is configured or loading fails.
 
-Segmentation strategy:
-  1. Try to load a checkpoint (nnU-Net / lightweight U-Net pretrained on ACDC).
-  2. Fallback: intensity-based thresholding + morphological operations on the
-     cleaner-looking frame (adequate for 13 relatively uniform scout images).
+Label convention (0=BG, 1=RV, 2=MYO, 3=LV) is identical in both paths.
+The single consensus mask is used for ALL downstream banding/quality metrics.
 """
 
 from __future__ import annotations
@@ -82,7 +81,8 @@ class SegmentationTool:
         self.checkpoint = checkpoint
         self.input_size = input_size
         self.device = device
-        self._model = None
+        self._model = None        # LightweightUNet (legacy)
+        self._lvsa_adapter = None # LVSASegAdapter  (primary)
 
         if checkpoint and Path(checkpoint).exists():
             self._load_model(checkpoint)
@@ -120,7 +120,14 @@ class SegmentationTool:
         """
         src_img = images[source_slice_idx]
 
-        if self._model is not None:
+        if self._lvsa_adapter is not None:
+            # Primary path: consensus mask across ALL frequency-offset images.
+            # All 13 frames are the same anatomy — majority vote makes the mask
+            # robust even when heavy banding corrupts individual frames.
+            logger.info("Segmentation[%s]: running LVSA U-Net consensus across %d images.",
+                        patient_id, len(images))
+            mask = self._lvsa_adapter.segment_consensus(images)
+        elif self._model is not None:
             mask = self._model_inference(src_img)
         else:
             mask = self._intensity_segment(src_img)
@@ -133,6 +140,13 @@ class SegmentationTool:
 
         sectors = self._build_sectors(mask, lv_centroid)
 
+        if self._lvsa_adapter is not None:
+            method = "lvsa_unet_consensus"
+        elif self._model is not None:
+            method = "lightweight_unet"
+        else:
+            method = "intensity_fallback"
+
         result = SegmentationResult(
             patient_id=patient_id,
             source_slice_idx=source_slice_idx,
@@ -142,9 +156,10 @@ class SegmentationTool:
             sectors=sectors,
             provenance={
                 "tool": self.TOOL_NAME,
-                "method": "model" if self._model is not None else "intensity_fallback",
+                "method": method,
                 "source_slice_idx": source_slice_idx,
                 "source_offset_hz": offsets_hz[source_slice_idx],
+                "consensus_n": len(images) if method == "lvsa_unet_consensus" else 1,
             },
         )
         logger.info(
@@ -159,7 +174,24 @@ class SegmentationTool:
     # ------------------------------------------------------------------
 
     def _load_model(self, checkpoint: str):
-        """Load a lightweight U-Net checkpoint (4-class: bg/RV/myo/LV)."""
+        """
+        Try to load the LVSA U-Net (advchain UNet_64).
+        Falls back to a legacy LightweightUNet if the file extension is .pt/.pth,
+        and then to intensity segmentation if that also fails.
+        """
+        ckpt = Path(checkpoint)
+        # Primary: advchain LVSA U-Net (.pkl or .pth)
+        if ckpt.suffix.lower() in (".pkl", ".pth"):
+            try:
+                from freqscout_agent.tools.seg_advchain.adapter import LVSASegAdapter
+                self._lvsa_adapter = LVSASegAdapter(checkpoint, device=self.device)
+                logger.info("LVSA U-Net (advchain) loaded from %s.", ckpt.name)
+                return
+            except Exception as exc:
+                logger.warning(
+                    "LVSA U-Net load failed (%s) — trying legacy checkpoint.", exc
+                )
+        # Legacy: freqscout_agent LightweightUNet (.pt)
         try:
             import torch
             from freqscout_agent.tools._unet import LightweightUNet
@@ -169,10 +201,9 @@ class SegmentationTool:
             model.eval()
             model.to(self.device)
             self._model = model
-            logger.info("Loaded segmentation checkpoint from %s.", checkpoint)
+            logger.info("Legacy LightweightUNet loaded from %s.", ckpt.name)
         except Exception as exc:
-            logger.warning("Could not load segmentation model: %s – using fallback.", exc)
-            self._model = None
+            logger.warning("Could not load any segmentation model: %s – using fallback.", exc)
 
     def _model_inference(self, img: np.ndarray) -> np.ndarray:
         import torch

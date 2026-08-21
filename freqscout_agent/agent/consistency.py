@@ -75,17 +75,28 @@ class ConsistencyChecker:
             neural_pkt, banding_pkt, quality_pkt, vlm_pkt, state.n_slices
         )
 
-        # Overall confidence
+        # --- Margin-based confidence (Exp 8 fix) ---
+        # Use score margin between top-1 and top-2 from the neural ranker as the
+        # primary signal (honest — not inflated by VLM rubber-stamping).
+        # Cross-source agreement modulates but does not dominate.
+        neural_margin = self._neural_score_margin(neural_pkt)
+        # Concordance — without the "all-agree" boost that was causing VLM to
+        # inflate confidence even when it labelled every slice "optimal".
         concordance = (
             self.W_NEURAL_CV  * float(neural_cv_agree)
             + self.W_NEURAL_VLM * float(neural_vlm_agree)
             + self.W_CV_VLM     * float(cv_vlm_agree)
         )
-        # Boost if all three agree on a clear winner
-        if neural_cv_agree and neural_vlm_agree and cv_vlm_agree:
-            concordance = min(concordance + 0.15, 1.0)
-        confidence = float(concordance)
-        confidence_label = "high" if confidence >= 0.75 else ("medium" if confidence >= 0.45 else "low")
+        # Confidence = 60% margin signal + 40% concordance signal
+        # Penalise when VLM is uninformative (all verdicts identical across top-3)
+        vlm_discriminates = self._vlm_discriminates(vlm_pkt)
+        vlm_penalty = 0.0 if vlm_discriminates else 0.10
+        confidence = float(
+            0.60 * min(neural_margin * 2.0, 1.0)   # margin in [0,0.5] → scale to [0,1]
+            + 0.40 * concordance
+        ) - vlm_penalty
+        confidence = max(0.10, min(confidence, 1.0))
+        confidence_label = "high" if confidence >= 0.70 else ("medium" if confidence >= 0.40 else "low")
 
         disagreements = self._collect_disagreements(
             neural_top1, cv_top1, vlm_top1,
@@ -148,6 +159,30 @@ class ConsistencyChecker:
     # ------------------------------------------------------------------
     # Top-1 from each source
     # ------------------------------------------------------------------
+
+    def _neural_score_margin(self, neural) -> float:
+        """
+        Softmax probability gap between top-1 and top-2 slice.
+        Returns 0.0 if not available or only one slice.
+        """
+        if neural is None:
+            return 0.0
+        conf = list(getattr(neural, "softmax_confidence", []))
+        if len(conf) < 2:
+            return 0.0
+        sorted_conf = sorted(conf, reverse=True)
+        return float(sorted_conf[0] - sorted_conf[1])
+
+    def _vlm_discriminates(self, vlm_results: List) -> bool:
+        """
+        Returns True if the VLM assigned at least 2 different verdicts across
+        the slices it processed.  If all are "optimal" (or all the same), the
+        VLM is not providing useful discrimination — treat as uninformative.
+        """
+        if not vlm_results:
+            return False
+        verdicts = {getattr(r, "overall_verdict", None) for r in vlm_results}
+        return len(verdicts) >= 2
 
     def _neural_top1(self, neural) -> int:
         if neural is None:

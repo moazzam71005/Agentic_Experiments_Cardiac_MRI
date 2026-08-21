@@ -41,14 +41,19 @@ Rules:
 - Use clinical frequency-scouting language.
 - Be concise and factual.
 - Your output MUST be valid JSON matching the schema provided.
+- IMPORTANT: You are comparing multiple candidate frequency offsets.
+  NOT all of them can be "optimal". Assign "optimal" to at most ONE.
+  All others must be "acceptable", "suboptimal", or "reject".
 """
 
-_USER_PROMPT_TEMPLATE = """Image description task for bSSFP frequency scout slice
+_USER_PROMPT_TEMPLATE = """Frequency-scout image assessment task.
   Patient: {patient_id}
   Frequency offset: {offset_hz:+.0f} Hz
-  Slice index: {slice_idx} of {n_slices}
+  Candidate rank: {candidate_rank} of {n_candidates} candidates under review
 
 Examine the FULL slice image and (if provided) the cropped myocardial ROI.
+Focus on: (1) banding artifact location relative to the left ventricular myocardium,
+(2) intra-myocardial signal uniformity, (3) blood-pool brightness.
 
 Return ONLY this JSON (no other text):
 {{
@@ -60,7 +65,7 @@ Return ONLY this JSON (no other text):
   "myocardial_uniformity": "excellent" | "good" | "fair" | "poor",
   "blood_pool_brightness": "bright" | "reduced" | "dark",
   "overall_verdict": "optimal" | "acceptable" | "suboptimal" | "reject",
-  "brief_reasoning": "<one or two sentences>",
+  "brief_reasoning": "<one or two sentences describing what you see in the myocardium>",
   "confidence_in_assessment": "high" | "medium" | "low"
 }}
 """
@@ -141,18 +146,47 @@ class VLMDescriptor:
         self._ensure_model_loaded()
 
         results = []
-        for idx in target_indices:
+        n_candidates = len(target_indices)
+        for rank, idx in enumerate(target_indices):
             img = images[idx]
             hz  = offsets_hz[idx]
             roi = self._crop_roi(img, seg_result) if seg_result is not None else None
             result = self._describe_slice(
-                img, roi, idx, hz, patient_id, len(images)
+                img, roi, idx, hz, patient_id, len(images),
+                candidate_rank=rank + 1, n_candidates=n_candidates,
             )
             results.append(result)
             logger.info(
                 "VLM[%s][%d @ %.0f Hz]: verdict=%s severity=%s",
                 patient_id, idx, hz, result.overall_verdict, result.banding_severity,
             )
+
+        # Post-process: enforce at-most-one "optimal".
+        # If the VLM labelled multiple candidates "optimal", demote all but the
+        # highest-confidence one to "acceptable" (prevents all-optimal collapse).
+        optimal_idxs = [i for i, r in enumerate(results) if r.overall_verdict == "optimal"]
+        if len(optimal_idxs) > 1:
+            best = max(
+                optimal_idxs,
+                key=lambda i: {"high": 2, "medium": 1, "low": 0}.get(
+                    results[i].confidence_in_assessment, 0
+                ),
+            )
+            for i in optimal_idxs:
+                if i != best:
+                    results[i] = VLMSliceResult(
+                        **{
+                            **results[i].__dict__,
+                            "overall_verdict": "acceptable",
+                            "brief_reasoning": results[i].brief_reasoning
+                            + " [demoted: at most one optimal allowed per scout]",
+                        }
+                    )
+            logger.info(
+                "VLM[%s]: demoted %d duplicate 'optimal' verdicts to 'acceptable'.",
+                patient_id, len(optimal_idxs) - 1,
+            )
+
         return results
 
     # ------------------------------------------------------------------
@@ -225,12 +259,16 @@ class VLMDescriptor:
         offset_hz: float,
         patient_id: str,
         n_slices: int,
+        candidate_rank: int = 1,
+        n_candidates: int = 1,
     ) -> VLMSliceResult:
         prompt = _USER_PROMPT_TEMPLATE.format(
             patient_id=patient_id,
             offset_hz=offset_hz,
             slice_idx=slice_idx,
             n_slices=n_slices,
+            candidate_rank=candidate_rank,
+            n_candidates=n_candidates,
         )
 
         if self._model == "mock" or self._model is None:
@@ -418,22 +456,27 @@ class VLMDescriptor:
         )
 
     def _mock_response(self, slice_idx: int, offset_hz: float) -> str:
-        """Return a plausible mock JSON for testing without a real VLM."""
+        """
+        Return a physics-informed mock JSON that distinguishes offsets.
+        Verdict grades: |Hz| ≤ 25 → acceptable, |Hz| ≤ 75 → suboptimal, >75 → reject.
+        (Cannot assign 'optimal' in mock — only a real VLM looking at the image can.)
+        """
         hz = float(offset_hz)
-        has_band = bool(abs(hz) > 75)
-        severity = "moderate" if abs(hz) > 100 else ("mild" if has_band else "none")
-        verdict = "reject" if abs(hz) > 100 else ("acceptable" if has_band else "optimal")
+        abs_hz = abs(hz)
+        has_band = abs_hz > 50
+        severity = "severe" if abs_hz > 125 else ("moderate" if abs_hz > 75 else ("mild" if has_band else "none"))
+        verdict = "reject" if abs_hz > 125 else ("suboptimal" if abs_hz > 75 else "acceptable")
         location = "inferior" if hz < -50 else ("anterior" if hz > 50 else "none")
         return json.dumps({
             "banding_present": bool(has_band),
             "banding_location": location,
             "banding_severity": severity,
-            "banding_overlaps_myocardium": bool(has_band and abs(hz) > 100),
+            "banding_overlaps_myocardium": bool(abs_hz > 100),
             "banding_overlaps_lv_pool": False,
-            "myocardial_uniformity": "excellent" if not has_band else "fair",
+            "myocardial_uniformity": "good" if abs_hz <= 25 else ("fair" if abs_hz <= 75 else "poor"),
             "blood_pool_brightness": "bright",
             "overall_verdict": verdict,
-            "brief_reasoning": f"Mock response for offset {hz:+.0f} Hz.",
+            "brief_reasoning": f"Mock: offset {hz:+.0f} Hz, banding classified as {severity}.",
             "confidence_in_assessment": "low",
         })
 

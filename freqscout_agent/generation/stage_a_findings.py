@@ -60,11 +60,14 @@ logger = logging.getLogger(__name__)
 
 class StageAGenerator:
 
-    # Weights for composite score
-    W_NEURAL  = 0.35
-    W_HOMOG   = 0.30
-    W_NOSEVER = 0.25   # (1 – banding_severity)
-    W_VLM     = 0.10
+    # Composite score weights — myocardium-centric (Exp 8).
+    # Primary signal is myocardial banding burden (physiologically grounded).
+    # Neural ranker (Exp5 LOOCV) provides the learned prior.
+    # VLM only contributes once it shows real discrimination (currently 5%).
+    W_NEURAL     = 0.40  # Exp5 LOOCV out-of-fold score
+    W_HOMOG      = 0.25  # 1 - intra-myocardial CoV  (real mask required)
+    W_NO_BURDEN  = 0.30  # 1 - banding_burden  (intra-myocardial, bSSFP-physics-based)
+    W_VLM        = 0.05  # VLM verdict  (until it discriminates; see Exp8 ablation)
 
     def generate(
         self,
@@ -103,12 +106,15 @@ class StageAGenerator:
                     "overlaps_myocardium": bool(b["overlaps_myo"]),
                     "overlaps_lv_pool":    bool(b["overlaps_pool"]),
                 },
-                "homogeneity":  round(float(q["homogeneity"]), 4),
-                "cnr":          round(float(q["cnr"]), 3),
-                "neural_score": round(float(neural_conf[i]), 4),
-                "vlm_verdict":  v["verdict"],
-                "composite_score": round(float(composite[i]), 4),
-                "verdict":      self._slice_verdict(b, q, v, composite[i]),
+                "homogeneity":           round(float(q["homogeneity"]), 4),
+                "cnr":                   round(float(q["cnr"]), 3),
+                "banded_fraction_myo":   round(float(q.get("banded_fraction_myo", 0.0)), 4),
+                "band_trough_depth":     round(float(q.get("band_trough_depth", 0.0)), 4),
+                "banding_burden":        round(float(b.get("banding_burden", 0.0)), 4),
+                "neural_score":          round(float(neural_conf[i]), 4),
+                "vlm_verdict":           v["verdict"],
+                "composite_score":       round(float(composite[i]), 4),
+                "verdict":               self._slice_verdict(b, q, v, composite[i]),
             }
             per_slice.append(ps)
 
@@ -187,29 +193,36 @@ class StageAGenerator:
         default = {
             "present": False, "location": "unknown", "severity": "none",
             "severity_float": 0.0, "overlaps_myo": False, "overlaps_pool": False,
+            "banding_burden": 0.0, "myo_overlap_fraction": 0.0, "band_depth_in_myo": 0.0,
         }
         lookup = {}
         for pkt in state.get_for_tool("banding"):
             b = pkt.data
             lookup[b.slice_idx] = {
-                "present":       b.band_present,
-                "location":      ", ".join(b.band_sectors) if b.band_sectors else "none",
-                "severity":      self._severity_label(b.severity),
-                "severity_float": b.severity,
-                "overlaps_myo":  b.bands_in_myocardium,
-                "overlaps_pool": b.bands_in_lv_pool,
+                "present":            b.band_present,
+                "location":           ", ".join(b.band_sectors) if b.band_sectors else "none",
+                "severity":           self._severity_label(b.severity),
+                "severity_float":     b.severity,
+                "overlaps_myo":       b.bands_in_myocardium,
+                "overlaps_pool":      b.bands_in_lv_pool,
+                "banding_burden":     getattr(b, "banding_burden", b.severity),
+                "myo_overlap_fraction": b.myo_overlap_fraction,
+                "band_depth_in_myo":  getattr(b, "band_depth_in_myo", 0.0),
             }
         return [lookup.get(i, dict(default)) for i in range(n)]
 
     def _quality_data(self, state: EvidenceState, n: int) -> List[Dict]:
-        default = {"homogeneity": 0.5, "cnr": 5.0, "snr": 10.0}
+        default = {"homogeneity": 0.5, "cnr": 5.0, "snr": 10.0,
+                   "banded_fraction_myo": 0.0, "band_trough_depth": 0.0}
         lookup = {}
         for pkt in state.get_for_tool("quality"):
             q = pkt.data
             lookup[q.slice_idx] = {
-                "homogeneity": q.homogeneity,
-                "cnr": q.cnr,
-                "snr": q.snr,
+                "homogeneity":        q.homogeneity,
+                "cnr":                q.cnr,
+                "snr":                q.snr,
+                "banded_fraction_myo": getattr(q, "banded_fraction_myo", 0.0),
+                "band_trough_depth":  getattr(q, "band_trough_depth", 0.0),
             }
         return [lookup.get(i, dict(default)) for i in range(n)]
 
@@ -238,31 +251,37 @@ class StageAGenerator:
             q = quality[i]
             v = vlm[i]
 
-            no_severity = 1.0 - b["severity_float"]
-            homog       = float(q["homogeneity"])
-            vlm_score   = {"optimal": 1.0, "acceptable": 0.7, "suboptimal": 0.3,
-                           "reject": 0.0, None: 0.5, "unknown": 0.5}[v["verdict"]]
+            # Use intra-myocardial banding_burden if available; fall back to severity
+            burden     = float(b.get("banding_burden", b["severity_float"]))
+            no_burden  = 1.0 - burden
+            homog      = float(q.get("homogeneity", 0.5))
+            vlm_score  = {"optimal": 1.0, "acceptable": 0.7, "suboptimal": 0.3,
+                          "reject": 0.0, None: 0.5, "unknown": 0.5}.get(v["verdict"], 0.5)
 
             scores[i] = (
-                self.W_NEURAL  * neural[i]
+                self.W_NEURAL    * neural[i]
                 + self.W_HOMOG   * homog
-                + self.W_NOSEVER * no_severity
+                + self.W_NO_BURDEN * no_burden
                 + self.W_VLM     * vlm_score
             )
         # Penalise slices where banding overlaps myocardium or LV pool
         for i in range(n):
             if banding[i]["overlaps_myo"] or banding[i]["overlaps_pool"]:
-                scores[i] *= 0.3
+                scores[i] *= 0.25   # stronger penalty with real mask
         return scores
 
     def _slice_verdict(self, b: Dict, q: Dict, v: Dict, composite: float) -> str:
+        # Hard veto: banding physically inside the myocardium — always reject.
         if b["overlaps_myo"] or b["overlaps_pool"]:
             return "reject"
-        if b["severity"] in ("severe", "moderate"):
+        # Soft veto: high intra-myocardial banding burden even without overlap
+        burden = float(b.get("banding_burden", b["severity_float"]))
+        if burden >= 0.60:
             return "suboptimal"
-        if composite >= 0.65:
+        # Grade by composite score
+        if composite >= 0.60:
             return "optimal"
-        if composite >= 0.40:
+        if composite >= 0.35:
             return "acceptable"
         return "suboptimal"
 

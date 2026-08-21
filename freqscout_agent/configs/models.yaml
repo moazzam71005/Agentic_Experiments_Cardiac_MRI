@@ -1,12 +1,15 @@
-# Model configuration for the Agentic Frequency Scouting System
-# Adjust paths and serving modes to your environment.
+# FreqScout Agent — Model configuration (Exp 8)
+# Myocardium-grounded frequency selection with LVSA U-Net.
+#
+# LOCAL (RTX 3050 8 GB)  → Qwen2-VL-2B-Instruct 4-bit
+# LAB GPU (if available) → Qwen2-VL-7B-Instruct 4-bit (swap model_id below)
 
 vlm:
-  # Primary vision-language model for banding description and Stage-B narrative
-  # MedGemma-4B is gated (needs HF login + access request). Default to open Qwen2.5-VL.
-  provider: "hf"                        # "hf" | "ollama"
-  model_id: "Qwen/Qwen2.5-VL-7B-Instruct"
-  alt_model_id: "google/medgemma-4b-it"  # gated — only if HF_TOKEN + access granted
+  provider: "hf"
+  # 3050 local: use 2B-Instruct (fits in 8 GB at 4-bit)
+  model_id: "Qwen/Qwen2-VL-2B-Instruct"
+  # Lab GPU: swap to 7B for better VLM quality
+  # model_id: "Qwen/Qwen2.5-VL-7B-Instruct"
   load_in_4bit: true
   device_map: "auto"
   max_new_tokens: 512
@@ -14,55 +17,54 @@ vlm:
   temperature_stageA: 0.0
 
 text_reasoner:
-  # LLM used for gap analysis, consistency checks, Stage-A JSON generation
-  # Can reuse VLM text head or use a separate text model
   provider: "hf"
   model_id: "Qwen/Qwen2.5-7B-Instruct"
-  alt_model_id: "google/medgemma-4b-it"  # fallback (text-only mode)
   load_in_4bit: true
   device_map: "auto"
   max_new_tokens: 1024
   temperature: 0.0
 
 segmentation:
-  # Cardiac SAX segmentation model
-  provider: "lightweight_unet"          # "lightweight_unet" | "medsam" | "nnunet"
-  # lightweight_unet: our simple U-Net trained on ACDC-style data
-  # medsam: Meta's MedSAM (needs point/box prompt)
-  # nnunet: nnU-Net ACDC checkpoint (requires nnunet installation)
-  checkpoint: null                      # path to checkpoint; null = auto-download/init
+  # LVSA U-Net (advchain UNet_64) — trained on Singapore cardiac SAX dataset.
+  # Labels: 0=BG, 1=RV, 2=MYO, 3=LV  (consensus mask across all 13 offsets).
+  #
+  # LOCAL path (Windows):
+  checkpoint: "E:/cardiotune/backend/ml/Cardiac_Multi_view_segmentation/checkpoints/Unet_LVSA_best.pkl"
+  # LAB GPU path (Linux, adjust if different):
+  # checkpoint: "/home/tukl/cardiotune/backend/ml/Cardiac_Multi_view_segmentation/checkpoints/Unet_LVSA_best.pkl"
+  #
+  # Available checkpoints (all in the same folder):
+  #   Unet_LVSA_best.pkl                        — primary (Singapore data)
+  #   Unet_LVSA_trained_on_Singapore_data.pkl   — same dataset, older save
+  #   Unet_LVSA_trained_from_UKBB.pkl           — UK Biobank trained
+  #   UNet_64$SAX$_Segmentation.pth             — SAX fine-tune
   input_size: [256, 256]
-  num_classes: 4                        # bg / RV / myo / LV-pool
-  device: "cpu"                         # segmentation is fast; use cpu to save GPU RAM
+  device: "cpu"   # seg U-Net is fast on CPU; use "cuda" to speed up consensus
 
 neural_ranker:
-  # DINOv2-L stack-transformer ranker from Exp5/Exp6
   dinov2_model: "facebook/dinov2-large"
-  checkpoint: null                      # path to .pt checkpoint; null = score-by-feature-norm
-  score_csv: "exp5_outputs/exp5_loocv_per_patient.csv"  # trained Exp5 LOOCV scores (preferred)
-  device: "cuda"                        # use GPU for DINOv2 inference
-  use_cached_features: true             # load pre-extracted features if available
+  checkpoint: null
+  score_csv: "exp5_outputs/exp5_loocv_per_patient.csv"
+  device: "cuda"
+  use_cached_features: true
 
 retrieval:
-  # Hybrid BM25 + dense retrieval knowledge base
   dense_model: "sentence-transformers/all-MiniLM-L6-v2"
   index_dir: "freqscout_agent/knowledge/index_store"
   faiss_index_path: "freqscout_agent/knowledge/index_store/faiss.index"
   bm25_index_path: "freqscout_agent/knowledge/index_store/bm25.pkl"
   chunks_path: "freqscout_agent/knowledge/index_store/chunks.jsonl"
-  alpha: 0.5                            # BM25 weight; (1-alpha) for dense
-  top_k: 5                              # retrieved chunks per query
-  context_expansion: 1                  # +/- adjacent chunks to include
+  alpha: 0.5
+  top_k: 5
+  context_expansion: 1
 
 agent:
-  t_max: 15                             # max reasoning loop iterations
-  min_evidence_tools: 3                 # must collect evidence from at least N tools
-  confidence_threshold: 0.6            # minimum confidence to finalise recommendation
+  t_max: 15
+  min_evidence_tools: 3
+  confidence_threshold: 0.5   # lowered — margin-based confidence is more conservative
 
 paths:
-  # Parent of Patient-* folders (or any ancestor — discovery uses rglob)
   data_root: "Dr-Dataset"
   excel_path: "1stcohortSAX (1).xlsx"
   exp5_outputs: "exp5_outputs"
-  exp6_outputs: "exp6_outputs"
-  agent_outputs: "agent_outputs"
+  agent_outputs: "agent_outputs_exp8"

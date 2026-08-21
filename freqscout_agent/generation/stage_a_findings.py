@@ -60,14 +60,23 @@ logger = logging.getLogger(__name__)
 
 class StageAGenerator:
 
-    # Composite score weights — myocardium-centric (Exp 8).
-    # Primary signal is myocardial banding burden (physiologically grounded).
-    # Neural ranker (Exp5 LOOCV) provides the learned prior.
-    # VLM only contributes once it shows real discrimination (currently 5%).
-    W_NEURAL     = 0.40  # Exp5 LOOCV out-of-fold score
-    W_HOMOG      = 0.25  # 1 - intra-myocardial CoV  (real mask required)
-    W_NO_BURDEN  = 0.30  # 1 - banding_burden  (intra-myocardial, bSSFP-physics-based)
-    W_VLM        = 0.05  # VLM verdict  (until it discriminates; see Exp8 ablation)
+    # Composite score weights — myocardium-centric + physics-prior (Exp 9).
+    #
+    # Center-frequency prior: bSSFP sweep is designed around 0 Hz; optimal offsets
+    # are rarely at the extremes (±150 Hz). A Gaussian prior (σ=100 Hz) softly
+    # penalises extreme offsets without hard-excluding them.
+    #
+    # W_NO_BURDEN reduced (from 0.30): burden is near-zero at both extremes because
+    # the banding null is outside the myocardium there — argmin(burden) incorrectly
+    # picks extreme offsets. Burden remains useful as a soft penalty.
+    W_NEURAL     = 0.50  # Exp5 LOOCV out-of-fold score (primary signal)
+    W_HOMOG      = 0.20  # 1 - intra-myocardial CoV  (real mask required)
+    W_NO_BURDEN  = 0.20  # 1 - banding_burden  (intra-myocardial, bSSFP-physics-based)
+    W_CENTER     = 0.10  # Gaussian center-frequency prior (σ=100 Hz)
+    W_VLM        = 0.00  # VLM verdict  (0% until real VLM run; see Exp9 lab GPU run)
+
+    # σ for the center-frequency Gaussian prior (Hz)
+    CENTER_SIGMA_HZ = 100.0
 
     def generate(
         self,
@@ -88,7 +97,7 @@ class StageAGenerator:
         vlm_data      = self._vlm_data(state, n)
 
         # --- Composite score ---
-        composite = self._composite(neural_conf, banding_data, quality_data, vlm_data, n)
+        composite = self._composite(neural_conf, banding_data, quality_data, vlm_data, n, offsets)
 
         # --- Per-slice findings ---
         per_slice = []
@@ -243,9 +252,25 @@ class StageAGenerator:
     # ------------------------------------------------------------------
 
     def _composite(
-        self, neural: np.ndarray, banding: List[Dict], quality: List[Dict], vlm: List[Dict], n: int
+        self,
+        neural: np.ndarray,
+        banding: List[Dict],
+        quality: List[Dict],
+        vlm: List[Dict],
+        n: int,
+        offsets_hz: Optional[List[float]] = None,
     ) -> np.ndarray:
         scores = np.zeros(n)
+
+        # Center-frequency Gaussian prior: p(i) ∝ exp(-0.5 * (hz/σ)²)
+        # Normalised to [0, 1] across the sweep so it acts as a relative prior.
+        if offsets_hz is not None and len(offsets_hz) == n:
+            hz_arr = np.array([float(h) for h in offsets_hz])
+            center_prior = np.exp(-0.5 * (hz_arr / self.CENTER_SIGMA_HZ) ** 2)
+            center_prior = center_prior / (center_prior.max() + 1e-9)
+        else:
+            center_prior = np.ones(n)
+
         for i in range(n):
             b = banding[i]
             q = quality[i]
@@ -259,10 +284,11 @@ class StageAGenerator:
                           "reject": 0.0, None: 0.5, "unknown": 0.5}.get(v["verdict"], 0.5)
 
             scores[i] = (
-                self.W_NEURAL    * neural[i]
-                + self.W_HOMOG   * homog
+                self.W_NEURAL      * neural[i]
+                + self.W_HOMOG     * homog
                 + self.W_NO_BURDEN * no_burden
-                + self.W_VLM     * vlm_score
+                + self.W_CENTER    * center_prior[i]
+                + self.W_VLM       * vlm_score
             )
         # Penalise slices where banding overlaps myocardium or LV pool
         for i in range(n):

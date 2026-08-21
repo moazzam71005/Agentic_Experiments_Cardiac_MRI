@@ -33,7 +33,10 @@ def main():
     logger.info("Config    : %s", CONFIG)
     logger.info("Output    : %s", OUTPUT_DIR)
 
-    pipeline = FreqScoutPipeline.from_config(CONFIG, output_dir=OUTPUT_DIR)
+    import yaml
+    with open(CONFIG, encoding="utf-8") as f:
+        cfg = yaml.safe_load(f)
+    pipeline = FreqScoutPipeline(cfg, output_dir=OUTPUT_DIR)
     pipeline.excel_path = EXCEL_PATH  # attach GT for eval logging
 
     reports = pipeline.run_all_patients(data_root=DATA_ROOT)

@@ -20,7 +20,7 @@ huggingface/
 *.safetensors
 
 # Large experiment artifacts
-*.pkl
+
 *.pt
 *.pth
 *.ckpt
@@ -52,3 +52,5 @@ Thumbs.db
 # Unrelated / local-only
 mitacs_projects_details.csv
 scraper.py
+
+*.pkl

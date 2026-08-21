@@ -20,7 +20,7 @@ huggingface/
 *.safetensors
 
 # Large experiment artifacts
-*.pkl
+
 *.pt
 *.pth
 *.ckpt

@@ -87,16 +87,20 @@ class ConsistencyChecker:
             + self.W_NEURAL_VLM * float(neural_vlm_agree)
             + self.W_CV_VLM     * float(cv_vlm_agree)
         )
-        # Confidence = 60% margin signal + 40% concordance signal
-        # Penalise when VLM is uninformative (all verdicts identical across top-3)
+        # Confidence = 60% margin signal + 40% concordance signal.
+        # VLM penalty only applies when VLM is active (has results) but fails to
+        # discriminate. If VLM returned no results at all (disabled / W_VLM=0)
+        # we skip the penalty — don't punish the system for not running VLM.
         vlm_discriminates = self._vlm_discriminates(vlm_pkt)
-        vlm_penalty = 0.0 if vlm_discriminates else 0.10
+        vlm_penalty = 0.0
+        if vlm_pkt:  # VLM was actually run
+            vlm_penalty = 0.0 if vlm_discriminates else 0.08
         confidence = float(
-            0.60 * min(neural_margin * 2.0, 1.0)   # margin in [0,0.5] → scale to [0,1]
+            0.60 * min(neural_margin * 4.0, 1.0)   # scale: margin 0.05 → 0.20, 0.25 → 1.0
             + 0.40 * concordance
         ) - vlm_penalty
         confidence = max(0.10, min(confidence, 1.0))
-        confidence_label = "high" if confidence >= 0.70 else ("medium" if confidence >= 0.40 else "low")
+        confidence_label = "high" if confidence >= 0.65 else ("medium" if confidence >= 0.35 else "low")
 
         disagreements = self._collect_disagreements(
             neural_top1, cv_top1, vlm_top1,

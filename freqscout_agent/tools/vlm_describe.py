@@ -31,29 +31,37 @@ TOOL_NAME = "vlm"
 # System prompt + per-slice user prompt templates
 # ------------------------------------------------------------------
 
-_SYSTEM_PROMPT = """You are a specialist cardiac MRI physicist reviewing a balanced
-steady-state free precession (bSSFP) frequency scout acquisition at 3.0 Tesla.
-You are assessing off-resonance banding artifacts: dark stripe-like regions caused
-by the bSSFP signal null at ±1/(2·TR) from the transmitter frequency.
+_SYSTEM_PROMPT = """You are a specialist cardiac MRI physicist reviewing a single
+balanced steady-state free precession (bSSFP) frequency-scout image at 3.0 Tesla.
+
+bSSFP banding artifacts are dark stripe-like regions caused by off-resonance nulls.
+Your job is to assess THIS IMAGE ALONE on its own merits — do NOT try to compare it
+to other images or guess what rank it holds.
+
+Verdict criteria (apply independently to this image):
+  "optimal"    — No banding visible inside or adjacent to the left ventricular
+                 myocardium; myocardial signal is uniform; blood pool is bright.
+  "acceptable" — Banding is present but lies away from the myocardium (peripheral,
+                 in lung or fat); myocardial uniformity is good.
+  "suboptimal" — Banding approaches or lightly touches the myocardium; noticeable
+                 signal loss inside the myocardium or reduced blood-pool brightness.
+  "reject"     — Banding clearly overlaps the myocardium or blood pool; image is
+                 diagnostically unusable for this frequency offset.
 
 Rules:
-- Answer ONLY about what you see in the image.
-- Use clinical frequency-scouting language.
+- Answer ONLY about what you see in THIS image.
 - Be concise and factual.
-- Your output MUST be valid JSON matching the schema provided.
-- IMPORTANT: You are comparing multiple candidate frequency offsets.
-  NOT all of them can be "optimal". Assign "optimal" to at most ONE.
-  All others must be "acceptable", "suboptimal", or "reject".
+- Output MUST be valid JSON matching the schema — no other text.
 """
 
-_USER_PROMPT_TEMPLATE = """Frequency-scout image assessment task.
+_USER_PROMPT_TEMPLATE = """Assess this bSSFP cardiac MRI frequency-scout image.
   Patient: {patient_id}
   Frequency offset: {offset_hz:+.0f} Hz
-  Candidate rank: {candidate_rank} of {n_candidates} candidates under review
 
-Examine the FULL slice image and (if provided) the cropped myocardial ROI.
-Focus on: (1) banding artifact location relative to the left ventricular myocardium,
-(2) intra-myocardial signal uniformity, (3) blood-pool brightness.
+Examine the image carefully. Look for:
+  1. Dark banding stripes — are they inside the myocardial wall, or away from it?
+  2. Signal uniformity inside the left ventricular myocardium (the ring-shaped wall).
+  3. Brightness of the blood pool (central cavity).
 
 Return ONLY this JSON (no other text):
 {{
@@ -65,7 +73,7 @@ Return ONLY this JSON (no other text):
   "myocardial_uniformity": "excellent" | "good" | "fair" | "poor",
   "blood_pool_brightness": "bright" | "reduced" | "dark",
   "overall_verdict": "optimal" | "acceptable" | "suboptimal" | "reject",
-  "brief_reasoning": "<one or two sentences describing what you see in the myocardium>",
+  "brief_reasoning": "<one or two sentences describing what you see>",
   "confidence_in_assessment": "high" | "medium" | "low"
 }}
 """

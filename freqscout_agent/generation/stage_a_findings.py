@@ -129,8 +129,21 @@ class StageAGenerator:
 
         # --- Recommendation ---
         best_idx   = int(np.argmax(composite))
-        rec_conf   = float(consistency.confidence)
-        rec_label  = consistency.confidence_label
+
+        # Composite-margin confidence: more principled than neural-margin alone.
+        # The composite already fuses neural + burden + homogeneity + center prior.
+        # Typical margin between top-1 and top-2 composite scores:
+        #   < 0.03  → low (slices are nearly tied)
+        #   0.03–0.08 → medium
+        #   > 0.08  → high
+        sorted_comp  = np.sort(composite)[::-1]
+        comp_margin  = float(sorted_comp[0] - sorted_comp[1]) if len(sorted_comp) > 1 else 0.0
+        comp_conf    = float(np.clip(comp_margin / 0.08, 0.0, 1.0))
+
+        # Blend composite-margin (70%) with cross-source concordance (30%)
+        rec_conf  = float(0.70 * comp_conf + 0.30 * consistency.confidence)
+        rec_conf  = float(np.clip(rec_conf, 0.05, 1.0))
+        rec_label = "high" if rec_conf >= 0.65 else ("medium" if rec_conf >= 0.35 else "low")
 
         # Alternative offsets: high composite OR neural top-3 (so Top-3 eval is meaningful)
         threshold = composite[best_idx] * 0.80

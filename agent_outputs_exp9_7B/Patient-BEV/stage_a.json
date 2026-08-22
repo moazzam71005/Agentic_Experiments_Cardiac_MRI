@@ -1,0 +1,313 @@
+{
+  "patient_id": "Patient-BEV",
+  "per_slice": [
+    {
+      "slice_idx": 0,
+      "offset_hz": -150.0,
+      "banding": {
+        "present": true,
+        "location": "none",
+        "severity": "mild",
+        "overlaps_myocardium": false,
+        "overlaps_lv_pool": false
+      },
+      "homogeneity": 0.6573,
+      "cnr": 1.735,
+      "banded_fraction_myo": 0.0897,
+      "band_trough_depth": 0.8879,
+      "banding_burden": 0.0,
+      "neural_score": 0.0076,
+      "vlm_verdict": "acceptable",
+      "composite_score": 0.3677,
+      "verdict": "acceptable"
+    },
+    {
+      "slice_idx": 1,
+      "offset_hz": -125.0,
+      "banding": {
+        "present": true,
+        "location": "none",
+        "severity": "mild",
+        "overlaps_myocardium": false,
+        "overlaps_lv_pool": false
+      },
+      "homogeneity": 0.6844,
+      "cnr": 2.266,
+      "banded_fraction_myo": 0.0934,
+      "band_trough_depth": 0.8043,
+      "banding_burden": 0.0,
+      "neural_score": 0.0038,
+      "vlm_verdict": null,
+      "composite_score": 0.3846,
+      "verdict": "acceptable"
+    },
+    {
+      "slice_idx": 2,
+      "offset_hz": -100.0,
+      "banding": {
+        "present": true,
+        "location": "none",
+        "severity": "mild",
+        "overlaps_myocardium": false,
+        "overlaps_lv_pool": false
+      },
+      "homogeneity": 0.7551,
+      "cnr": 1.774,
+      "banded_fraction_myo": 0.043,
+      "band_trough_depth": 0.7564,
+      "banding_burden": 0.0,
+      "neural_score": 0.0187,
+      "vlm_verdict": "acceptable",
+      "composite_score": 0.421,
+      "verdict": "acceptable"
+    },
+    {
+      "slice_idx": 3,
+      "offset_hz": -75.0,
+      "banding": {
+        "present": true,
+        "location": "none",
+        "severity": "mild",
+        "overlaps_myocardium": false,
+        "overlaps_lv_pool": false
+      },
+      "homogeneity": 0.8065,
+      "cnr": 1.364,
+      "banded_fraction_myo": 0.0172,
+      "band_trough_depth": 0.6762,
+      "banding_burden": 0.0,
+      "neural_score": 0.1614,
+      "vlm_verdict": null,
+      "composite_score": 0.5175,
+      "verdict": "acceptable"
+    },
+    {
+      "slice_idx": 4,
+      "offset_hz": -50.0,
+      "banding": {
+        "present": true,
+        "location": "none",
+        "severity": "mild",
+        "overlaps_myocardium": false,
+        "overlaps_lv_pool": false
+      },
+      "homogeneity": 0.819,
+      "cnr": 1.113,
+      "banded_fraction_myo": 0.0098,
+      "band_trough_depth": 0.6568,
+      "banding_burden": 0.0,
+      "neural_score": 0.2104,
+      "vlm_verdict": "acceptable",
+      "composite_score": 0.5573,
+      "verdict": "acceptable"
+    },
+    {
+      "slice_idx": 5,
+      "offset_hz": -25.0,
+      "banding": {
+        "present": true,
+        "location": "none",
+        "severity": "mild",
+        "overlaps_myocardium": false,
+        "overlaps_lv_pool": false
+      },
+      "homogeneity": 0.8322,
+      "cnr": 0.975,
+      "banded_fraction_myo": 0.0061,
+      "band_trough_depth": 0.5625,
+      "banding_burden": 0.0,
+      "neural_score": 0.247,
+      "vlm_verdict": "acceptable",
+      "composite_score": 0.5869,
+      "verdict": "acceptable"
+    },
+    {
+      "slice_idx": 6,
+      "offset_hz": 0.0,
+      "banding": {
+        "present": true,
+        "location": "none",
+        "severity": "mild",
+        "overlaps_myocardium": false,
+        "overlaps_lv_pool": false
+      },
+      "homogeneity": 0.83,
+      "cnr": 0.977,
+      "banded_fraction_myo": 0.0037,
+      "band_trough_depth": 0.4994,
+      "banding_burden": 0.0,
+      "neural_score": 0.2372,
+      "vlm_verdict": "optimal",
+      "composite_score": 0.5846,
+      "verdict": "acceptable"
+    },
+    {
+      "slice_idx": 7,
+      "offset_hz": 25.0,
+      "banding": {
+        "present": true,
+        "location": "none",
+        "severity": "mild",
+        "overlaps_myocardium": false,
+        "overlaps_lv_pool": false
+      },
+      "homogeneity": 0.8212,
+      "cnr": 1.179,
+      "banded_fraction_myo": 0.0098,
+      "band_trough_depth": 0.5648,
+      "banding_burden": 0.0,
+      "neural_score": 0.0835,
+      "vlm_verdict": null,
+      "composite_score": 0.5029,
+      "verdict": "acceptable"
+    },
+    {
+      "slice_idx": 8,
+      "offset_hz": 50.0,
+      "banding": {
+        "present": true,
+        "location": "none",
+        "severity": "mild",
+        "overlaps_myocardium": false,
+        "overlaps_lv_pool": false
+      },
+      "homogeneity": 0.7657,
+      "cnr": 1.488,
+      "banded_fraction_myo": 0.0233,
+      "band_trough_depth": 0.6125,
+      "banding_burden": 0.0,
+      "neural_score": 0.0195,
+      "vlm_verdict": null,
+      "composite_score": 0.4511,
+      "verdict": "acceptable"
+    },
+    {
+      "slice_idx": 9,
+      "offset_hz": 75.0,
+      "banding": {
+        "present": true,
+        "location": "anterior",
+        "severity": "mild",
+        "overlaps_myocardium": false,
+        "overlaps_lv_pool": false
+      },
+      "homogeneity": 0.5822,
+      "cnr": 2.011,
+      "banded_fraction_myo": 0.1806,
+      "band_trough_depth": 0.9119,
+      "banding_burden": 0.0369,
+      "neural_score": 0.0041,
+      "vlm_verdict": null,
+      "composite_score": 0.3866,
+      "verdict": "acceptable"
+    },
+    {
+      "slice_idx": 10,
+      "offset_hz": 100.0,
+      "banding": {
+        "present": true,
+        "location": "none",
+        "severity": "mild",
+        "overlaps_myocardium": false,
+        "overlaps_lv_pool": false
+      },
+      "homogeneity": 0.3848,
+      "cnr": 1.917,
+      "banded_fraction_myo": 0.317,
+      "band_trough_depth": 0.9527,
+      "banding_burden": 0.0061,
+      "neural_score": 0.0023,
+      "vlm_verdict": null,
+      "composite_score": 0.3376,
+      "verdict": "suboptimal"
+    },
+    {
+      "slice_idx": 11,
+      "offset_hz": 125.0,
+      "banding": {
+        "present": true,
+        "location": "none",
+        "severity": "mild",
+        "overlaps_myocardium": false,
+        "overlaps_lv_pool": false
+      },
+      "homogeneity": 0.4222,
+      "cnr": 0.961,
+      "banded_fraction_myo": 0.1966,
+      "band_trough_depth": 0.9248,
+      "banding_burden": 0.0,
+      "neural_score": 0.0014,
+      "vlm_verdict": null,
+      "composite_score": 0.3309,
+      "verdict": "suboptimal"
+    },
+    {
+      "slice_idx": 12,
+      "offset_hz": 150.0,
+      "banding": {
+        "present": true,
+        "location": "none",
+        "severity": "mild",
+        "overlaps_myocardium": false,
+        "overlaps_lv_pool": false
+      },
+      "homogeneity": 0.5308,
+      "cnr": 2.52,
+      "banded_fraction_myo": 0.1388,
+      "band_trough_depth": 0.925,
+      "banding_burden": 0.0,
+      "neural_score": 0.003,
+      "vlm_verdict": null,
+      "composite_score": 0.3401,
+      "verdict": "suboptimal"
+    }
+  ],
+  "recommended_offset": {
+    "slice_idx": 5,
+    "offset_hz": -25.0,
+    "confidence": 0.075,
+    "confidence_label": "low"
+  },
+  "alternative_offsets": [
+    {
+      "slice_idx": 3,
+      "offset_hz": -75.0,
+      "verdict": "acceptable"
+    },
+    {
+      "slice_idx": 4,
+      "offset_hz": -50.0,
+      "verdict": "acceptable"
+    },
+    {
+      "slice_idx": 6,
+      "offset_hz": 0.0,
+      "verdict": "acceptable"
+    },
+    {
+      "slice_idx": 7,
+      "offset_hz": 25.0,
+      "verdict": "acceptable"
+    }
+  ],
+  "neural_top3": [
+    5,
+    6,
+    4
+  ],
+  "evidence_agreement": "conflicted",
+  "disagreements": [
+    "Neural ranker picks slice 5 (-25 Hz) but VLM rates slice 6 (+0 Hz) as optimal.",
+    "CV metrics favour slice 5 (-25 Hz) but VLM prefers slice 6 (+0 Hz)."
+  ],
+  "evidence_sources": [
+    "retrieve",
+    "quality",
+    "segment",
+    "vlm",
+    "physics",
+    "banding",
+    "neural",
+    "consistency"
+  ]
+}

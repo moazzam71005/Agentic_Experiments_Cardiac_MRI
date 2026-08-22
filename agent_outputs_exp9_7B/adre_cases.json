@@ -1,0 +1,194 @@
+{
+  "summary": {
+    "n_patients": 26,
+    "top1_acc": 0.34615384615384615,
+    "top3_acc": 0.6153846153846154,
+    "within1_acc": 0.6538461538461539,
+    "mean_mae_hz": 26.923076923076923,
+    "confidence_calibration": {
+      "correct": 0.32255555555555554,
+      "wrong": 0.3356470588235294,
+      "ece": 0.2433461538461538
+    },
+    "hallucination_rate": 0.0,
+    "agreement": {
+      "full": 0,
+      "partial": 0,
+      "conflicted": 26
+    }
+  },
+  "success_cases": [
+    {
+      "patient_id": "Patient-BGT",
+      "gt_slice": 6,
+      "gt_hz": 0.0,
+      "pred_slice": 6,
+      "pred_hz": 0.0,
+      "top3_slices": [
+        6,
+        0,
+        5
+      ],
+      "confidence": 0.556,
+      "confidence_label": "medium",
+      "agreement": "conflicted",
+      "repair_issues": 1,
+      "hallucinated": false
+    },
+    {
+      "patient_id": "Patient-BVE",
+      "gt_slice": 5,
+      "gt_hz": -25.0,
+      "pred_slice": 5,
+      "pred_hz": -25.0,
+      "top3_slices": [
+        5,
+        4,
+        6
+      ],
+      "confidence": 0.124,
+      "confidence_label": "low",
+      "agreement": "conflicted",
+      "repair_issues": 0,
+      "hallucinated": false
+    },
+    {
+      "patient_id": "Patient-DEM",
+      "gt_slice": 8,
+      "gt_hz": 50.0,
+      "pred_slice": 8,
+      "pred_hz": 50.0,
+      "top3_slices": [
+        8,
+        6,
+        10
+      ],
+      "confidence": 0.881,
+      "confidence_label": "high",
+      "agreement": "conflicted",
+      "repair_issues": 1,
+      "hallucinated": false
+    },
+    {
+      "patient_id": "Patient-FAJ",
+      "gt_slice": 8,
+      "gt_hz": 50.0,
+      "pred_slice": 8,
+      "pred_hz": 50.0,
+      "top3_slices": [
+        6,
+        8,
+        9
+      ],
+      "confidence": 0.497,
+      "confidence_label": "medium",
+      "agreement": "conflicted",
+      "repair_issues": 1,
+      "hallucinated": false
+    },
+    {
+      "patient_id": "Patient-IAM",
+      "gt_slice": 7,
+      "gt_hz": 25.0,
+      "pred_slice": 7,
+      "pred_hz": 25.0,
+      "top3_slices": [
+        7,
+        6,
+        9
+      ],
+      "confidence": 0.082,
+      "confidence_label": "low",
+      "agreement": "conflicted",
+      "repair_issues": 0,
+      "hallucinated": false
+    }
+  ],
+  "failure_cases": [
+    {
+      "patient_id": "Patient-BEV",
+      "gt_slice": 6,
+      "gt_hz": 0.0,
+      "pred_slice": 5,
+      "pred_hz": -25.0,
+      "top3_slices": [
+        5,
+        6,
+        4
+      ],
+      "confidence": 0.075,
+      "confidence_label": "low",
+      "agreement": "conflicted",
+      "repair_issues": 0,
+      "hallucinated": false
+    },
+    {
+      "patient_id": "Patient-CEA",
+      "gt_slice": 6,
+      "gt_hz": 0.0,
+      "pred_slice": 4,
+      "pred_hz": -50.0,
+      "top3_slices": [
+        4,
+        5,
+        6
+      ],
+      "confidence": 0.88,
+      "confidence_label": "high",
+      "agreement": "conflicted",
+      "repair_issues": 1,
+      "hallucinated": false
+    },
+    {
+      "patient_id": "Patient-CEJP",
+      "gt_slice": 3,
+      "gt_hz": -75.0,
+      "pred_slice": 5,
+      "pred_hz": -25.0,
+      "top3_slices": [
+        4,
+        3,
+        5
+      ],
+      "confidence": 0.054,
+      "confidence_label": "low",
+      "agreement": "conflicted",
+      "repair_issues": 0,
+      "hallucinated": false
+    },
+    {
+      "patient_id": "Patient-FEC",
+      "gt_slice": 7,
+      "gt_hz": 25.0,
+      "pred_slice": 5,
+      "pred_hz": -25.0,
+      "top3_slices": [
+        5,
+        7,
+        9
+      ],
+      "confidence": 0.126,
+      "confidence_label": "low",
+      "agreement": "conflicted",
+      "repair_issues": 0,
+      "hallucinated": false
+    },
+    {
+      "patient_id": "Patient-GJ",
+      "gt_slice": 8,
+      "gt_hz": 50.0,
+      "pred_slice": 10,
+      "pred_hz": 100.0,
+      "top3_slices": [
+        10,
+        7,
+        9
+      ],
+      "confidence": 0.328,
+      "confidence_label": "low",
+      "agreement": "conflicted",
+      "repair_issues": 1,
+      "hallucinated": false
+    }
+  ]
+}

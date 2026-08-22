@@ -1,0 +1,11 @@
+ASSESSMENT:
+Suboptimal banding is observed at slice 12 (+150 Hz), with residual artifacts at or near the myocardial borders. 
+
+OPTIMAL SELECTION:
+The frequency offset at +25 Hz (slice 7) demonstrates no significant banding artifact within the cardiac silhouette, with myocardial homogeneity of 0.86 and blood-myocardium CNR of 1.1. This offset is selected as optimal, supported by the neural quality ranker (confidence 0.17), quantitative image metrics, and visual banding assessment.
+
+ALTERNATIVE OFFSETS:
+Acceptable alternative offset(s): -50 Hz, -25 Hz, +0 Hz. These may be substituted if patient motion or field drift occurs.
+
+CONFIDENCE:
+Overall confidence: low (score 0.17). Evidence sources: retrieve, quality, segment, vlm, physics, banding, neural, consistency. Agreement: conflicted. Note: Neural ranker picks slice 7 (+25 Hz) but VLM rates slice 6 (+0 Hz) as optimal.; CV metrics favour slice 7 (+25 Hz) but VLM prefers slice 6 (+0 Hz).

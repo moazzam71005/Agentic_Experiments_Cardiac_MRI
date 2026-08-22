@@ -4,6 +4,7 @@ from .quality import QualityMetrics
 from .neural_scorer import NeuralRanker
 from .physics import PhysicsDescriptor
 from .vlm_describe import VLMDescriptor
+from .passband import PassbandEstimator
 
 __all__ = [
     "SegmentationTool",
@@ -12,4 +13,5 @@ __all__ = [
     "NeuralRanker",
     "PhysicsDescriptor",
     "VLMDescriptor",
+    "PassbandEstimator",
 ]

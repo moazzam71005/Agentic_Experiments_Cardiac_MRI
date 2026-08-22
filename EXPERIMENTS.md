@@ -229,23 +229,25 @@ or a contrastive pair-wise prompt (show two images, ask which is better) may be 
 
 ---
 
-## Current Best Results (Exp9)
+## Current Best Results (Exp10 deploy)
 
 ```
-Top-1 accuracy   : 9/26  = 34.6%
-Top-3 accuracy   : 16/26 = 61.5%
-Within ±1 step   : 18/26 = 69.2%   (proxy eval reports 17/26 due to GT Hz convention)
-Mean MAE         : 26.9 Hz
-Hallucination    : 0%
+Top-1 accuracy        : 11/26 = 42.3%
+Clinical (±1 step)    : 20/26 = 76.9%
+Acceptable-set hit    : 19/26 = 73.1%
+Mean MAE              : 22.1 Hz
+Hallucination         : 0%
 ```
 
-**Composite weights (models.yaml / stage_a_findings.py):**
+**Composite weights (stage_a_findings.py, Exp10 grid):**
 ```
-W_NEURAL    = 0.50   # Exp5 LOOCV neural score
-W_HOMOG     = 0.20   # 1 - intra-myocardial CoV
-W_NO_BURDEN = 0.20   # 1 - banding_burden
+W_NEURAL    = 0.20   # Exp5 LOOCV (kept as a weak prior)
+W_NO_BFM    = 0.70   # 1 - banded_fraction_myo  (strongest physics signal)
 W_CENTER    = 0.10   # Gaussian center prior σ=100 Hz
-W_VLM       = 0.00   # VLM disabled (biased, unreliable)
+W_HOMOG     = 0.00
+W_NO_BURDEN = 0.00
+W_PASSBAND  = 0.00   # used for acceptable-set / reasons, not the scalar score
+W_VLM       = 0.00
 ```
 
 ---
@@ -279,29 +281,74 @@ W_VLM       = 0.00   # VLM disabled (biased, unreliable)
 
 ---
 
-## Next Steps (Exp10 and beyond)
+### Exp10: Physics passband + acceptable-region reasoning
+
+**Are segments used?** Yes. The LVSA U-Net consensus mask is required for
+`banded_fraction_myo`, homogeneity, CNR, `mu_myo`, and `banding_burden`. Exp10
+showed that `banded_fraction_myo` — computed from the mask but unused in Exp8/9
+scoring — is the single best selector.
+
+**Bugs fixed**
+- `band_trough_depth` now uses the 5th percentile of myocardial pixels (not min).
+- `_slice_verdict` is relative to the per-patient max composite (the old 0.60
+  cutoff never fired; nothing was ever labelled "optimal").
+- Acceptable set is a contiguous ±1-step window around the passband peak
+  (extreme ±150 Hz offsets are no longer treated as "acceptable" just because
+  the null has not yet entered the myocardium).
+- GT Hz for eval is the scout-sweep value at Excel `image no` (same as Exp1–9),
+  not the "Manual frequency" column (the two disagree).
+
+**New modules**
+- `freqscout_agent/tools/passband.py` — peak, acceptable/rejected sets, reasons
+- `freqscout_agent/eval/fusion.py` — simplex grid + LOOCV weight search
+- `freqscout_agent/eval/calibration.py` — Platt / isotonic LOOCV + ECE
+- `freqscout_agent/eval/exp10_runner.py` — shared evaluation engine
+- `experiment10_passband.ipynb` / `run_exp10_eval.py`
+
+**Ablation (26 patients, image-no GT):**
+
+| Selector | Top-1 | ±1 step | Accept-hit | MAE |
+|---|---|---|---|---|
+| Neural-only (Exp7) | 23.1% | 57.7% | 65.4% | 30.8 Hz |
+| argmin(banded_fraction_myo) | 38.5% | 73.1% | 65.4% | 33.7 Hz |
+| Passband peak | 19.2% | 61.5% | 65.4% | 45.3 Hz |
+| **Fused Exp10 (0.7·no_bfm + 0.2·neural + 0.1·center)** | **42.3%** | **76.9%** | **73.1%** | **22.1 Hz** |
+| Exp9 pipeline (for reference) | 34.6% | 65.4% | — | 26.9 Hz |
+
+LOOCV of the 6-D weight grid is unstable (n=26): honest LOOCV Top-1 was 11.5%.
+Deploy the **fixed** physics-first weights above, not per-fold re-fit weights.
+
+**Miss categories (15 patients not exact Top-1):**
+- clinical_neighbor (±25 Hz): GJ, HMJ, IAM, MSR, OAF, PJ, RAK, SK, SWJ, WMR
+- neural_error_passband_ok: CEA, HRJ, MS
+- flat/ambiguous passband: CEJP, MJ, TL
+- segmentation_failure: KP (empty / atypical mask, 7-frame scout)
+
+**Reasoning output.** Stage-A JSON now includes `reason` per offset,
+`acceptable_neighbors[]`, `rejected_offsets[]`, and `passband.{peak, sets}`.
+Stage-B template narrative quotes those physics reasons (why good / why reject).
+
+**Calibration.** Composite-margin still does not separate correct vs wrong
+(conf_correct ≈ conf_wrong). Platt LOOCV ECE 0.227 → 0.337 (worse). Do not
+ship post-hoc scaling until a margin that tracks correctness exists. Raw
+margin labels (low/medium/high) remain in the report.
+
+---
+
+## Next Steps (beyond Exp10)
 
 ### High priority
-1. **Retrain or fine-tune the neural ranker** — DINOv2 LOOCV on 26 patients is the
-   accuracy ceiling. Options:
-   - Collect more patients
-   - Use stronger augmentation in LOOCV
-   - Try a contrastive ranking loss instead of softmax
-2. **Investigate the 8 failing patients** (CEA, CEJP, FEC, GJ, HRJ, RK, SK, TL):
-   - All have ≥50 Hz error
-   - Check if their DICOMs have unusual anatomy or image artefacts
-   - Check if their GT in the Excel is clinically well-defined
+1. **More labelled patients** — 26 is too small for 6-D weight LOOCV; a second
+   cohort would let us validate the 0.7/0.2/0.1 recipe out of sample.
+2. **Patient-KP** — exclude from headline metrics or handle the 7-frame scout
+   as a special case (segmentation currently fails).
+3. **Investigate CEJP / MJ / TL** — flat passband; check Excel GT vs visual.
 
 ### Medium priority
-3. **VLM redesign** — if VLM is to be used:
-   - Use **pairwise comparison prompt**: show 2 images, ask "which has less myocardial banding?"
-   - Or use a medically fine-tuned model (MedGemma, BioViL-T)
-   - Avoid absolute quality verdicts with a 4-point scale — small models can't calibrate this
-4. **Confidence calibration** — post-hoc Platt scaling or isotonic regression on the
-   composite margin to reduce ECE below 0.15
-5. **Patient-KP** — investigate whether this patient should be excluded from evaluation
-   or treated specially (different frequency sweep range)
+4. **Pairwise VLM** — only if a medically tuned model is available; absolute
+   4-way verdicts failed at 2B and 7B.
+5. **Neural ranker** — DINOv2 LOOCV is weaker than `banded_fraction_myo`;
+   keep it as a 0.20 prior, do not let it dominate.
 
 ### Low priority
-6. **Stage-B narrative** — improve the clinical narrative generation
-7. **Run on second cohort** — if additional patient data becomes available
+6. Second-cohort hold-out once data arrives.

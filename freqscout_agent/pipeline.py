@@ -236,10 +236,15 @@ class FreqScoutPipeline:
             phys = physics_pkts[0].data
             rec  = stage_a["recommended_offset"]
             top3 = list(stage_a.get("neural_top3") or [])
-            top3 = list(dict.fromkeys(top3 + [rec["slice_idx"]] + [a["slice_idx"] for a in stage_a["alternative_offsets"]]))
+            top3 = list(dict.fromkeys(top3 + [rec["slice_idx"]] + [a["slice_idx"] for a in stage_a.get("alternative_offsets", [])]))
+            pb = stage_a.get("passband") or {}
+            accept = list(pb.get("acceptable_set") or [])
+            if rec["slice_idx"] not in accept:
+                accept = [rec["slice_idx"]] + accept
+            gt_s = phys.gt_best_slice
             proxy_result = SinglePatientResult(
                 patient_id=patient_id,
-                gt_slice=phys.gt_best_slice,
+                gt_slice=gt_s,
                 gt_hz=phys.gt_offset_hz,
                 pred_slice=rec["slice_idx"],
                 pred_hz=rec["offset_hz"],
@@ -249,6 +254,8 @@ class FreqScoutPipeline:
                 agreement=stage_a["evidence_agreement"],
                 repair_issues=len(repair.issues_found),
                 hallucinated=any("hallucinated" in i.lower() for i in repair.issues_found),
+                acceptable_set=accept,
+                acceptable_hit=(gt_s in accept) if gt_s is not None else None,
             )
 
         # --- Save outputs ---

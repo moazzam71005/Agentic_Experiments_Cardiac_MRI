@@ -34,6 +34,9 @@ exp8_seg_qc/
 exp8_seg_qc_preview.png
 exp8_burden_profile.png
 exp8_ablation_results.csv
+exp10_ablation_results.csv
+exp10_passband_curves.png
+exp10_weights.json
 lora_data/
 lora_checkpoints/
 

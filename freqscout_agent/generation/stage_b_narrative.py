@@ -167,70 +167,64 @@ class StageBGenerator:
 
     def _template_narrative(self, stage_a: Dict, consistency: ConsistencyReport) -> str:
         rec   = stage_a["recommended_offset"]
-        alts  = stage_a["alternative_offsets"]
         slices = stage_a["per_slice"]
+        neighbors = stage_a.get("acceptable_neighbors") or stage_a.get("alternative_offsets") or []
+        rejected = stage_a.get("rejected_offsets") or [s for s in slices if s.get("verdict") == "reject"]
+        pb = stage_a.get("passband") or {}
 
-        # Identify rejected slices
-        rejected = [s for s in slices if s["verdict"] == "reject"]
-        sub_opt  = [s for s in slices if s["verdict"] == "suboptimal"]
+        def hz_str(s):
+            if isinstance(s, dict) and "offset_hz" in s:
+                return f"{s['offset_hz']:+.0f} Hz"
+            return f"{s:+.0f} Hz"
 
-        def hz_str(s): return f"{s['offset_hz']:+.0f} Hz"
-        def idx_str(s): return f"slice {s['slice_idx']} ({hz_str(s)})"
+        def idx_str(s):
+            return f"slice {s['slice_idx']} ({hz_str(s)})"
 
-        # Assessment block
+        # Assessment: why rejected offsets are bad (physics reason)
         if rejected:
-            reject_str = ", ".join(idx_str(s) for s in rejected[:3])
+            lines = []
+            for s in rejected[:4]:
+                reason = s.get("reason") or "banding enters the myocardium"
+                lines.append(f"{idx_str(s)}: {reason}")
             assessment = (
-                f"Frequency offsets at {reject_str} show dark banding artifacts "
-                f"overlapping the left ventricular myocardium or blood pool, rendering these "
-                f"offsets clinically unacceptable for diagnostic bSSFP CINE acquisition. "
-            )
-        elif sub_opt:
-            sub_str = ", ".join(idx_str(s) for s in sub_opt[:3])
-            assessment = (
-                f"Suboptimal banding is observed at {sub_str}, with residual artifacts "
-                f"at or near the myocardial borders. "
+                "The following offsets are rejected because the bSSFP null enters "
+                "the cardiac ROI:\n  - " + "\n  - ".join(lines)
             )
         else:
-            assessment = "All evaluated frequency offsets show acceptable to optimal image quality. "
+            assessment = "No offset showed a banding null overlapping myocardium or LV pool."
 
-        # Best slice information
         best = next((s for s in slices if s["slice_idx"] == rec["slice_idx"]), {})
-        homog  = best.get("homogeneity", 0)
-        cnr    = best.get("cnr", 0)
-        bdet   = best.get("banding", {})
-        band_loc = bdet.get("location", "none") if bdet else "none"
-        band_sev = bdet.get("severity", "none") if bdet else "none"
-
-        if band_sev in ("none", "mild") and band_loc in ("none", "peripheral/lung/fat"):
-            band_desc = f"no significant banding artifact within the cardiac silhouette"
-        else:
-            band_desc = f"residual banding displaced to {band_loc}"
+        rec_reason = rec.get("reason") or best.get("reason") or ""
+        homog = best.get("homogeneity", 0)
+        cnr   = best.get("cnr", 0)
+        bfm   = best.get("banded_fraction_myo", 0)
+        peak_hz = pb.get("peak_hz", rec.get("offset_hz"))
 
         optimal_block = (
-            f"The frequency offset at {hz_str(rec)} (slice {rec['slice_idx']}) demonstrates "
-            f"{band_desc}, with myocardial homogeneity of {homog:.2f} and "
-            f"blood-myocardium CNR of {cnr:.1f}. This offset is selected as optimal, "
-            f"supported by the neural quality ranker (confidence {consistency.confidence:.2f}), "
-            f"quantitative image metrics, and visual banding assessment."
+            f"Primary selection: {hz_str(rec)} (slice {rec['slice_idx']}). "
+            f"{rec_reason} "
+            f"Myocardial homogeneity {homog:.2f}, CNR {cnr:.1f}, "
+            f"intra-myocardial banded fraction {bfm:.1%}. "
+            f"Myocardial passband peak is at {peak_hz:+.0f} Hz."
         )
 
-        # Alternatives
-        if alts:
-            alt_str = ", ".join(f"{a['offset_hz']:+.0f} Hz" for a in alts[:3])
+        if neighbors:
+            alt_lines = []
+            for a in neighbors[:4]:
+                rsn = a.get("reason") or "near-passband, no myocardial overlap"
+                alt_lines.append(f"{a['offset_hz']:+.0f} Hz ({a.get('verdict', 'acceptable')}): {rsn}")
             alt_block = (
-                f"Acceptable alternative offset(s): {alt_str}. "
-                f"These may be substituted if patient motion or field drift occurs."
+                "Clinically acceptable neighbour(s) — the referring doctor may use any of these "
+                "if the primary offset is unavailable:\n  - " + "\n  - ".join(alt_lines)
             )
         else:
-            alt_block = "No other acceptable alternatives were identified in this frequency sweep."
+            alt_block = "No other acceptable neighbours were identified in this frequency sweep."
 
-        # Confidence
         conf_block = (
-            f"Overall confidence: {consistency.confidence_label} "
-            f"(score {consistency.confidence:.2f}). "
-            f"Evidence sources: {', '.join(stage_a['evidence_sources'])}. "
-            f"Agreement: {stage_a['evidence_agreement']}."
+            f"Overall confidence: {rec.get('confidence_label', consistency.confidence_label)} "
+            f"(score {rec.get('confidence', consistency.confidence):.2f}). "
+            f"Evidence sources: {', '.join(stage_a.get('evidence_sources', []))}. "
+            f"Agreement: {stage_a.get('evidence_agreement', 'unknown')}."
         )
         if consistency.disagreements:
             conf_block += f" Note: {'; '.join(consistency.disagreements)}"

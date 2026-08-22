@@ -50,6 +50,8 @@ class SinglePatientResult:
     agreement: str              # "full"|"partial"|"conflicted"
     repair_issues: int
     hallucinated: bool
+    acceptable_set: List[int] = field(default_factory=list)
+    acceptable_hit: Optional[bool] = None   # GT falls in agent's acceptable set
 
 
 @dataclass
@@ -57,7 +59,8 @@ class ProxyResult:
     n_patients: int
     top1_acc: float
     top3_acc: float
-    within1_acc: float          # within ±1 step from GT
+    within1_acc: float          # within ±1 step from GT  (clinical agreement)
+    accept_hit_acc: float       # GT is in the agent's acceptable set
     mean_mae_hz: float
     mean_conf_correct: float
     mean_conf_wrong: float
@@ -75,7 +78,7 @@ class ProxyMetrics:
         """Aggregate per-patient results into summary metrics."""
         n = len(patient_results)
         if n == 0:
-            return ProxyResult(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0)
+            return ProxyResult(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0)
 
         evaluated = [r for r in patient_results if r.gt_slice is not None]
         n_eval = len(evaluated)
@@ -91,9 +94,19 @@ class ProxyMetrics:
             abs(r.pred_hz - r.gt_hz) for r in evaluated if r.gt_hz is not None
         ]
 
+        accept_hits = [
+            r for r in evaluated
+            if r.acceptable_hit is True
+            or (r.acceptable_hit is None and r.gt_slice in (r.acceptable_set or []))
+        ]
+        # If acceptable_set empty and flag unset, fall back to ±1 step
+        if not any(r.acceptable_set or r.acceptable_hit is not None for r in evaluated):
+            accept_hits = within1
+
         top1_acc   = len(top1_correct) / max(n_eval, 1)
         top3_acc   = len(top3_correct) / max(n_eval, 1)
         within1_acc= len(within1) / max(n_eval, 1)
+        accept_hit_acc = len(accept_hits) / max(n_eval, 1)
         mean_mae   = float(np.mean(mae_vals)) if mae_vals else 0.0
 
         # Confidence calibration
@@ -117,6 +130,7 @@ class ProxyMetrics:
             top1_acc=top1_acc,
             top3_acc=top3_acc,
             within1_acc=within1_acc,
+            accept_hit_acc=accept_hit_acc,
             mean_mae_hz=mean_mae,
             mean_conf_correct=mean_conf_c,
             mean_conf_wrong=mean_conf_w,
@@ -150,6 +164,8 @@ class ProxyMetrics:
                 "agreement": r.agreement,
                 "repair_issues": r.repair_issues,
                 "hallucinated": r.hallucinated,
+                "acceptable_set": r.acceptable_set,
+                "acceptable_hit": r.acceptable_hit,
             }
 
         doc = {
@@ -158,6 +174,7 @@ class ProxyMetrics:
                 "top1_acc": result.top1_acc,
                 "top3_acc": result.top3_acc,
                 "within1_acc": result.within1_acc,
+                "accept_hit_acc": result.accept_hit_acc,
                 "mean_mae_hz": result.mean_mae_hz,
                 "confidence_calibration": {
                     "correct": result.mean_conf_correct,
@@ -202,7 +219,8 @@ class ProxyMetrics:
         print(f"  Patients evaluated  : {result.n_patients}")
         print(f"  Top-1 accuracy      : {result.top1_acc:.3f}  ({result.top1_acc*100:.1f}%)")
         print(f"  Top-3 accuracy      : {result.top3_acc:.3f}  ({result.top3_acc*100:.1f}%)")
-        print(f"  Within ±1 step      : {result.within1_acc:.3f}  ({result.within1_acc*100:.1f}%)")
+        print(f"  Clinical (±1 step)  : {result.within1_acc:.3f}  ({result.within1_acc*100:.1f}%)")
+        print(f"  Acceptable-set hit  : {result.accept_hit_acc:.3f}  ({result.accept_hit_acc*100:.1f}%)")
         print(f"  Mean offset MAE     : {result.mean_mae_hz:.1f} Hz")
         print(f"  Conf (correct)      : {result.mean_conf_correct:.3f}")
         print(f"  Conf (wrong)        : {result.mean_conf_wrong:.3f}")

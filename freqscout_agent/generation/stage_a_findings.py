@@ -54,29 +54,38 @@ from typing import Any, Dict, List, Optional
 
 from ..agent.evidence_state import EvidenceState
 from ..agent.consistency import ConsistencyReport
+from ..tools.passband import PassbandEstimator, PassbandResult
 
 logger = logging.getLogger(__name__)
 
 
 class StageAGenerator:
 
-    # Composite score weights — myocardium-centric + physics-prior (Exp 9).
-    #
-    # Center-frequency prior: bSSFP sweep is designed around 0 Hz; optimal offsets
-    # are rarely at the extremes (±150 Hz). A Gaussian prior (σ=100 Hz) softly
-    # penalises extreme offsets without hard-excluding them.
-    #
-    # W_NO_BURDEN reduced (from 0.30): burden is near-zero at both extremes because
-    # the banding null is outside the myocardium there — argmin(burden) incorrectly
-    # picks extreme offsets. Burden remains useful as a soft penalty.
-    W_NEURAL     = 0.50  # Exp5 LOOCV out-of-fold score (primary signal)
-    W_HOMOG      = 0.20  # 1 - intra-myocardial CoV  (real mask required)
-    W_NO_BURDEN  = 0.20  # 1 - banding_burden  (intra-myocardial, bSSFP-physics-based)
-    W_CENTER     = 0.10  # Gaussian center-frequency prior (σ=100 Hz)
-    W_VLM        = 0.00  # VLM verdict  (0% until real VLM run; see Exp9 lab GPU run)
+    # Composite score weights — Exp 10 (passband + myocardial banded fraction).
+    # VLM remains at 0: Exp9 showed 7B/2B are center-biased and 0/20 accurate.
+    # Weights may be overwritten by LOOCV fusion (see eval.fusion).
+    # Deploy weights from Exp10 full-data grid search (2*Top-1 + ±1 objective):
+    # banded_fraction_myo is the strongest physics signal (38.5% Top-1 alone).
+    W_NEURAL     = 0.20
+    W_HOMOG      = 0.00
+    W_NO_BURDEN  = 0.00
+    W_NO_BFM     = 0.70
+    W_PASSBAND   = 0.00
+    W_CENTER     = 0.10
+    W_VLM        = 0.00
 
-    # σ for the center-frequency Gaussian prior (Hz)
     CENTER_SIGMA_HZ = 100.0
+
+    def __init__(self, weights: Optional[Dict[str, float]] = None):
+        if weights:
+            self.W_NEURAL   = float(weights.get("neural", self.W_NEURAL))
+            self.W_HOMOG    = float(weights.get("homog", self.W_HOMOG))
+            self.W_NO_BURDEN = float(weights.get("no_burden", self.W_NO_BURDEN))
+            self.W_NO_BFM   = float(weights.get("no_bfm", self.W_NO_BFM))
+            self.W_PASSBAND = float(weights.get("passband", self.W_PASSBAND))
+            self.W_CENTER   = float(weights.get("center", self.W_CENTER))
+            self.W_VLM      = float(weights.get("vlm", self.W_VLM))
+        self._passband = PassbandEstimator()
 
     def generate(
         self,
@@ -96,15 +105,29 @@ class StageAGenerator:
         quality_data  = self._quality_data(state, n)
         vlm_data      = self._vlm_data(state, n)
 
-        # --- Composite score ---
-        composite = self._composite(neural_conf, banding_data, quality_data, vlm_data, n, offsets)
+        # --- Myocardial passband model (Exp 10) ---
+        pb: PassbandResult = self._passband.estimate(offsets, quality_data, banding_data)
+        accept_set = set(pb.acceptable_set)
+        reject_set = set(pb.rejected_set)
 
-        # --- Per-slice findings ---
+        # --- Composite score ---
+        composite = self._composite(
+            neural_conf, banding_data, quality_data, vlm_data, n, offsets,
+            passband_prox=np.array(pb.per_offset_proximity),
+        )
+        max_comp = float(composite.max()) if n else 0.0
+
+        # --- Per-slice findings (verdict relative to this patient's best) ---
         per_slice = []
         for i in range(n):
             b = banding_data[i]
             q = quality_data[i]
             v = vlm_data[i]
+            verdict = self._slice_verdict(
+                b, q, composite[i], max_comp,
+                in_acceptable=(i in accept_set),
+                in_rejected=(i in reject_set),
+            )
             ps = {
                 "slice_idx": int(i),
                 "offset_hz": float(offsets[i]),
@@ -117,51 +140,53 @@ class StageAGenerator:
                 },
                 "homogeneity":           round(float(q["homogeneity"]), 4),
                 "cnr":                   round(float(q["cnr"]), 3),
+                "mu_myo":                round(float(q.get("mu_myo", 0.0)), 4),
                 "banded_fraction_myo":   round(float(q.get("banded_fraction_myo", 0.0)), 4),
                 "band_trough_depth":     round(float(q.get("band_trough_depth", 0.0)), 4),
                 "banding_burden":        round(float(b.get("banding_burden", 0.0)), 4),
                 "neural_score":          round(float(neural_conf[i]), 4),
+                "passband_quality":      round(float(pb.passband_quality[i]), 4),
+                "passband_proximity":    round(float(pb.per_offset_proximity[i]), 4),
                 "vlm_verdict":           v["verdict"],
                 "composite_score":       round(float(composite[i]), 4),
-                "verdict":               self._slice_verdict(b, q, v, composite[i]),
+                "verdict":               verdict,
+                "reason":                pb.per_offset_reason[i],
             }
             per_slice.append(ps)
 
         # --- Recommendation ---
         best_idx   = int(np.argmax(composite))
 
-        # Composite-margin confidence: more principled than neural-margin alone.
-        # The composite already fuses neural + burden + homogeneity + center prior.
-        # Typical margin between top-1 and top-2 composite scores:
-        #   < 0.03  → low (slices are nearly tied)
-        #   0.03–0.08 → medium
-        #   > 0.08  → high
         sorted_comp  = np.sort(composite)[::-1]
         comp_margin  = float(sorted_comp[0] - sorted_comp[1]) if len(sorted_comp) > 1 else 0.0
         comp_conf    = float(np.clip(comp_margin / 0.08, 0.0, 1.0))
-
-        # Blend composite-margin (70%) with cross-source concordance (30%)
         rec_conf  = float(0.70 * comp_conf + 0.30 * consistency.confidence)
         rec_conf  = float(np.clip(rec_conf, 0.05, 1.0))
         rec_label = "high" if rec_conf >= 0.65 else ("medium" if rec_conf >= 0.35 else "low")
 
-        # Alternative offsets: high composite OR neural top-3 (so Top-3 eval is meaningful)
-        threshold = composite[best_idx] * 0.80
-        alts = []
-        seen = {best_idx}
+        # Graded sets (doctor: neighbors can both be good)
+        acceptable_neighbors = []
+        rejected_offsets = []
         for i, ps in enumerate(per_slice):
-            if i in seen:
+            entry = {
+                "slice_idx": i,
+                "offset_hz": float(offsets[i]),
+                "verdict": ps["verdict"],
+                "reason": ps["reason"],
+                "composite_score": ps["composite_score"],
+            }
+            if i == best_idx:
                 continue
-            if composite[i] >= threshold and ps["verdict"] in ("optimal", "acceptable"):
-                alts.append({
-                    "slice_idx": i,
-                    "offset_hz": float(offsets[i]),
-                    "verdict": ps["verdict"],
-                })
-                seen.add(i)
+            if ps["verdict"] in ("optimal", "acceptable") or i in accept_set:
+                acceptable_neighbors.append(entry)
+            if ps["verdict"] == "reject" or i in reject_set:
+                rejected_offsets.append(entry)
 
+        # Legacy alternative_offsets = acceptable neighbors ∪ neural top-3
         neural_pkts = state.get_for_tool("neural")
         neural_top3 = list(neural_pkts[0].data.top3_idx) if neural_pkts else []
+        alts = list(acceptable_neighbors)
+        seen = {best_idx} | {a["slice_idx"] for a in alts}
         for i in neural_top3:
             if i in seen or i < 0 or i >= n:
                 continue
@@ -169,10 +194,11 @@ class StageAGenerator:
                 "slice_idx": int(i),
                 "offset_hz": float(offsets[i]),
                 "verdict": per_slice[i]["verdict"],
+                "reason": per_slice[i]["reason"],
+                "composite_score": per_slice[i]["composite_score"],
             })
             seen.add(i)
 
-        # Evidence agreement
         if len(consistency.disagreements) == 0:
             agreement = "full"
         elif len(consistency.disagreements) <= 1:
@@ -180,6 +206,7 @@ class StageAGenerator:
         else:
             agreement = "conflicted"
 
+        rec_reason = per_slice[best_idx]["reason"]
         doc = {
             "patient_id": state.patient_id,
             "per_slice": per_slice,
@@ -188,6 +215,16 @@ class StageAGenerator:
                 "offset_hz": float(offsets[best_idx]),
                 "confidence": round(rec_conf, 3),
                 "confidence_label": rec_label,
+                "reason": rec_reason,
+                "verdict": per_slice[best_idx]["verdict"],
+            },
+            "acceptable_neighbors": acceptable_neighbors,
+            "rejected_offsets": rejected_offsets,
+            "passband": {
+                "peak_idx": pb.passband_peak_idx,
+                "peak_hz": pb.passband_peak_hz,
+                "acceptable_set": list(pb.acceptable_set),
+                "rejected_set": list(pb.rejected_set),
             },
             "alternative_offsets": alts,
             "neural_top3": [int(i) for i in neural_top3],
@@ -196,8 +233,10 @@ class StageAGenerator:
             "evidence_sources": state.tools_present(),
         }
         logger.info(
-            "Stage-A done: recommend slice %d (%+.0f Hz), conf=%.2f, alts=%d",
-            best_idx, offsets[best_idx], rec_conf, len(alts),
+            "Stage-A done: recommend slice %d (%+.0f Hz), conf=%.2f, "
+            "acceptable=%d rejected=%d",
+            best_idx, offsets[best_idx], rec_conf,
+            len(acceptable_neighbors), len(rejected_offsets),
         )
         return doc
 
@@ -235,7 +274,8 @@ class StageAGenerator:
 
     def _quality_data(self, state: EvidenceState, n: int) -> List[Dict]:
         default = {"homogeneity": 0.5, "cnr": 5.0, "snr": 10.0,
-                   "banded_fraction_myo": 0.0, "band_trough_depth": 0.0}
+                   "banded_fraction_myo": 0.0, "band_trough_depth": 0.0,
+                   "mu_myo": 0.0}
         lookup = {}
         for pkt in state.get_for_tool("quality"):
             q = pkt.data
@@ -245,6 +285,7 @@ class StageAGenerator:
                 "snr":                q.snr,
                 "banded_fraction_myo": getattr(q, "banded_fraction_myo", 0.0),
                 "band_trough_depth":  getattr(q, "band_trough_depth", 0.0),
+                "mu_myo":             getattr(q, "mu_myo", 0.0),
             }
         return [lookup.get(i, dict(default)) for i in range(n)]
 
@@ -272,11 +313,10 @@ class StageAGenerator:
         vlm: List[Dict],
         n: int,
         offsets_hz: Optional[List[float]] = None,
+        passband_prox: Optional[np.ndarray] = None,
     ) -> np.ndarray:
         scores = np.zeros(n)
 
-        # Center-frequency Gaussian prior: p(i) ∝ exp(-0.5 * (hz/σ)²)
-        # Normalised to [0, 1] across the sweep so it acts as a relative prior.
         if offsets_hz is not None and len(offsets_hz) == n:
             hz_arr = np.array([float(h) for h in offsets_hz])
             center_prior = np.exp(-0.5 * (hz_arr / self.CENTER_SIGMA_HZ) ** 2)
@@ -284,15 +324,18 @@ class StageAGenerator:
         else:
             center_prior = np.ones(n)
 
+        if passband_prox is None or len(passband_prox) != n:
+            passband_prox = np.ones(n)
+
         for i in range(n):
             b = banding[i]
             q = quality[i]
             v = vlm[i]
 
-            # Use intra-myocardial banding_burden if available; fall back to severity
             burden     = float(b.get("banding_burden", b["severity_float"]))
             no_burden  = 1.0 - burden
             homog      = float(q.get("homogeneity", 0.5))
+            no_bfm     = 1.0 - float(q.get("banded_fraction_myo", 0.0))
             vlm_score  = {"optimal": 1.0, "acceptable": 0.7, "suboptimal": 0.3,
                           "reject": 0.0, None: 0.5, "unknown": 0.5}.get(v["verdict"], 0.5)
 
@@ -300,27 +343,37 @@ class StageAGenerator:
                 self.W_NEURAL      * neural[i]
                 + self.W_HOMOG     * homog
                 + self.W_NO_BURDEN * no_burden
+                + self.W_NO_BFM    * no_bfm
+                + self.W_PASSBAND  * float(passband_prox[i])
                 + self.W_CENTER    * center_prior[i]
                 + self.W_VLM       * vlm_score
             )
-        # Penalise slices where banding overlaps myocardium or LV pool
         for i in range(n):
             if banding[i]["overlaps_myo"] or banding[i]["overlaps_pool"]:
-                scores[i] *= 0.25   # stronger penalty with real mask
+                scores[i] *= 0.25
         return scores
 
-    def _slice_verdict(self, b: Dict, q: Dict, v: Dict, composite: float) -> str:
-        # Hard veto: banding physically inside the myocardium — always reject.
-        if b["overlaps_myo"] or b["overlaps_pool"]:
+    def _slice_verdict(
+        self,
+        b: Dict,
+        q: Dict,
+        composite: float,
+        max_comp: float,
+        in_acceptable: bool,
+        in_rejected: bool,
+    ) -> str:
+        # Hard veto: banding physically inside the myocardium.
+        if b["overlaps_myo"] or b["overlaps_pool"] or in_rejected:
             return "reject"
-        # Soft veto: high intra-myocardial banding burden even without overlap
         burden = float(b.get("banding_burden", b["severity_float"]))
-        if burden >= 0.60:
+        bfm = float(q.get("banded_fraction_myo", 0.0))
+        if burden >= 0.60 or bfm >= 0.25:
             return "suboptimal"
-        # Grade by composite score
-        if composite >= 0.60:
+        # Relative to this patient's best composite (absolute 0.60 never fired).
+        rel = composite / (max_comp + 1e-9)
+        if in_acceptable and rel >= 0.95:
             return "optimal"
-        if composite >= 0.35:
+        if in_acceptable or rel >= 0.70:
             return "acceptable"
         return "suboptimal"
 

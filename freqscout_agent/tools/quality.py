@@ -118,10 +118,12 @@ class QualityMetrics:
 
         # --- Intra-myocardial banding metrics ---
         # Banding threshold: pixels below 60% of mean myocardial intensity are "banded"
+        # Trough depth uses the 5th percentile (not min) so a single dark pixel
+        # cannot saturate the metric at 1.0.
         band_thresh = mu_myo * 0.60
         if myo_pixels.size > 0 and mu_myo > 1e-6:
             banded_fraction_myo = float((myo_pixels < band_thresh).mean())
-            myo_min_signal = float(myo_pixels.min())
+            myo_min_signal = float(np.percentile(myo_pixels, 5.0))
             band_trough_depth = max(0.0, (mu_myo - myo_min_signal) / mu_myo)
         else:
             banded_fraction_myo = 0.0

@@ -1,0 +1,11 @@
+{
+  "neural_top1": 10,
+  "cv_top1": 8,
+  "vlm_top1": 10,
+  "confidence": 0.35261088583561667,
+  "confidence_label": "medium",
+  "disagreements": [
+    "Neural ranker picks slice 10 (+100 Hz) but CV metrics favour slice 8 (+50 Hz).",
+    "CV metrics favour slice 8 (+50 Hz) but VLM prefers slice 10 (+100 Hz)."
+  ]
+}

@@ -1,0 +1,491 @@
+{
+  "patient_id": "Patient-IAM",
+  "per_slice": [
+    {
+      "slice_idx": 0,
+      "offset_hz": -150.0,
+      "banding": {
+        "present": true,
+        "location": "none",
+        "severity": "mild",
+        "overlaps_myocardium": false,
+        "overlaps_lv_pool": false
+      },
+      "homogeneity": 0.3919,
+      "cnr": 1.418,
+      "mu_myo": 0.0691,
+      "banded_fraction_myo": 0.2948,
+      "band_trough_depth": 0.7575,
+      "banding_burden": 0.0,
+      "neural_score": 0.0022,
+      "passband_quality": 0.3036,
+      "passband_proximity": 0.0,
+      "vlm_verdict": "acceptable",
+      "composite_score": 0.5265,
+      "verdict": "reject",
+      "reason": "high intra-myocardial banded fraction (29% > 25%): probable null approaching myocardial wall \u2014 suboptimal"
+    },
+    {
+      "slice_idx": 1,
+      "offset_hz": -125.0,
+      "banding": {
+        "present": true,
+        "location": "none",
+        "severity": "mild",
+        "overlaps_myocardium": false,
+        "overlaps_lv_pool": false
+      },
+      "homogeneity": 0.3735,
+      "cnr": 1.718,
+      "mu_myo": 0.117,
+      "banded_fraction_myo": 0.238,
+      "band_trough_depth": 0.6727,
+      "banding_burden": 0.0,
+      "neural_score": 0.0195,
+      "passband_quality": 0.4369,
+      "passband_proximity": 0.0657,
+      "vlm_verdict": null,
+      "composite_score": 0.5831,
+      "verdict": "suboptimal",
+      "reason": "marginal: banded fraction 23.8% above acceptable threshold (15%); some peripheral banding \u2014 suboptimal"
+    },
+    {
+      "slice_idx": 2,
+      "offset_hz": -100.0,
+      "banding": {
+        "present": true,
+        "location": "none",
+        "severity": "mild",
+        "overlaps_myocardium": false,
+        "overlaps_lv_pool": false
+      },
+      "homogeneity": 0.5711,
+      "cnr": 1.285,
+      "mu_myo": 0.1807,
+      "banded_fraction_myo": 0.1172,
+      "band_trough_depth": 0.5404,
+      "banding_burden": 0.0,
+      "neural_score": 0.0193,
+      "passband_quality": 0.638,
+      "passband_proximity": 0.1353,
+      "vlm_verdict": "acceptable",
+      "composite_score": 0.6824,
+      "verdict": "acceptable",
+      "reason": "near-passband: banded fraction 11.7%, homogeneity 0.57 \u2014 acceptable (150 Hz from peak)"
+    },
+    {
+      "slice_idx": 3,
+      "offset_hz": -75.0,
+      "banding": {
+        "present": true,
+        "location": "none",
+        "severity": "mild",
+        "overlaps_myocardium": false,
+        "overlaps_lv_pool": false
+      },
+      "homogeneity": 0.6546,
+      "cnr": 1.223,
+      "mu_myo": 0.193,
+      "banded_fraction_myo": 0.0977,
+      "band_trough_depth": 0.4943,
+      "banding_burden": 0.0089,
+      "neural_score": 0.0244,
+      "passband_quality": 0.6855,
+      "passband_proximity": 0.2494,
+      "vlm_verdict": null,
+      "composite_score": 0.712,
+      "verdict": "acceptable",
+      "reason": "near-passband: banded fraction 9.8%, homogeneity 0.65 \u2014 acceptable (125 Hz from peak)"
+    },
+    {
+      "slice_idx": 4,
+      "offset_hz": -50.0,
+      "banding": {
+        "present": true,
+        "location": "septal",
+        "severity": "moderate",
+        "overlaps_myocardium": false,
+        "overlaps_lv_pool": false
+      },
+      "homogeneity": 0.5817,
+      "cnr": 0.868,
+      "mu_myo": 0.241,
+      "banded_fraction_myo": 0.0657,
+      "band_trough_depth": 0.5879,
+      "banding_burden": 0.0977,
+      "neural_score": 0.0523,
+      "passband_quality": 0.6997,
+      "passband_proximity": 0.4111,
+      "vlm_verdict": null,
+      "composite_score": 0.7527,
+      "verdict": "acceptable",
+      "reason": "near-passband: banded fraction 6.6%, homogeneity 0.58; banding septal \u2014 acceptable (100 Hz from peak)"
+    },
+    {
+      "slice_idx": 5,
+      "offset_hz": -25.0,
+      "banding": {
+        "present": true,
+        "location": "none",
+        "severity": "mild",
+        "overlaps_myocardium": false,
+        "overlaps_lv_pool": false
+      },
+      "homogeneity": 0.6707,
+      "cnr": 0.467,
+      "mu_myo": 0.2477,
+      "banded_fraction_myo": 0.0266,
+      "band_trough_depth": 0.3347,
+      "banding_burden": 0.0355,
+      "neural_score": 0.0584,
+      "passband_quality": 0.7338,
+      "passband_proximity": 0.6065,
+      "vlm_verdict": "acceptable",
+      "composite_score": 0.79,
+      "verdict": "acceptable",
+      "reason": "near-passband: banded fraction 2.7%, homogeneity 0.67 \u2014 acceptable (75 Hz from peak)"
+    },
+    {
+      "slice_idx": 6,
+      "offset_hz": 0.0,
+      "banding": {
+        "present": true,
+        "location": "none",
+        "severity": "mild",
+        "overlaps_myocardium": false,
+        "overlaps_lv_pool": false
+      },
+      "homogeneity": 0.7933,
+      "cnr": 0.683,
+      "mu_myo": 0.2123,
+      "banded_fraction_myo": 0.0,
+      "band_trough_depth": 0.2085,
+      "banding_burden": 0.0,
+      "neural_score": 0.3082,
+      "passband_quality": 0.8024,
+      "passband_proximity": 0.8007,
+      "vlm_verdict": "optimal",
+      "composite_score": 0.8616,
+      "verdict": "acceptable",
+      "reason": "near-passband: banded fraction 0.0%, homogeneity 0.79 \u2014 acceptable (50 Hz from peak)"
+    },
+    {
+      "slice_idx": 7,
+      "offset_hz": 25.0,
+      "banding": {
+        "present": true,
+        "location": "none",
+        "severity": "mild",
+        "overlaps_myocardium": false,
+        "overlaps_lv_pool": false
+      },
+      "homogeneity": 0.7248,
+      "cnr": 1.097,
+      "mu_myo": 0.1909,
+      "banded_fraction_myo": 0.0071,
+      "band_trough_depth": 0.2412,
+      "banding_burden": 0.0,
+      "neural_score": 0.3473,
+      "passband_quality": 0.8087,
+      "passband_proximity": 0.946,
+      "vlm_verdict": "acceptable",
+      "composite_score": 0.8614,
+      "verdict": "optimal",
+      "reason": "near-passband: banded fraction 0.7%, homogeneity 0.72 \u2014 acceptable (25 Hz from peak)"
+    },
+    {
+      "slice_idx": 8,
+      "offset_hz": 50.0,
+      "banding": {
+        "present": true,
+        "location": "none",
+        "severity": "mild",
+        "overlaps_myocardium": false,
+        "overlaps_lv_pool": false
+      },
+      "homogeneity": 0.7446,
+      "cnr": 1.648,
+      "mu_myo": 0.189,
+      "banded_fraction_myo": 0.0018,
+      "band_trough_depth": 0.2274,
+      "banding_burden": 0.0,
+      "neural_score": 0.0398,
+      "passband_quality": 0.8805,
+      "passband_proximity": 1.0,
+      "vlm_verdict": null,
+      "composite_score": 0.795,
+      "verdict": "acceptable",
+      "reason": "passband peak: myocardial signal most uniform (banded fraction 0.2%, homogeneity 0.74); banding null outside cardiac ROI \u2014 OPTIMAL"
+    },
+    {
+      "slice_idx": 9,
+      "offset_hz": 75.0,
+      "banding": {
+        "present": true,
+        "location": "septal",
+        "severity": "moderate",
+        "overlaps_myocardium": false,
+        "overlaps_lv_pool": false
+      },
+      "homogeneity": 0.5077,
+      "cnr": 1.615,
+      "mu_myo": 0.1942,
+      "banded_fraction_myo": 0.1528,
+      "band_trough_depth": 0.5807,
+      "banding_burden": 0.0799,
+      "neural_score": 0.0614,
+      "passband_quality": 0.6195,
+      "passband_proximity": 0.946,
+      "vlm_verdict": "acceptable",
+      "composite_score": 0.6808,
+      "verdict": "acceptable",
+      "reason": "marginal: banded fraction 15.3% above acceptable threshold (15%); banding in septal \u2014 suboptimal"
+    },
+    {
+      "slice_idx": 10,
+      "offset_hz": 100.0,
+      "banding": {
+        "present": true,
+        "location": "anterior, septal",
+        "severity": "severe",
+        "overlaps_myocardium": true,
+        "overlaps_lv_pool": false
+      },
+      "homogeneity": 0.2576,
+      "cnr": 1.808,
+      "mu_myo": 0.1761,
+      "banded_fraction_myo": 0.3233,
+      "band_trough_depth": 0.8859,
+      "banding_burden": 0.722,
+      "neural_score": 0.0204,
+      "passband_quality": 0.0,
+      "passband_proximity": 0.0,
+      "vlm_verdict": null,
+      "composite_score": 0.1346,
+      "verdict": "reject",
+      "reason": "bSSFP null crosses myocardium (anterior, septal sector): banding burden 72% \u2014 REJECT"
+    },
+    {
+      "slice_idx": 11,
+      "offset_hz": 125.0,
+      "banding": {
+        "present": true,
+        "location": "none",
+        "severity": "mild",
+        "overlaps_myocardium": false,
+        "overlaps_lv_pool": false
+      },
+      "homogeneity": 0.4724,
+      "cnr": 1.133,
+      "mu_myo": 0.1002,
+      "banded_fraction_myo": 0.2575,
+      "band_trough_depth": 0.7548,
+      "banding_burden": 0.0,
+      "neural_score": 0.0078,
+      "passband_quality": 0.3607,
+      "passband_proximity": 0.0,
+      "vlm_verdict": null,
+      "composite_score": 0.5671,
+      "verdict": "reject",
+      "reason": "high intra-myocardial banded fraction (26% > 25%): probable null approaching myocardial wall \u2014 suboptimal"
+    },
+    {
+      "slice_idx": 12,
+      "offset_hz": 150.0,
+      "banding": {
+        "present": true,
+        "location": "none",
+        "severity": "mild",
+        "overlaps_myocardium": false,
+        "overlaps_lv_pool": false
+      },
+      "homogeneity": 0.3111,
+      "cnr": 1.36,
+      "mu_myo": 0.0582,
+      "banded_fraction_myo": 0.3428,
+      "band_trough_depth": 0.8093,
+      "banding_burden": 0.0,
+      "neural_score": 0.0389,
+      "passband_quality": 0.2634,
+      "passband_proximity": 0.0,
+      "vlm_verdict": null,
+      "composite_score": 0.5003,
+      "verdict": "reject",
+      "reason": "high intra-myocardial banded fraction (34% > 25%): probable null approaching myocardial wall \u2014 suboptimal"
+    }
+  ],
+  "recommended_offset": {
+    "slice_idx": 6,
+    "offset_hz": 0.0,
+    "confidence": 0.06,
+    "confidence_label": "low",
+    "reason": "near-passband: banded fraction 0.0%, homogeneity 0.79 \u2014 acceptable (50 Hz from peak)",
+    "verdict": "acceptable"
+  },
+  "acceptable_neighbors": [
+    {
+      "slice_idx": 2,
+      "offset_hz": -100.0,
+      "verdict": "acceptable",
+      "reason": "near-passband: banded fraction 11.7%, homogeneity 0.57 \u2014 acceptable (150 Hz from peak)",
+      "composite_score": 0.6824
+    },
+    {
+      "slice_idx": 3,
+      "offset_hz": -75.0,
+      "verdict": "acceptable",
+      "reason": "near-passband: banded fraction 9.8%, homogeneity 0.65 \u2014 acceptable (125 Hz from peak)",
+      "composite_score": 0.712
+    },
+    {
+      "slice_idx": 4,
+      "offset_hz": -50.0,
+      "verdict": "acceptable",
+      "reason": "near-passband: banded fraction 6.6%, homogeneity 0.58; banding septal \u2014 acceptable (100 Hz from peak)",
+      "composite_score": 0.7527
+    },
+    {
+      "slice_idx": 5,
+      "offset_hz": -25.0,
+      "verdict": "acceptable",
+      "reason": "near-passband: banded fraction 2.7%, homogeneity 0.67 \u2014 acceptable (75 Hz from peak)",
+      "composite_score": 0.79
+    },
+    {
+      "slice_idx": 7,
+      "offset_hz": 25.0,
+      "verdict": "optimal",
+      "reason": "near-passband: banded fraction 0.7%, homogeneity 0.72 \u2014 acceptable (25 Hz from peak)",
+      "composite_score": 0.8614
+    },
+    {
+      "slice_idx": 8,
+      "offset_hz": 50.0,
+      "verdict": "acceptable",
+      "reason": "passband peak: myocardial signal most uniform (banded fraction 0.2%, homogeneity 0.74); banding null outside cardiac ROI \u2014 OPTIMAL",
+      "composite_score": 0.795
+    },
+    {
+      "slice_idx": 9,
+      "offset_hz": 75.0,
+      "verdict": "acceptable",
+      "reason": "marginal: banded fraction 15.3% above acceptable threshold (15%); banding in septal \u2014 suboptimal",
+      "composite_score": 0.6808
+    }
+  ],
+  "rejected_offsets": [
+    {
+      "slice_idx": 0,
+      "offset_hz": -150.0,
+      "verdict": "reject",
+      "reason": "high intra-myocardial banded fraction (29% > 25%): probable null approaching myocardial wall \u2014 suboptimal",
+      "composite_score": 0.5265
+    },
+    {
+      "slice_idx": 10,
+      "offset_hz": 100.0,
+      "verdict": "reject",
+      "reason": "bSSFP null crosses myocardium (anterior, septal sector): banding burden 72% \u2014 REJECT",
+      "composite_score": 0.1346
+    },
+    {
+      "slice_idx": 11,
+      "offset_hz": 125.0,
+      "verdict": "reject",
+      "reason": "high intra-myocardial banded fraction (26% > 25%): probable null approaching myocardial wall \u2014 suboptimal",
+      "composite_score": 0.5671
+    },
+    {
+      "slice_idx": 12,
+      "offset_hz": 150.0,
+      "verdict": "reject",
+      "reason": "high intra-myocardial banded fraction (34% > 25%): probable null approaching myocardial wall \u2014 suboptimal",
+      "composite_score": 0.5003
+    }
+  ],
+  "passband": {
+    "peak_idx": 8,
+    "peak_hz": 50.0,
+    "acceptable_set": [
+      7,
+      8
+    ],
+    "rejected_set": [
+      0,
+      10,
+      11,
+      12
+    ]
+  },
+  "alternative_offsets": [
+    {
+      "slice_idx": 2,
+      "offset_hz": -100.0,
+      "verdict": "acceptable",
+      "reason": "near-passband: banded fraction 11.7%, homogeneity 0.57 \u2014 acceptable (150 Hz from peak)",
+      "composite_score": 0.6824
+    },
+    {
+      "slice_idx": 3,
+      "offset_hz": -75.0,
+      "verdict": "acceptable",
+      "reason": "near-passband: banded fraction 9.8%, homogeneity 0.65 \u2014 acceptable (125 Hz from peak)",
+      "composite_score": 0.712
+    },
+    {
+      "slice_idx": 4,
+      "offset_hz": -50.0,
+      "verdict": "acceptable",
+      "reason": "near-passband: banded fraction 6.6%, homogeneity 0.58; banding septal \u2014 acceptable (100 Hz from peak)",
+      "composite_score": 0.7527
+    },
+    {
+      "slice_idx": 5,
+      "offset_hz": -25.0,
+      "verdict": "acceptable",
+      "reason": "near-passband: banded fraction 2.7%, homogeneity 0.67 \u2014 acceptable (75 Hz from peak)",
+      "composite_score": 0.79
+    },
+    {
+      "slice_idx": 7,
+      "offset_hz": 25.0,
+      "verdict": "optimal",
+      "reason": "near-passband: banded fraction 0.7%, homogeneity 0.72 \u2014 acceptable (25 Hz from peak)",
+      "composite_score": 0.8614
+    },
+    {
+      "slice_idx": 8,
+      "offset_hz": 50.0,
+      "verdict": "acceptable",
+      "reason": "passband peak: myocardial signal most uniform (banded fraction 0.2%, homogeneity 0.74); banding null outside cardiac ROI \u2014 OPTIMAL",
+      "composite_score": 0.795
+    },
+    {
+      "slice_idx": 9,
+      "offset_hz": 75.0,
+      "verdict": "acceptable",
+      "reason": "marginal: banded fraction 15.3% above acceptable threshold (15%); banding in septal \u2014 suboptimal",
+      "composite_score": 0.6808
+    }
+  ],
+  "neural_top3": [
+    7,
+    6,
+    9
+  ],
+  "evidence_agreement": "conflicted",
+  "disagreements": [
+    "Neural ranker picks slice 7 (+25 Hz) but CV metrics favour slice 6 (+0 Hz).",
+    "Neural ranker picks slice 7 (+25 Hz) but VLM rates slice 6 (+0 Hz) as optimal."
+  ],
+  "evidence_sources": [
+    "physics",
+    "vlm",
+    "consistency",
+    "segment",
+    "banding",
+    "retrieve",
+    "neural",
+    "quality"
+  ]
+}

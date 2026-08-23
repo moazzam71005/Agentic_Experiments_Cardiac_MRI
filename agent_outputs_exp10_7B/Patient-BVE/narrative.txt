@@ -1,0 +1,16 @@
+ASSESSMENT:
+The following offsets are rejected because the bSSFP null enters the cardiac ROI:
+  - slice 9 (+75 Hz): high intra-myocardial banded fraction (32% > 25%): probable null approaching myocardial wall — suboptimal
+
+OPTIMAL SELECTION:
+Primary selection: -25 Hz (slice 5). near-passband: banded fraction 0.4%, homogeneity 0.83 — acceptable (25 Hz from peak) Myocardial homogeneity 0.83, CNR 1.0, intra-myocardial banded fraction 0.4%. Myocardial passband peak is at +0 Hz.
+
+ALTERNATIVE OFFSETS:
+Clinically acceptable neighbour(s) — the referring doctor may use any of these if the primary offset is unavailable:
+  - -150 Hz (acceptable): near-passband: banded fraction 9.4%, homogeneity 0.68 — acceptable (150 Hz from peak)
+  - -125 Hz (acceptable): near-passband: banded fraction 4.3%, homogeneity 0.76 — acceptable (125 Hz from peak)
+  - -100 Hz (acceptable): near-passband: banded fraction 1.7%, homogeneity 0.81 — acceptable (100 Hz from peak)
+  - -75 Hz (acceptable): near-passband: banded fraction 1.0%, homogeneity 0.82 — acceptable (75 Hz from peak)
+
+CONFIDENCE:
+Overall confidence: low (score 0.09). Evidence sources: physics, vlm, consistency, segment, banding, retrieve, neural, quality. Agreement: conflicted. Note: Neural ranker picks slice 5 (-25 Hz) but CV metrics favour slice 4 (-50 Hz).; CV metrics favour slice 4 (-50 Hz) but VLM prefers slice 5 (-25 Hz).

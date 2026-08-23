@@ -1,0 +1,257 @@
+{
+  "summary": {
+    "n_patients": 26,
+    "top1_acc": 0.4230769230769231,
+    "top3_acc": 0.6923076923076923,
+    "within1_acc": 0.7692307692307693,
+    "accept_hit_acc": 0.7307692307692307,
+    "mean_mae_hz": 22.115384615384617,
+    "confidence_calibration": {
+      "correct": 0.23972727272727273,
+      "wrong": 0.24053333333333332,
+      "ece": 0.21980769230769226
+    },
+    "hallucination_rate": 0.0,
+    "agreement": {
+      "full": 0,
+      "partial": 0,
+      "conflicted": 26
+    }
+  },
+  "success_cases": [
+    {
+      "patient_id": "Patient-BEV",
+      "gt_slice": 6,
+      "gt_hz": 0.0,
+      "pred_slice": 6,
+      "pred_hz": 0.0,
+      "top3_slices": [
+        5,
+        6,
+        4
+      ],
+      "confidence": 0.08,
+      "confidence_label": "low",
+      "agreement": "conflicted",
+      "repair_issues": 3,
+      "hallucinated": false,
+      "acceptable_set": [
+        6,
+        7,
+        8
+      ],
+      "acceptable_hit": true
+    },
+    {
+      "patient_id": "Patient-BGT",
+      "gt_slice": 6,
+      "gt_hz": 0.0,
+      "pred_slice": 6,
+      "pred_hz": 0.0,
+      "top3_slices": [
+        6,
+        0,
+        5
+      ],
+      "confidence": 0.466,
+      "confidence_label": "medium",
+      "agreement": "conflicted",
+      "repair_issues": 1,
+      "hallucinated": false,
+      "acceptable_set": [
+        5,
+        6,
+        7
+      ],
+      "acceptable_hit": true
+    },
+    {
+      "patient_id": "Patient-BVE",
+      "gt_slice": 5,
+      "gt_hz": -25.0,
+      "pred_slice": 5,
+      "pred_hz": -25.0,
+      "top3_slices": [
+        5,
+        4,
+        6
+      ],
+      "confidence": 0.087,
+      "confidence_label": "low",
+      "agreement": "conflicted",
+      "repair_issues": 2,
+      "hallucinated": false,
+      "acceptable_set": [
+        5,
+        6,
+        7
+      ],
+      "acceptable_hit": true
+    },
+    {
+      "patient_id": "Patient-DEM",
+      "gt_slice": 8,
+      "gt_hz": 50.0,
+      "pred_slice": 8,
+      "pred_hz": 50.0,
+      "top3_slices": [
+        8,
+        6,
+        10
+      ],
+      "confidence": 0.763,
+      "confidence_label": "high",
+      "agreement": "conflicted",
+      "repair_issues": 1,
+      "hallucinated": false,
+      "acceptable_set": [
+        8,
+        9,
+        10
+      ],
+      "acceptable_hit": true
+    },
+    {
+      "patient_id": "Patient-FAJ",
+      "gt_slice": 8,
+      "gt_hz": 50.0,
+      "pred_slice": 8,
+      "pred_hz": 50.0,
+      "top3_slices": [
+        6,
+        8,
+        9
+      ],
+      "confidence": 0.228,
+      "confidence_label": "low",
+      "agreement": "conflicted",
+      "repair_issues": 4,
+      "hallucinated": false,
+      "acceptable_set": [
+        8,
+        2,
+        3,
+        4
+      ],
+      "acceptable_hit": true
+    }
+  ],
+  "failure_cases": [
+    {
+      "patient_id": "Patient-CEA",
+      "gt_slice": 6,
+      "gt_hz": 0.0,
+      "pred_slice": 4,
+      "pred_hz": -50.0,
+      "top3_slices": [
+        4,
+        5,
+        6
+      ],
+      "confidence": 0.457,
+      "confidence_label": "medium",
+      "agreement": "conflicted",
+      "repair_issues": 6,
+      "hallucinated": false,
+      "acceptable_set": [
+        4,
+        5,
+        6
+      ],
+      "acceptable_hit": true
+    },
+    {
+      "patient_id": "Patient-CEJP",
+      "gt_slice": 3,
+      "gt_hz": -75.0,
+      "pred_slice": 5,
+      "pred_hz": -25.0,
+      "top3_slices": [
+        4,
+        3,
+        5
+      ],
+      "confidence": 0.272,
+      "confidence_label": "low",
+      "agreement": "conflicted",
+      "repair_issues": 2,
+      "hallucinated": false,
+      "acceptable_set": [
+        4,
+        5
+      ],
+      "acceptable_hit": false
+    },
+    {
+      "patient_id": "Patient-GJ",
+      "gt_slice": 8,
+      "gt_hz": 50.0,
+      "pred_slice": 7,
+      "pred_hz": 25.0,
+      "top3_slices": [
+        10,
+        7,
+        9
+      ],
+      "confidence": 0.333,
+      "confidence_label": "low",
+      "agreement": "conflicted",
+      "repair_issues": 5,
+      "hallucinated": false,
+      "acceptable_set": [
+        7,
+        4,
+        5,
+        6
+      ],
+      "acceptable_hit": false
+    },
+    {
+      "patient_id": "Patient-HMJ",
+      "gt_slice": 7,
+      "gt_hz": 25.0,
+      "pred_slice": 6,
+      "pred_hz": 0.0,
+      "top3_slices": [
+        4,
+        5,
+        6
+      ],
+      "confidence": 0.05,
+      "confidence_label": "low",
+      "agreement": "conflicted",
+      "repair_issues": 6,
+      "hallucinated": false,
+      "acceptable_set": [
+        6,
+        7,
+        8,
+        9
+      ],
+      "acceptable_hit": true
+    },
+    {
+      "patient_id": "Patient-IAM",
+      "gt_slice": 7,
+      "gt_hz": 25.0,
+      "pred_slice": 6,
+      "pred_hz": 0.0,
+      "top3_slices": [
+        7,
+        6,
+        9
+      ],
+      "confidence": 0.06,
+      "confidence_label": "low",
+      "agreement": "conflicted",
+      "repair_issues": 4,
+      "hallucinated": false,
+      "acceptable_set": [
+        6,
+        7,
+        8
+      ],
+      "acceptable_hit": true
+    }
+  ]
+}

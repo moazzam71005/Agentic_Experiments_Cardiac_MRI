@@ -1,0 +1,15 @@
+ASSESSMENT:
+No offset showed a banding null overlapping myocardium or LV pool.
+
+OPTIMAL SELECTION:
+Primary selection: +0 Hz (slice 3). near-passband: banded fraction 0.0%, homogeneity 0.00 — acceptable (150 Hz from peak) Myocardial homogeneity 0.00, CNR 0.0, intra-myocardial banded fraction 0.0%. Myocardial passband peak is at -150 Hz.
+
+ALTERNATIVE OFFSETS:
+Clinically acceptable neighbour(s) — the referring doctor may use any of these if the primary offset is unavailable:
+  - -150 Hz (acceptable): passband peak: myocardial signal most uniform (banded fraction 0.0%, homogeneity 0.00); banding null outside cardiac ROI — OPTIMAL
+  - -100 Hz (acceptable): near-passband: banded fraction 0.0%, homogeneity 0.00 — acceptable (50 Hz from peak)
+  - -50 Hz (acceptable): near-passband: banded fraction 0.0%, homogeneity 0.00 — acceptable (100 Hz from peak)
+  - +50 Hz (acceptable): near-passband: banded fraction 0.0%, homogeneity 0.00 — acceptable (200 Hz from peak)
+
+CONFIDENCE:
+Overall confidence: low (score 0.23). Evidence sources: physics, vlm, consistency, segment, banding, retrieve, neural, quality. Agreement: conflicted. Note: Neural ranker picks slice 6 (+150 Hz) but CV metrics favour slice 0 (-150 Hz).; Neural ranker picks slice 6 (+150 Hz) but VLM rates slice 3 (+0 Hz) as optimal.; CV metrics favour slice 0 (-150 Hz) but VLM prefers slice 3 (+0 Hz).

@@ -157,14 +157,18 @@ class StageAGenerator:
         # --- Recommendation ---
         best_idx   = int(np.argmax(composite))
 
-        sorted_comp  = np.sort(composite)[::-1]
-        comp_margin  = float(sorted_comp[0] - sorted_comp[1]) if len(sorted_comp) > 1 else 0.0
-        comp_conf    = float(np.clip(comp_margin / 0.08, 0.0, 1.0))
-        rec_conf  = float(0.70 * comp_conf + 0.30 * consistency.confidence)
-        rec_conf  = float(np.clip(rec_conf, 0.05, 1.0))
-        rec_label = "high" if rec_conf >= 0.65 else ("medium" if rec_conf >= 0.35 else "low")
+        # Exp11: passband-margin confidence (doctor-trustable rules)
+        rec_conf, rec_label, conf_basis = self._passband_confidence(
+            best_idx=best_idx,
+            peak_idx=pb.passband_peak_idx,
+            quality_data=quality_data,
+            banding_data=banding_data,
+            accept_set=accept_set,
+            consistency=consistency,
+        )
 
-        # Graded sets (doctor: neighbors can both be good)
+        # Graded sets — neighbours STRICTLY from passband acceptable window
+        # (do not promote extreme offsets just because verdict is "acceptable")
         acceptable_neighbors = []
         rejected_offsets = []
         for i, ps in enumerate(per_slice):
@@ -177,7 +181,7 @@ class StageAGenerator:
             }
             if i == best_idx:
                 continue
-            if ps["verdict"] in ("optimal", "acceptable") or i in accept_set:
+            if i in accept_set:
                 acceptable_neighbors.append(entry)
             if ps["verdict"] == "reject" or i in reject_set:
                 rejected_offsets.append(entry)
@@ -215,6 +219,7 @@ class StageAGenerator:
                 "offset_hz": float(offsets[best_idx]),
                 "confidence": round(rec_conf, 3),
                 "confidence_label": rec_label,
+                "confidence_basis": conf_basis,
                 "reason": rec_reason,
                 "verdict": per_slice[best_idx]["verdict"],
             },
@@ -300,6 +305,70 @@ class StageAGenerator:
                 "uniformity": v.myocardial_uniformity,
             }
         return [lookup.get(i, dict(default)) for i in range(n)]
+
+    # ------------------------------------------------------------------
+    # Exp11 confidence
+    # ------------------------------------------------------------------
+
+    def _passband_confidence(
+        self,
+        best_idx: int,
+        peak_idx: int,
+        quality_data: List[Dict],
+        banding_data: List[Dict],
+        accept_set: set,
+        consistency: ConsistencyReport,
+    ) -> tuple:
+        """
+        High   — primary == passband peak, bfm margin ≥ 15%, no myo overlap
+        Medium — primary within ±1 step of peak OR in acceptable set
+        Low    — flat passband (bfm margin < 5%), no mask signal, or large disagreement
+        """
+        bfms = [float(q.get("banded_fraction_myo", 1.0)) for q in quality_data]
+        if len(bfms) >= 2:
+            sorted_bfm = sorted(bfms)
+            bfm_margin = float(sorted_bfm[1] - sorted_bfm[0])
+        else:
+            bfm_margin = 0.0
+
+        no_overlap = not (
+            banding_data[best_idx].get("overlaps_myo", False)
+            or banding_data[best_idx].get("overlaps_pool", False)
+        )
+        at_peak = best_idx == peak_idx
+        near_peak = abs(best_idx - peak_idx) <= 1
+        flat = bfm_margin < 0.05
+        n_disagree = len(consistency.disagreements)
+
+        if flat or (not no_overlap):
+            label, conf = "low", 0.25
+            basis = (
+                f"flat passband (bfm margin {bfm_margin:.1%})"
+                if flat else "primary overlaps myocardium/pool"
+            )
+        elif at_peak and bfm_margin >= 0.15 and no_overlap and n_disagree <= 1:
+            label = "high"
+            conf = float(np.clip(0.70 + min(0.25, bfm_margin), 0.70, 0.95))
+            basis = (
+                f"primary is passband peak; bfm margin {bfm_margin:.1%}; "
+                f"sources {'agree' if n_disagree == 0 else 'mostly agree'}"
+            )
+        elif near_peak or best_idx in accept_set:
+            label, conf = "medium", 0.48
+            basis = (
+                f"primary within ±1 step of passband peak "
+                f"(peak idx {peak_idx}, primary {best_idx}); bfm margin {bfm_margin:.1%}"
+            )
+        else:
+            label, conf = "low", 0.28
+            basis = (
+                f"primary distant from passband peak (peak {peak_idx}, "
+                f"primary {best_idx}); {n_disagree} source disagreements"
+            )
+
+        # Blend lightly with consistency score so agreement still matters
+        conf = float(np.clip(0.80 * conf + 0.20 * consistency.confidence, 0.10, 0.95))
+        return conf, label, basis
 
     # ------------------------------------------------------------------
     # Scoring

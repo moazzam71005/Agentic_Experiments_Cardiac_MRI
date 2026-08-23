@@ -228,14 +228,10 @@ class AgentReasoningLoop:
             packets.append(pkt)
 
         elif tool_name == "vlm" and "vlm" in self.tools:
-            # Start with top-3 neural candidates
-            neural_pkts = state.get_for_tool("neural")
-            if neural_pkts:
-                top3 = neural_pkts[0].data.top3_idx
-            else:
-                top3 = list(range(min(3, len(images))))
+            # Exp11: visual QA on physics peak + neural candidates + myo-overlap rejects
+            targets = self._vlm_target_indices(state, images)
             results = self.tools["vlm"].run(
-                images, offsets_hz, patient_id, seg_result, target_indices=top3
+                images, offsets_hz, patient_id, seg_result, target_indices=targets
             )
             for r in results:
                 packets.append(EvidencePacket(
@@ -305,19 +301,21 @@ class AgentReasoningLoop:
                     disputed_slices.add(i)
 
         if not disputed_slices and consistency.vlm_top1 is None:
-            # VLM hasn't covered all candidate slices; expand coverage
-            neural_pkts = state.get_for_tool("neural")
-            if neural_pkts:
-                covered = set(state.covered_slices("vlm"))
-                top3 = neural_pkts[0].data.top3_idx
-                disputed_slices = set(top3) - covered
+            # Expand to any Exp11 targets not yet covered by VLM
+            covered = set(state.covered_slices("vlm"))
+            disputed_slices = set(self._vlm_target_indices(state, images)) - covered
 
         if disputed_slices and "vlm" in self.tools:
+            # Prefer Exp11 target set intersection with disputed, else disputed alone
+            covered = set(state.covered_slices("vlm"))
+            targets = [i for i in self._vlm_target_indices(state, images) if i in disputed_slices]
+            if not targets:
+                targets = sorted(disputed_slices - covered) or sorted(disputed_slices)
             seg_pkts = state.get_for_tool("segment")
             seg_result = seg_pkts[0].data if seg_pkts else None
             results = self.tools["vlm"].run(
                 images, offsets_hz, patient_id, seg_result,
-                target_indices=sorted(disputed_slices),
+                target_indices=targets,
             )
             for r in results:
                 pkt = EvidencePacket(
@@ -331,5 +329,64 @@ class AgentReasoningLoop:
                 )
                 state.add(pkt)
             logger.info(
-                "Disagreement re-check: ran VLM on %d disputed slices.", len(disputed_slices)
+                "Disagreement re-check: ran VLM on %d disputed slices.", len(targets)
             )
+
+    def _vlm_target_indices(self, state: EvidenceState, images: List) -> List[int]:
+        """
+        Exp11 VLM targets (capped ~7): neural top-3 + lowest-bfm (+runner-up)
+        + up to 3 myocardium-overlap rejects. Explains, does not score (W_VLM=0).
+        """
+        n = len(images)
+        targets: set = set()
+        ranked = []
+        overlaps: List[int] = []
+
+        neural_pkts = state.get_for_tool("neural")
+        if neural_pkts:
+            for i in getattr(neural_pkts[0].data, "top3_idx", []) or []:
+                if 0 <= int(i) < n:
+                    targets.add(int(i))
+        elif n:
+            targets.add(n // 2)
+
+        qual = [p.data for p in state.get_for_tool("quality")]
+        if qual:
+            ranked = sorted(
+                qual,
+                key=lambda q: (
+                    float(getattr(q, "banded_fraction_myo", 1.0)),
+                    -float(getattr(q, "homogeneity", 0.0)),
+                ),
+            )
+            for q in ranked[:2]:
+                idx = int(q.slice_idx)
+                if 0 <= idx < n:
+                    targets.add(idx)
+
+        band = [p.data for p in state.get_for_tool("banding")]
+        overlaps = [
+            int(b.slice_idx)
+            for b in band
+            if getattr(b, "bands_in_myocardium", False) and 0 <= int(b.slice_idx) < n
+        ]
+        for idx in overlaps[:3]:
+            targets.add(idx)
+
+        if not targets and n:
+            targets.add(min(n // 2, n - 1))
+
+        ordered = sorted(targets)
+        if len(ordered) > 7:
+            keep: set = set()
+            if ranked:
+                keep.add(int(ranked[0].slice_idx))
+            if neural_pkts:
+                keep.add(int(neural_pkts[0].data.top1_idx))
+            keep.update(overlaps[:2])
+            for i in ordered:
+                if len(keep) >= 7:
+                    break
+                keep.add(i)
+            ordered = sorted(i for i in keep if 0 <= i < n)[:7]
+        return ordered

@@ -41,14 +41,13 @@ DICOM stack (13 slices)
 └─────────────────────────────────────────────────────────┘
        │
        ▼
-  StageAGenerator  →  composite score per slice
-       │                 W_NEURAL=0.50 · neural_score
-       │               + W_HOMOG=0.20  · homogeneity
-       │               + W_NO_BURDEN=0.20 · (1−banding_burden)
-       │               + W_CENTER=0.10  · Gaussian(σ=100Hz)
-       │               + W_VLM=0.00    · vlm_score  (disabled)
+  StageAGenerator  →  composite score per slice (Exp10+)
+       │                 W_NEURAL=0.20 · neural_score
+       │               + W_NO_BFM=0.70 · (1−banded_fraction_myo)
+       │               + W_CENTER=0.10 · Gaussian(σ=100Hz)
+       │               + W_VLM=0.00   · vlm_score  (disabled — explain only)
        ▼
-  Recommended offset + confidence label
+  Primary + acceptable neighbours + rejected + Stage-C narrative
 ```
 
 ### Key Models
@@ -335,20 +334,92 @@ margin labels (low/medium/high) remain in the report.
 
 ---
 
-## Next Steps (beyond Exp10)
+### Exp11: Meaningful agentic reasoning (selector + clinical reasoner)
+
+**Status:** Implemented — awaiting lab 7B re-run (`run_exp11_pipeline.py`)  
+**Hypothesis:** Accuracy stays on Exp10 physics fusion; agentic value is
+evidence reconciliation + radiologist-style reporting + calibrated confidence.
+Exp10 agentic 7B matched ablation numbers (Top-1 42.3%, ±1 76.9%) but
+`conflicted=26/26` because `cv_top1` used legacy homogeneity+burden (often
+−150 Hz). VLM ran on neural top-3 only; confidence did not separate correct
+vs wrong.
+
+**Implemented (this commit cycle)**
+- `cv_top1` → argmin(`banded_fraction_myo`) with homog/burden tie-break
+- Passband-margin confidence + `confidence_basis` in Stage-A
+- Acceptable neighbours restricted to passband `acceptable_set`
+- VLM targets: neural top-3 + lowest-bfm (+runner-up) + myo-overlap rejects (cap 7)
+- Stage-C 7-block clinical narrative template
+- `run_exp11_pipeline.py` → `agent_outputs_exp11/`
+- `clinical_spec.md` §8 Stage-C schema
+- Local smoke test: agreement=full when neural=cv(bfm)=primary
+
+**Architecture split**
+
+| Layer | Role | Changes |
+|---|---|---|
+| **Selector** | Pick primary offset | Unchanged Exp10 weights (`W_VLM=0`) |
+| **Consistency** | Meaningful agreement | `cv_top1` = argmin(`banded_fraction_myo`) |
+| **Confidence** | Doctor-trustable labels | Passband-margin rules (peak / ±1 / flat) |
+| **VLM** | Visual QA, not scoring | Targets: bfm peak + neural top-3 + myo-overlap rejects |
+| **Stage-C narrative** | Radiologist report | Fixed 7-block clinical schema |
+
+**Code touchpoints**
+- `freqscout_agent/agent/consistency.py` — CV top-1 + confidence basis
+- `freqscout_agent/generation/stage_a_findings.py` — passband confidence; neighbours ⊆ accept set
+- `freqscout_agent/agent/reasoning_loop.py` — expanded VLM targets
+- `freqscout_agent/generation/stage_b_narrative.py` — Stage-C template
+- `run_exp11_pipeline.py` → `agent_outputs_exp11/`
+
+**Eval targets (vs Exp10 agentic 7B baseline)**
+
+| Metric | Exp10 agent 7B | Exp11 goal |
+|---|---|---|
+| Top-1 / ±1 / Accept-hit | 42.3% / 76.9% / 73.1% | ≈ same (selector frozen) |
+| Evidence agreement | conflicted=26 | full+partial ≫ conflicted |
+| Conf correct vs wrong | 0.240 ≈ 0.241 | correct ≫ wrong; ECE < 0.15 |
+| Narrative | 4-block template | Stage-C 7-block clinical report |
+
+**Demo cases for FYP:** Patient-BGT (sources converge), Patient-CEA (primary ≠ peak; explain neighbours).
+
+**Run (lab 7B):**
+```bash
+python run_exp11_pipeline.py
+# OUTPUT_DIR=agent_outputs_exp11_7B  (edit script or symlink)
+```
+
+---
+
+## Guideline / materials checklist
+
+| Material | Status | Needed for Exp11 / FYP? |
+|---|---|---|
+| `EXPERIMENTS.md` (this log) | Updated | Yes — primary track |
+| `clinical_spec.md` | Exists; Stage-C schema added | Yes — narrative vocabulary |
+| Excel GT (`image no`) | Present | Yes — Top-1 / ±1 eval |
+| Acceptable-set radiologist labels | **Missing** | Optional — currently derived from passband ±1 |
+| Patient-KP exclusion note | In Exp10 miss list | Yes — flag in headline metrics |
+| Demo write-ups (BGT, CEA) | Pending after Exp11 run | Thesis figures |
+| Second-cohort protocol | **Missing** | Later — out-of-sample validation |
+| Pairwise VLM prompt ablations | Not started | Only if absolute VLM still weak |
+| `EXPERIMENTS_REPORT.md` | Stale vs Exp10/11 | Refresh after Exp11 numbers |
+
+**Not required to start Exp11:** new GT labels, second cohort, or a stronger VLM.
+Ship code + re-run on existing 26 patients first.
+
+---
+
+## Next Steps (beyond Exp11)
 
 ### High priority
-1. **More labelled patients** — 26 is too small for 6-D weight LOOCV; a second
-   cohort would let us validate the 0.7/0.2/0.1 recipe out of sample.
-2. **Patient-KP** — exclude from headline metrics or handle the 7-frame scout
-   as a special case (segmentation currently fails).
-3. **Investigate CEJP / MJ / TL** — flat passband; check Excel GT vs visual.
+1. Finish Exp11 implementation + lab 7B re-run; compare agreement / ECE tables.
+2. **Patient-KP** — exclude from headline metrics (7-frame scout / empty mask).
+3. **More labelled patients** — second cohort for out-of-sample 0.7/0.2/0.1 check.
 
 ### Medium priority
-4. **Pairwise VLM** — only if a medically tuned model is available; absolute
-   4-way verdicts failed at 2B and 7B.
-5. **Neural ranker** — DINOv2 LOOCV is weaker than `banded_fraction_myo`;
-   keep it as a 0.20 prior, do not let it dominate.
+4. Investigate CEJP / MJ / TL (flat passband).
+5. Pairwise VLM only if medically tuned model available.
+6. Refresh `EXPERIMENTS_REPORT.md` after Exp11.
 
 ### Low priority
-6. Second-cohort hold-out once data arrives.
+7. Optional radiologist acceptable-set annotation sheet for stronger clinical eval.

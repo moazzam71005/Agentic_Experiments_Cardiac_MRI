@@ -144,3 +144,22 @@ Given TR (repetition time), the following are computed per patient:
   images alone without B0 mapping).
 
 The banding detector treats band position empirically from image intensities.
+
+## 8. Stage-C Clinical Report Schema (Exp11)
+
+The agent outputs a radiologist-style report with fixed sections (selection stays
+on Exp10 physics fusion; VLM explains but does not score):
+
+1. **CLINICAL QUESTION** — frequency-scout offset selection goal  
+2. **REJECTED OFFSETS (hard veto)** — null in myocardium / pool, with physics reason  
+3. **MYOCARDIAL PASSBAND** — peak Hz and quality at peak  
+4. **PRIMARY RECOMMENDATION** — fused primary + metrics + reason  
+5. **ACCEPTABLE NEIGHBOURS (±25 Hz)** — passband window only (doctor: neighbours OK)  
+6. **EVIDENCE RECONCILIATION** — neural vs CV(bfm) vs VLM vs selector  
+7. **CONFIDENCE** — high / medium / low from passband-margin rules + basis string  
+
+Confidence rules:
+- **High** — primary = passband peak, bfm margin ≥ 15%, no myo overlap  
+- **Medium** — primary within ±1 step of peak or in acceptable set  
+- **Low** — flat passband (bfm margin < 5%), overlap, or large source disagreement  
+

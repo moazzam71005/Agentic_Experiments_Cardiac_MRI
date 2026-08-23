@@ -1,0 +1,947 @@
+2026-08-22 23:11:44,849 INFO     exp9 | === Exp9 Pipeline Run ===
+2026-08-22 23:11:44,849 INFO     exp9 | Data root : Dr-Dataset
+2026-08-22 23:11:44,850 INFO     exp9 | Config    : freqscout_agent/configs/models.yaml
+2026-08-22 23:11:44,850 INFO     exp9 | Output    : agent_outputs_exp10_7B
+2026-08-22 23:11:46,176 INFO     freqscout_agent.tools.seg_advchain.adapter | LVSA U-Net loaded from Unet_LVSA_best.pkl (device=cuda).
+2026-08-22 23:11:46,180 INFO     freqscout_agent.tools.segment | LVSA U-Net (advchain) loaded from Unet_LVSA_best.pkl.
+2026-08-22 23:11:46,185 INFO     freqscout_agent.tools.neural_scorer | Loaded Exp5 LOOCV scores for 26 patients from exp5_outputs/exp5_loocv_per_patient.csv.
+2026-08-22 23:11:46,252 INFO     freqscout_agent.tools.physics | Loaded Excel with 26 rows, 11 cols.
+2026-08-22 23:11:46,252 INFO     freqscout_agent.knowledge.retrieve | Loaded 13 knowledge chunks.
+2026-08-22 23:11:46,255 INFO     freqscout_agent.agent.gap_analysis | Loaded 10 checklist items.
+2026-08-22 23:11:46,255 INFO     freqscout_agent.pipeline | FreqScoutPipeline initialised.
+2026-08-22 23:11:46,256 INFO     freqscout_agent.pipeline | Discovered 26 patients under Dr-Dataset: ['Patient-BEV', 'Patient-BGT', 'Patient-BVE', 'Patient-CEA', 'Patient-CEJP', '…']
+2026-08-22 23:11:46,335 INFO     freqscout_agent.pipeline | Loaded 13 DICOM frames for patient Patient-BEV from Dr-Dataset/1st_cohort_SAX/Patient-BEV.
+2026-08-22 23:11:46,335 INFO     freqscout_agent.pipeline | Running pipeline for patient Patient-BEV (13 slices).
+2026-08-22 23:11:46,335 INFO     freqscout_agent.agent.reasoning_loop | [Patient-BEV] Iter 0: 10 unsatisfied items, next_tool=neural
+2026-08-22 23:11:46,335 INFO     freqscout_agent.tools.neural_scorer | NeuralRanker[Patient-BEV]: top1=5 (0.247 conf), method=exp5_loocv
+2026-08-22 23:11:46,335 INFO     freqscout_agent.agent.reasoning_loop | [Patient-BEV] Iter 1: 9 unsatisfied items, next_tool=segment
+2026-08-22 23:11:46,335 INFO     freqscout_agent.tools.segment | Segmentation[Patient-BEV]: running LVSA U-Net consensus across 13 images.
+2026-08-22 23:11:46,585 INFO     freqscout_agent.tools.segment | Segmentation done for Patient-BEV (source slice 5 @ -25 Hz, method=lvsa_unet_consensus).
+2026-08-22 23:11:46,585 INFO     freqscout_agent.agent.reasoning_loop | [Patient-BEV] Iter 2: 8 unsatisfied items, next_tool=banding
+2026-08-22 23:11:46,844 INFO     freqscout_agent.agent.reasoning_loop | [Patient-BEV] Iter 3: 7 unsatisfied items, next_tool=quality
+2026-08-22 23:11:46,847 INFO     freqscout_agent.agent.reasoning_loop | [Patient-BEV] Iter 4: 6 unsatisfied items, next_tool=physics
+2026-08-22 23:11:46,848 INFO     freqscout_agent.tools.physics | Physics[Patient-BEV]: 13 slices, GT_slice=6, GT_Hz=0.0, TR=None ms
+2026-08-22 23:11:46,848 INFO     freqscout_agent.agent.reasoning_loop | [Patient-BEV] Iter 5: 5 unsatisfied items, next_tool=vlm
+2026-08-22 23:11:46,848 INFO     freqscout_agent.tools.vlm_describe | Loading VLM Qwen/Qwen2.5-VL-7B-Instruct …
+2026-08-22 23:11:49,344 INFO     httpx | HTTP Request: HEAD https://huggingface.co/Qwen/Qwen2.5-VL-7B-Instruct/resolve/main/processor_config.json "HTTP/1.1 404 Not Found"
+2026-08-22 23:11:49,594 INFO     httpx | HTTP Request: HEAD https://huggingface.co/Qwen/Qwen2.5-VL-7B-Instruct/resolve/main/preprocessor_config.json "HTTP/1.1 307 Temporary Redirect"
+2026-08-22 23:11:49,634 INFO     httpx | HTTP Request: HEAD https://huggingface.co/api/resolve-cache/models/Qwen/Qwen2.5-VL-7B-Instruct/cc594898137f460bfe9f0759e9844b3ce807cfb5/preprocessor_config.json "HTTP/1.1 200 OK"
+2026-08-22 23:11:49,887 INFO     httpx | HTTP Request: HEAD https://huggingface.co/Qwen/Qwen2.5-VL-7B-Instruct/resolve/main/processor_config.json "HTTP/1.1 404 Not Found"
+2026-08-22 23:11:50,139 INFO     httpx | HTTP Request: HEAD https://huggingface.co/Qwen/Qwen2.5-VL-7B-Instruct/resolve/main/preprocessor_config.json "HTTP/1.1 307 Temporary Redirect"
+2026-08-22 23:11:50,178 INFO     httpx | HTTP Request: HEAD https://huggingface.co/api/resolve-cache/models/Qwen/Qwen2.5-VL-7B-Instruct/cc594898137f460bfe9f0759e9844b3ce807cfb5/preprocessor_config.json "HTTP/1.1 200 OK"
+2026-08-22 23:11:50,435 INFO     httpx | HTTP Request: GET https://huggingface.co/api/models/Qwen/Qwen2.5-VL-7B-Instruct/tree/main/additional_chat_templates?recursive=false&expand=false "HTTP/1.1 404 Not Found"
+2026-08-22 23:11:50,691 INFO     httpx | HTTP Request: HEAD https://huggingface.co/Qwen/Qwen2.5-VL-7B-Instruct/resolve/main/processor_config.json "HTTP/1.1 404 Not Found"
+2026-08-22 23:11:50,944 INFO     httpx | HTTP Request: HEAD https://huggingface.co/Qwen/Qwen2.5-VL-7B-Instruct/resolve/main/chat_template.json "HTTP/1.1 307 Temporary Redirect"
+2026-08-22 23:11:50,985 INFO     httpx | HTTP Request: HEAD https://huggingface.co/api/resolve-cache/models/Qwen/Qwen2.5-VL-7B-Instruct/cc594898137f460bfe9f0759e9844b3ce807cfb5/chat_template.json "HTTP/1.1 200 OK"
+2026-08-22 23:11:51,236 INFO     httpx | HTTP Request: HEAD https://huggingface.co/Qwen/Qwen2.5-VL-7B-Instruct/resolve/main/chat_template.jinja "HTTP/1.1 404 Not Found"
+2026-08-22 23:11:51,493 INFO     httpx | HTTP Request: HEAD https://huggingface.co/Qwen/Qwen2.5-VL-7B-Instruct/resolve/main/audio_tokenizer_config.json "HTTP/1.1 404 Not Found"
+2026-08-22 23:11:51,746 INFO     httpx | HTTP Request: HEAD https://huggingface.co/Qwen/Qwen2.5-VL-7B-Instruct/resolve/main/processor_config.json "HTTP/1.1 404 Not Found"
+2026-08-22 23:11:52,188 INFO     httpx | HTTP Request: HEAD https://huggingface.co/Qwen/Qwen2.5-VL-7B-Instruct/resolve/main/preprocessor_config.json "HTTP/1.1 307 Temporary Redirect"
+2026-08-22 23:11:52,227 INFO     httpx | HTTP Request: HEAD https://huggingface.co/api/resolve-cache/models/Qwen/Qwen2.5-VL-7B-Instruct/cc594898137f460bfe9f0759e9844b3ce807cfb5/preprocessor_config.json "HTTP/1.1 200 OK"
+2026-08-22 23:11:52,560 INFO     httpx | HTTP Request: HEAD https://huggingface.co/Qwen/Qwen2.5-VL-7B-Instruct/resolve/main/processor_config.json "HTTP/1.1 404 Not Found"
+2026-08-22 23:11:52,810 INFO     httpx | HTTP Request: HEAD https://huggingface.co/Qwen/Qwen2.5-VL-7B-Instruct/resolve/main/preprocessor_config.json "HTTP/1.1 307 Temporary Redirect"
+2026-08-22 23:11:52,849 INFO     httpx | HTTP Request: HEAD https://huggingface.co/api/resolve-cache/models/Qwen/Qwen2.5-VL-7B-Instruct/cc594898137f460bfe9f0759e9844b3ce807cfb5/preprocessor_config.json "HTTP/1.1 200 OK"
+2026-08-22 23:11:53,099 INFO     httpx | HTTP Request: HEAD https://huggingface.co/Qwen/Qwen2.5-VL-7B-Instruct/resolve/main/config.json "HTTP/1.1 307 Temporary Redirect"
+2026-08-22 23:11:53,140 INFO     httpx | HTTP Request: HEAD https://huggingface.co/api/resolve-cache/models/Qwen/Qwen2.5-VL-7B-Instruct/cc594898137f460bfe9f0759e9844b3ce807cfb5/config.json "HTTP/1.1 200 OK"
+2026-08-22 23:11:53,403 INFO     httpx | HTTP Request: HEAD https://huggingface.co/Qwen/Qwen2.5-VL-7B-Instruct/resolve/main/tokenizer_config.json "HTTP/1.1 307 Temporary Redirect"
+2026-08-22 23:11:53,442 INFO     httpx | HTTP Request: HEAD https://huggingface.co/api/resolve-cache/models/Qwen/Qwen2.5-VL-7B-Instruct/cc594898137f460bfe9f0759e9844b3ce807cfb5/tokenizer_config.json "HTTP/1.1 200 OK"
+2026-08-22 23:11:53,698 INFO     httpx | HTTP Request: GET https://huggingface.co/api/models/Qwen/Qwen2.5-VL-7B-Instruct/tree/main/additional_chat_templates?recursive=false&expand=false "HTTP/1.1 404 Not Found"
+2026-08-22 23:11:53,959 INFO     httpx | HTTP Request: GET https://huggingface.co/api/models/Qwen/Qwen2.5-VL-7B-Instruct/tree/main?recursive=true&expand=false "HTTP/1.1 200 OK"
+2026-08-22 23:11:54,469 INFO     httpx | HTTP Request: GET https://huggingface.co/api/models/Qwen/Qwen2.5-VL-7B-Instruct "HTTP/1.1 200 OK"
+2026-08-22 23:11:54,725 INFO     httpx | HTTP Request: HEAD https://huggingface.co/Qwen/Qwen2.5-VL-7B-Instruct/resolve/main/processor_config.json "HTTP/1.1 404 Not Found"
+2026-08-22 23:11:54,978 INFO     httpx | HTTP Request: HEAD https://huggingface.co/Qwen/Qwen2.5-VL-7B-Instruct/resolve/main/video_preprocessor_config.json "HTTP/1.1 404 Not Found"
+2026-08-22 23:11:55,228 INFO     httpx | HTTP Request: HEAD https://huggingface.co/Qwen/Qwen2.5-VL-7B-Instruct/resolve/main/preprocessor_config.json "HTTP/1.1 307 Temporary Redirect"
+2026-08-22 23:11:55,265 INFO     httpx | HTTP Request: HEAD https://huggingface.co/api/resolve-cache/models/Qwen/Qwen2.5-VL-7B-Instruct/cc594898137f460bfe9f0759e9844b3ce807cfb5/preprocessor_config.json "HTTP/1.1 200 OK"
+2026-08-22 23:11:55,516 INFO     httpx | HTTP Request: HEAD https://huggingface.co/Qwen/Qwen2.5-VL-7B-Instruct/resolve/main/processor_config.json "HTTP/1.1 404 Not Found"
+2026-08-22 23:11:55,772 INFO     httpx | HTTP Request: HEAD https://huggingface.co/Qwen/Qwen2.5-VL-7B-Instruct/resolve/main/video_preprocessor_config.json "HTTP/1.1 404 Not Found"
+2026-08-22 23:11:56,026 INFO     httpx | HTTP Request: HEAD https://huggingface.co/Qwen/Qwen2.5-VL-7B-Instruct/resolve/main/preprocessor_config.json "HTTP/1.1 307 Temporary Redirect"
+2026-08-22 23:11:56,066 INFO     httpx | HTTP Request: HEAD https://huggingface.co/api/resolve-cache/models/Qwen/Qwen2.5-VL-7B-Instruct/cc594898137f460bfe9f0759e9844b3ce807cfb5/preprocessor_config.json "HTTP/1.1 200 OK"
+2026-08-22 23:11:56,350 INFO     httpx | HTTP Request: HEAD https://huggingface.co/Qwen/Qwen2.5-VL-7B-Instruct/resolve/main/config.json "HTTP/1.1 307 Temporary Redirect"
+2026-08-22 23:11:56,389 INFO     httpx | HTTP Request: HEAD https://huggingface.co/api/resolve-cache/models/Qwen/Qwen2.5-VL-7B-Instruct/cc594898137f460bfe9f0759e9844b3ce807cfb5/config.json "HTTP/1.1 200 OK"
+2026-08-22 23:11:56,639 INFO     httpx | HTTP Request: HEAD https://huggingface.co/Qwen/Qwen2.5-VL-7B-Instruct/resolve/main/config.json "HTTP/1.1 307 Temporary Redirect"
+2026-08-22 23:11:56,678 INFO     httpx | HTTP Request: HEAD https://huggingface.co/api/resolve-cache/models/Qwen/Qwen2.5-VL-7B-Instruct/cc594898137f460bfe9f0759e9844b3ce807cfb5/config.json "HTTP/1.1 200 OK"
+2026-08-22 23:11:57,479 INFO     httpx | HTTP Request: HEAD https://huggingface.co/Qwen/Qwen2.5-VL-7B-Instruct/resolve/main/model.safetensors "HTTP/1.1 404 Not Found"
+2026-08-22 23:11:57,732 INFO     httpx | HTTP Request: HEAD https://huggingface.co/Qwen/Qwen2.5-VL-7B-Instruct/resolve/main/model.safetensors.index.json "HTTP/1.1 307 Temporary Redirect"
+2026-08-22 23:11:57,771 INFO     httpx | HTTP Request: HEAD https://huggingface.co/api/resolve-cache/models/Qwen/Qwen2.5-VL-7B-Instruct/cc594898137f460bfe9f0759e9844b3ce807cfb5/model.safetensors.index.json "HTTP/1.1 200 OK"
+2026-08-22 23:11:58,030 INFO     httpx | HTTP Request: GET https://huggingface.co/api/models/Qwen/Qwen2.5-VL-7B-Instruct/revision/main "HTTP/1.1 200 OK"
+Fetching 5 files:   0%|          | 0/5 [00:00<?, ?it/s]Fetching 5 files: 100%|██████████| 5/5 [00:00<00:00, 2339.53it/s]
+Loading weights:   0%|          | 0/729 [00:00<?, ?it/s]Loading weights:   0%|          | 1/729 [00:00<01:43,  7.04it/s]Loading weights:   0%|          | 2/729 [00:00<01:42,  7.07it/s]Loading weights:   2%|▏         | 16/729 [00:00<00:12, 55.55it/s]Loading weights:   4%|▍         | 30/729 [00:00<00:08, 82.85it/s]Loading weights:   7%|▋         | 53/729 [00:00<00:05, 124.08it/s]Loading weights:  10%|█         | 76/729 [00:00<00:04, 149.16it/s]Loading weights:  13%|█▎        | 93/729 [00:00<00:04, 155.09it/s]Loading weights:  16%|█▌        | 113/729 [00:00<00:03, 165.41it/s]Loading weights:  19%|█▊        | 136/729 [00:01<00:03, 176.74it/s]Loading weights:  21%|██        | 154/729 [00:01<00:03, 173.06it/s]Loading weights:  24%|██▎       | 173/729 [00:01<00:03, 172.49it/s]Loading weights:  27%|██▋       | 196/729 [00:01<00:02, 180.54it/s]Loading weights:  29%|██▉       | 215/729 [00:01<00:02, 180.60it/s]Loading weights:  32%|███▏      | 234/729 [00:01<00:02, 172.02it/s]Loading weights:  35%|███▌      | 257/729 [00:01<00:02, 180.03it/s]Loading weights:  38%|███▊      | 280/729 [00:01<00:02, 185.44it/s]Loading weights:  41%|████      | 299/729 [00:01<00:02, 181.05it/s]Loading weights:  44%|████▎     | 318/729 [00:02<00:02, 174.75it/s]Loading weights:  52%|█████▏    | 377/729 [00:02<00:01, 287.20it/s]Loading weights:  73%|███████▎  | 529/729 [00:02<00:00, 629.73it/s]Loading weights:  95%|█████████▍| 689/729 [00:02<00:00, 905.55it/s]Loading weights: 100%|██████████| 729/729 [00:02<00:00, 302.23it/s]
+2026-08-22 23:12:01,360 INFO     httpx | HTTP Request: HEAD https://huggingface.co/Qwen/Qwen2.5-VL-7B-Instruct/resolve/main/generation_config.json "HTTP/1.1 307 Temporary Redirect"
+2026-08-22 23:12:01,401 INFO     httpx | HTTP Request: HEAD https://huggingface.co/api/resolve-cache/models/Qwen/Qwen2.5-VL-7B-Instruct/cc594898137f460bfe9f0759e9844b3ce807cfb5/generation_config.json "HTTP/1.1 200 OK"
+2026-08-22 23:12:01,656 INFO     httpx | HTTP Request: HEAD https://huggingface.co/Qwen/Qwen2.5-VL-7B-Instruct/resolve/main/custom_generate/generate.py "HTTP/1.1 404 Not Found"
+2026-08-22 23:12:01,658 INFO     freqscout_agent.tools.vlm_describe | VLM loaded.
+/home/tukl/Agentic_Experiments_Cardiac_MRI/venv/lib/python3.13/site-packages/bitsandbytes/backends/cuda/ops.py:957: UserWarning: inner dimension (3420) is not aligned for fast kernel with blocksize=64, falling back to slower implementation.
+  warn(
+2026-08-22 23:12:06,934 INFO     freqscout_agent.tools.vlm_describe | VLM[Patient-BEV][5 @ -25 Hz]: verdict=acceptable severity=mild
+2026-08-22 23:12:12,031 INFO     freqscout_agent.tools.vlm_describe | VLM[Patient-BEV][6 @ 0 Hz]: verdict=optimal severity=none
+2026-08-22 23:12:16,967 INFO     freqscout_agent.tools.vlm_describe | VLM[Patient-BEV][4 @ -50 Hz]: verdict=acceptable severity=mild
+2026-08-22 23:12:16,967 INFO     freqscout_agent.agent.reasoning_loop | [Patient-BEV] Iter 6: 4 unsatisfied items, next_tool=retrieve
+2026-08-22 23:12:16,967 INFO     freqscout_agent.agent.reasoning_loop | [Patient-BEV] Iter 7: 3 unsatisfied items, next_tool=None
+2026-08-22 23:12:16,967 INFO     freqscout_agent.agent.consistency | Consistency[Patient-BEV]: neural=5 cv=5 vlm=6 conf=0.18 (low) | 2 disagreements
+2026-08-22 23:12:21,902 INFO     freqscout_agent.tools.vlm_describe | VLM[Patient-BEV][0 @ -150 Hz]: verdict=acceptable severity=mild
+2026-08-22 23:12:27,038 INFO     freqscout_agent.tools.vlm_describe | VLM[Patient-BEV][2 @ -100 Hz]: verdict=acceptable severity=mild
+2026-08-22 23:12:31,975 INFO     freqscout_agent.tools.vlm_describe | VLM[Patient-BEV][5 @ -25 Hz]: verdict=acceptable severity=mild
+2026-08-22 23:12:37,061 INFO     freqscout_agent.tools.vlm_describe | VLM[Patient-BEV][6 @ 0 Hz]: verdict=optimal severity=none
+2026-08-22 23:12:37,061 INFO     freqscout_agent.agent.reasoning_loop | Disagreement re-check: ran VLM on 4 disputed slices.
+2026-08-22 23:12:37,061 INFO     freqscout_agent.agent.consistency | Consistency[Patient-BEV]: neural=5 cv=5 vlm=6 conf=0.18 (low) | 2 disagreements
+2026-08-22 23:12:37,061 INFO     freqscout_agent.agent.reasoning_loop | [Patient-BEV] Loop done after 7 iters (no_further_tools). Confidence=0.18 (low).
+2026-08-22 23:12:37,062 INFO     freqscout_agent.generation.stage_a_findings | Stage-A done: recommend slice 6 (+0 Hz), conf=0.08, acceptable=11 rejected=1
+2026-08-22 23:12:37,062 INFO     freqscout_agent.generation.stage_b_narrative | Stage-B narrative generated for Patient-BEV (1384 chars).
+2026-08-22 23:12:37,062 WARNING  freqscout_agent.generation.repair | Repair found 3 issues for patient Patient-BEV.
+2026-08-22 23:12:37,063 INFO     freqscout_agent.pipeline | Outputs saved to agent_outputs_exp10_7B/Patient-BEV.
+2026-08-22 23:12:37,079 INFO     freqscout_agent.pipeline | Loaded 13 DICOM frames for patient Patient-BGT from Dr-Dataset/1st_cohort_SAX/Patient-BGT.
+2026-08-22 23:12:37,079 INFO     freqscout_agent.pipeline | Running pipeline for patient Patient-BGT (13 slices).
+2026-08-22 23:12:37,079 INFO     freqscout_agent.agent.reasoning_loop | [Patient-BGT] Iter 0: 10 unsatisfied items, next_tool=neural
+2026-08-22 23:12:37,079 INFO     freqscout_agent.tools.neural_scorer | NeuralRanker[Patient-BGT]: top1=6 (0.187 conf), method=exp5_loocv
+2026-08-22 23:12:37,079 INFO     freqscout_agent.agent.reasoning_loop | [Patient-BGT] Iter 1: 9 unsatisfied items, next_tool=segment
+2026-08-22 23:12:37,079 INFO     freqscout_agent.tools.segment | Segmentation[Patient-BGT]: running LVSA U-Net consensus across 13 images.
+2026-08-22 23:12:37,148 INFO     freqscout_agent.tools.segment | Segmentation done for Patient-BGT (source slice 6 @ 0 Hz, method=lvsa_unet_consensus).
+2026-08-22 23:12:37,149 INFO     freqscout_agent.agent.reasoning_loop | [Patient-BGT] Iter 2: 8 unsatisfied items, next_tool=banding
+2026-08-22 23:12:37,247 INFO     freqscout_agent.agent.reasoning_loop | [Patient-BGT] Iter 3: 7 unsatisfied items, next_tool=quality
+2026-08-22 23:12:37,249 INFO     freqscout_agent.agent.reasoning_loop | [Patient-BGT] Iter 4: 6 unsatisfied items, next_tool=physics
+2026-08-22 23:12:37,250 INFO     freqscout_agent.tools.physics | Physics[Patient-BGT]: 13 slices, GT_slice=6, GT_Hz=0.0, TR=None ms
+2026-08-22 23:12:37,250 INFO     freqscout_agent.agent.reasoning_loop | [Patient-BGT] Iter 5: 5 unsatisfied items, next_tool=vlm
+/home/tukl/Agentic_Experiments_Cardiac_MRI/venv/lib/python3.13/site-packages/bitsandbytes/backends/cuda/ops.py:957: UserWarning: inner dimension (3420) is not aligned for fast kernel with blocksize=64, falling back to slower implementation.
+  warn(
+2026-08-22 23:12:42,209 INFO     freqscout_agent.tools.vlm_describe | VLM[Patient-BGT][6 @ 0 Hz]: verdict=optimal severity=none
+2026-08-22 23:12:47,144 INFO     freqscout_agent.tools.vlm_describe | VLM[Patient-BGT][0 @ -150 Hz]: verdict=acceptable severity=mild
+2026-08-22 23:12:52,102 INFO     freqscout_agent.tools.vlm_describe | VLM[Patient-BGT][5 @ -25 Hz]: verdict=acceptable severity=mild
+2026-08-22 23:12:52,102 INFO     freqscout_agent.agent.reasoning_loop | [Patient-BGT] Iter 6: 4 unsatisfied items, next_tool=retrieve
+2026-08-22 23:12:52,102 INFO     freqscout_agent.agent.reasoning_loop | [Patient-BGT] Iter 7: 3 unsatisfied items, next_tool=None
+2026-08-22 23:12:52,102 INFO     freqscout_agent.agent.consistency | Consistency[Patient-BGT]: neural=6 cv=0 vlm=6 conf=0.23 (low) | 2 disagreements
+2026-08-22 23:12:57,045 INFO     freqscout_agent.tools.vlm_describe | VLM[Patient-BGT][0 @ -150 Hz]: verdict=acceptable severity=mild
+2026-08-22 23:13:01,970 INFO     freqscout_agent.tools.vlm_describe | VLM[Patient-BGT][1 @ -125 Hz]: verdict=acceptable severity=mild
+2026-08-22 23:13:06,957 INFO     freqscout_agent.tools.vlm_describe | VLM[Patient-BGT][5 @ -25 Hz]: verdict=acceptable severity=mild
+2026-08-22 23:13:11,902 INFO     freqscout_agent.tools.vlm_describe | VLM[Patient-BGT][6 @ 0 Hz]: verdict=optimal severity=none
+2026-08-22 23:13:11,903 INFO     freqscout_agent.agent.reasoning_loop | Disagreement re-check: ran VLM on 4 disputed slices.
+2026-08-22 23:13:11,903 INFO     freqscout_agent.agent.consistency | Consistency[Patient-BGT]: neural=6 cv=0 vlm=6 conf=0.23 (low) | 2 disagreements
+2026-08-22 23:13:11,903 INFO     freqscout_agent.agent.reasoning_loop | [Patient-BGT] Loop done after 7 iters (no_further_tools). Confidence=0.23 (low).
+2026-08-22 23:13:11,903 INFO     freqscout_agent.generation.stage_a_findings | Stage-A done: recommend slice 6 (+0 Hz), conf=0.47, acceptable=8 rejected=4
+2026-08-22 23:13:11,903 INFO     freqscout_agent.generation.stage_b_narrative | Stage-B narrative generated for Patient-BGT (1752 chars).
+2026-08-22 23:13:11,904 WARNING  freqscout_agent.generation.repair | Repair found 1 issues for patient Patient-BGT.
+2026-08-22 23:13:11,904 INFO     freqscout_agent.pipeline | Outputs saved to agent_outputs_exp10_7B/Patient-BGT.
+2026-08-22 23:13:11,918 INFO     freqscout_agent.pipeline | Loaded 12 DICOM frames for patient Patient-BVE from Dr-Dataset/1st_cohort_SAX/Patient-BVE.
+2026-08-22 23:13:11,919 INFO     freqscout_agent.pipeline | Running pipeline for patient Patient-BVE (12 slices).
+2026-08-22 23:13:11,919 INFO     freqscout_agent.agent.reasoning_loop | [Patient-BVE] Iter 0: 10 unsatisfied items, next_tool=neural
+2026-08-22 23:13:11,919 INFO     freqscout_agent.tools.neural_scorer | NeuralRanker[Patient-BVE]: top1=5 (0.211 conf), method=exp5_loocv
+2026-08-22 23:13:11,919 INFO     freqscout_agent.agent.reasoning_loop | [Patient-BVE] Iter 1: 9 unsatisfied items, next_tool=segment
+2026-08-22 23:13:11,919 INFO     freqscout_agent.tools.segment | Segmentation[Patient-BVE]: running LVSA U-Net consensus across 12 images.
+2026-08-22 23:13:11,982 INFO     freqscout_agent.tools.segment | Segmentation done for Patient-BVE (source slice 5 @ -14 Hz, method=lvsa_unet_consensus).
+2026-08-22 23:13:11,982 INFO     freqscout_agent.agent.reasoning_loop | [Patient-BVE] Iter 2: 8 unsatisfied items, next_tool=banding
+2026-08-22 23:13:12,085 INFO     freqscout_agent.agent.reasoning_loop | [Patient-BVE] Iter 3: 7 unsatisfied items, next_tool=quality
+2026-08-22 23:13:12,088 INFO     freqscout_agent.agent.reasoning_loop | [Patient-BVE] Iter 4: 6 unsatisfied items, next_tool=physics
+2026-08-22 23:13:12,088 INFO     freqscout_agent.tools.physics | Physics[Patient-BVE]: 12 slices, GT_slice=5, GT_Hz=-25.0, TR=None ms
+2026-08-22 23:13:12,089 INFO     freqscout_agent.agent.reasoning_loop | [Patient-BVE] Iter 5: 5 unsatisfied items, next_tool=vlm
+/home/tukl/Agentic_Experiments_Cardiac_MRI/venv/lib/python3.13/site-packages/bitsandbytes/backends/cuda/ops.py:957: UserWarning: inner dimension (3420) is not aligned for fast kernel with blocksize=64, falling back to slower implementation.
+  warn(
+2026-08-22 23:13:17,217 INFO     freqscout_agent.tools.vlm_describe | VLM[Patient-BVE][5 @ -25 Hz]: verdict=acceptable severity=mild
+2026-08-22 23:13:22,169 INFO     freqscout_agent.tools.vlm_describe | VLM[Patient-BVE][4 @ -50 Hz]: verdict=acceptable severity=mild
+2026-08-22 23:13:27,121 INFO     freqscout_agent.tools.vlm_describe | VLM[Patient-BVE][6 @ 0 Hz]: verdict=acceptable severity=mild
+2026-08-22 23:13:27,121 INFO     freqscout_agent.agent.reasoning_loop | [Patient-BVE] Iter 6: 4 unsatisfied items, next_tool=retrieve
+2026-08-22 23:13:27,121 INFO     freqscout_agent.agent.reasoning_loop | [Patient-BVE] Iter 7: 3 unsatisfied items, next_tool=None
+2026-08-22 23:13:27,122 INFO     freqscout_agent.agent.consistency | Consistency[Patient-BVE]: neural=5 cv=4 vlm=5 conf=0.10 (low) | 2 disagreements
+2026-08-22 23:13:32,039 INFO     freqscout_agent.tools.vlm_describe | VLM[Patient-BVE][0 @ -150 Hz]: verdict=acceptable severity=mild
+2026-08-22 23:13:36,948 INFO     freqscout_agent.tools.vlm_describe | VLM[Patient-BVE][2 @ -100 Hz]: verdict=acceptable severity=mild
+2026-08-22 23:13:41,912 INFO     freqscout_agent.tools.vlm_describe | VLM[Patient-BVE][4 @ -50 Hz]: verdict=acceptable severity=mild
+2026-08-22 23:13:47,042 INFO     freqscout_agent.tools.vlm_describe | VLM[Patient-BVE][5 @ -25 Hz]: verdict=acceptable severity=mild
+2026-08-22 23:13:47,042 INFO     freqscout_agent.agent.reasoning_loop | Disagreement re-check: ran VLM on 4 disputed slices.
+2026-08-22 23:13:47,042 INFO     freqscout_agent.agent.consistency | Consistency[Patient-BVE]: neural=5 cv=4 vlm=5 conf=0.10 (low) | 2 disagreements
+2026-08-22 23:13:47,042 INFO     freqscout_agent.agent.reasoning_loop | [Patient-BVE] Loop done after 7 iters (no_further_tools). Confidence=0.10 (low).
+2026-08-22 23:13:47,042 INFO     freqscout_agent.generation.stage_a_findings | Stage-A done: recommend slice 5 (-25 Hz), conf=0.09, acceptable=10 rejected=1
+2026-08-22 23:13:47,043 INFO     freqscout_agent.generation.stage_b_narrative | Stage-B narrative generated for Patient-BVE (1380 chars).
+2026-08-22 23:13:47,043 WARNING  freqscout_agent.generation.repair | Repair found 2 issues for patient Patient-BVE.
+2026-08-22 23:13:47,043 INFO     freqscout_agent.pipeline | Outputs saved to agent_outputs_exp10_7B/Patient-BVE.
+2026-08-22 23:13:47,059 INFO     freqscout_agent.pipeline | Loaded 13 DICOM frames for patient Patient-CEA from Dr-Dataset/1st_cohort_SAX/Patient-CEA.
+2026-08-22 23:13:47,059 INFO     freqscout_agent.pipeline | Running pipeline for patient Patient-CEA (13 slices).
+2026-08-22 23:13:47,059 INFO     freqscout_agent.agent.reasoning_loop | [Patient-CEA] Iter 0: 10 unsatisfied items, next_tool=neural
+2026-08-22 23:13:47,059 INFO     freqscout_agent.tools.neural_scorer | NeuralRanker[Patient-CEA]: top1=4 (0.412 conf), method=exp5_loocv
+2026-08-22 23:13:47,059 INFO     freqscout_agent.agent.reasoning_loop | [Patient-CEA] Iter 1: 9 unsatisfied items, next_tool=segment
+2026-08-22 23:13:47,059 INFO     freqscout_agent.tools.segment | Segmentation[Patient-CEA]: running LVSA U-Net consensus across 13 images.
+2026-08-22 23:13:47,128 INFO     freqscout_agent.tools.segment | Segmentation done for Patient-CEA (source slice 4 @ -50 Hz, method=lvsa_unet_consensus).
+2026-08-22 23:13:47,128 INFO     freqscout_agent.agent.reasoning_loop | [Patient-CEA] Iter 2: 8 unsatisfied items, next_tool=banding
+2026-08-22 23:13:47,277 INFO     freqscout_agent.agent.reasoning_loop | [Patient-CEA] Iter 3: 7 unsatisfied items, next_tool=quality
+2026-08-22 23:13:47,279 INFO     freqscout_agent.agent.reasoning_loop | [Patient-CEA] Iter 4: 6 unsatisfied items, next_tool=physics
+2026-08-22 23:13:47,280 INFO     freqscout_agent.tools.physics | Physics[Patient-CEA]: 13 slices, GT_slice=6, GT_Hz=0.0, TR=None ms
+2026-08-22 23:13:47,280 INFO     freqscout_agent.agent.reasoning_loop | [Patient-CEA] Iter 5: 5 unsatisfied items, next_tool=vlm
+/home/tukl/Agentic_Experiments_Cardiac_MRI/venv/lib/python3.13/site-packages/bitsandbytes/backends/cuda/ops.py:957: UserWarning: inner dimension (3420) is not aligned for fast kernel with blocksize=64, falling back to slower implementation.
+  warn(
+2026-08-22 23:13:52,223 INFO     freqscout_agent.tools.vlm_describe | VLM[Patient-CEA][4 @ -50 Hz]: verdict=acceptable severity=mild
+2026-08-22 23:13:57,167 INFO     freqscout_agent.tools.vlm_describe | VLM[Patient-CEA][5 @ -25 Hz]: verdict=acceptable severity=mild
+2026-08-22 23:14:02,112 INFO     freqscout_agent.tools.vlm_describe | VLM[Patient-CEA][6 @ 0 Hz]: verdict=optimal severity=none
+2026-08-22 23:14:02,112 INFO     freqscout_agent.agent.reasoning_loop | [Patient-CEA] Iter 6: 4 unsatisfied items, next_tool=retrieve
+2026-08-22 23:14:02,112 INFO     freqscout_agent.agent.reasoning_loop | [Patient-CEA] Iter 7: 3 unsatisfied items, next_tool=None
+2026-08-22 23:14:02,112 INFO     freqscout_agent.agent.consistency | Consistency[Patient-CEA]: neural=4 cv=5 vlm=6 conf=0.60 (medium) | 3 disagreements
+2026-08-22 23:14:07,242 INFO     freqscout_agent.tools.vlm_describe | VLM[Patient-CEA][0 @ -150 Hz]: verdict=acceptable severity=mild
+2026-08-22 23:14:12,184 INFO     freqscout_agent.tools.vlm_describe | VLM[Patient-CEA][2 @ -100 Hz]: verdict=acceptable severity=mild
+2026-08-22 23:14:17,117 INFO     freqscout_agent.tools.vlm_describe | VLM[Patient-CEA][4 @ -50 Hz]: verdict=acceptable severity=mild
+2026-08-22 23:14:22,064 INFO     freqscout_agent.tools.vlm_describe | VLM[Patient-CEA][5 @ -25 Hz]: verdict=acceptable severity=mild
+2026-08-22 23:14:26,998 INFO     freqscout_agent.tools.vlm_describe | VLM[Patient-CEA][6 @ 0 Hz]: verdict=optimal severity=none
+2026-08-22 23:14:26,998 INFO     freqscout_agent.agent.reasoning_loop | Disagreement re-check: ran VLM on 5 disputed slices.
+2026-08-22 23:14:26,998 INFO     freqscout_agent.agent.consistency | Consistency[Patient-CEA]: neural=4 cv=5 vlm=6 conf=0.60 (medium) | 3 disagreements
+2026-08-22 23:14:26,998 INFO     freqscout_agent.agent.reasoning_loop | [Patient-CEA] Loop done after 7 iters (no_further_tools). Confidence=0.60 (medium).
+2026-08-22 23:14:26,999 INFO     freqscout_agent.generation.stage_a_findings | Stage-A done: recommend slice 4 (-50 Hz), conf=0.46, acceptable=7 rejected=4
+2026-08-22 23:14:26,999 INFO     freqscout_agent.generation.stage_b_narrative | Stage-B narrative generated for Patient-CEA (1877 chars).
+2026-08-22 23:14:26,999 WARNING  freqscout_agent.generation.repair | Repair found 6 issues for patient Patient-CEA.
+2026-08-22 23:14:27,000 INFO     freqscout_agent.pipeline | Outputs saved to agent_outputs_exp10_7B/Patient-CEA.
+2026-08-22 23:14:27,015 INFO     freqscout_agent.pipeline | Loaded 13 DICOM frames for patient Patient-CEJP from Dr-Dataset/1st_cohort_SAX/Patient-CEJP.
+2026-08-22 23:14:27,016 INFO     freqscout_agent.pipeline | Running pipeline for patient Patient-CEJP (13 slices).
+2026-08-22 23:14:27,016 INFO     freqscout_agent.agent.reasoning_loop | [Patient-CEJP] Iter 0: 10 unsatisfied items, next_tool=neural
+2026-08-22 23:14:27,016 INFO     freqscout_agent.tools.neural_scorer | NeuralRanker[Patient-CEJP]: top1=4 (0.165 conf), method=exp5_loocv
+2026-08-22 23:14:27,016 INFO     freqscout_agent.agent.reasoning_loop | [Patient-CEJP] Iter 1: 9 unsatisfied items, next_tool=segment
+2026-08-22 23:14:27,016 INFO     freqscout_agent.tools.segment | Segmentation[Patient-CEJP]: running LVSA U-Net consensus across 13 images.
+2026-08-22 23:14:27,085 INFO     freqscout_agent.tools.segment | Segmentation done for Patient-CEJP (source slice 4 @ -50 Hz, method=lvsa_unet_consensus).
+2026-08-22 23:14:27,085 INFO     freqscout_agent.agent.reasoning_loop | [Patient-CEJP] Iter 2: 8 unsatisfied items, next_tool=banding
+2026-08-22 23:14:27,181 INFO     freqscout_agent.agent.reasoning_loop | [Patient-CEJP] Iter 3: 7 unsatisfied items, next_tool=quality
+2026-08-22 23:14:27,184 INFO     freqscout_agent.agent.reasoning_loop | [Patient-CEJP] Iter 4: 6 unsatisfied items, next_tool=physics
+2026-08-22 23:14:27,185 INFO     freqscout_agent.tools.physics | Physics[Patient-CEJP]: 13 slices, GT_slice=3, GT_Hz=-75.0, TR=None ms
+2026-08-22 23:14:27,185 INFO     freqscout_agent.agent.reasoning_loop | [Patient-CEJP] Iter 5: 5 unsatisfied items, next_tool=vlm
+/home/tukl/Agentic_Experiments_Cardiac_MRI/venv/lib/python3.13/site-packages/bitsandbytes/backends/cuda/ops.py:957: UserWarning: inner dimension (3420) is not aligned for fast kernel with blocksize=64, falling back to slower implementation.
+  warn(
+2026-08-22 23:14:32,163 INFO     freqscout_agent.tools.vlm_describe | VLM[Patient-CEJP][4 @ -50 Hz]: verdict=acceptable severity=mild
+2026-08-22 23:14:37,101 INFO     freqscout_agent.tools.vlm_describe | VLM[Patient-CEJP][3 @ -75 Hz]: verdict=acceptable severity=mild
+2026-08-22 23:14:42,044 INFO     freqscout_agent.tools.vlm_describe | VLM[Patient-CEJP][5 @ -25 Hz]: verdict=acceptable severity=mild
+2026-08-22 23:14:42,044 INFO     freqscout_agent.agent.reasoning_loop | [Patient-CEJP] Iter 6: 4 unsatisfied items, next_tool=retrieve
+2026-08-22 23:14:42,044 INFO     freqscout_agent.agent.reasoning_loop | [Patient-CEJP] Iter 7: 3 unsatisfied items, next_tool=None
+2026-08-22 23:14:42,044 INFO     freqscout_agent.agent.consistency | Consistency[Patient-CEJP]: neural=4 cv=3 vlm=4 conf=0.10 (low) | 2 disagreements
+2026-08-22 23:14:47,184 INFO     freqscout_agent.tools.vlm_describe | VLM[Patient-CEJP][0 @ -150 Hz]: verdict=acceptable severity=mild
+2026-08-22 23:14:52,121 INFO     freqscout_agent.tools.vlm_describe | VLM[Patient-CEJP][3 @ -75 Hz]: verdict=acceptable severity=mild
+2026-08-22 23:14:57,101 INFO     freqscout_agent.tools.vlm_describe | VLM[Patient-CEJP][4 @ -50 Hz]: verdict=acceptable severity=mild
+2026-08-22 23:15:02,045 INFO     freqscout_agent.tools.vlm_describe | VLM[Patient-CEJP][5 @ -25 Hz]: verdict=acceptable severity=mild
+2026-08-22 23:15:07,167 INFO     freqscout_agent.tools.vlm_describe | VLM[Patient-CEJP][7 @ 25 Hz]: verdict=acceptable severity=mild
+2026-08-22 23:15:07,167 INFO     freqscout_agent.agent.reasoning_loop | Disagreement re-check: ran VLM on 5 disputed slices.
+2026-08-22 23:15:07,167 INFO     freqscout_agent.agent.consistency | Consistency[Patient-CEJP]: neural=4 cv=3 vlm=4 conf=0.10 (low) | 2 disagreements
+2026-08-22 23:15:07,167 INFO     freqscout_agent.agent.reasoning_loop | [Patient-CEJP] Loop done after 7 iters (no_further_tools). Confidence=0.10 (low).
+2026-08-22 23:15:07,167 INFO     freqscout_agent.generation.stage_a_findings | Stage-A done: recommend slice 5 (-25 Hz), conf=0.27, acceptable=8 rejected=4
+2026-08-22 23:15:07,168 INFO     freqscout_agent.generation.stage_b_narrative | Stage-B narrative generated for Patient-CEJP (1791 chars).
+2026-08-22 23:15:07,168 WARNING  freqscout_agent.generation.repair | Repair found 2 issues for patient Patient-CEJP.
+2026-08-22 23:15:07,168 INFO     freqscout_agent.pipeline | Outputs saved to agent_outputs_exp10_7B/Patient-CEJP.
+2026-08-22 23:15:07,183 INFO     freqscout_agent.pipeline | Loaded 13 DICOM frames for patient Patient-DEM from Dr-Dataset/1st_cohort_SAX/Patient-DEM.
+2026-08-22 23:15:07,184 INFO     freqscout_agent.pipeline | Running pipeline for patient Patient-DEM (13 slices).
+2026-08-22 23:15:07,184 INFO     freqscout_agent.agent.reasoning_loop | [Patient-DEM] Iter 0: 10 unsatisfied items, next_tool=neural
+2026-08-22 23:15:07,184 INFO     freqscout_agent.tools.neural_scorer | NeuralRanker[Patient-DEM]: top1=8 (0.332 conf), method=exp5_loocv
+2026-08-22 23:15:07,184 INFO     freqscout_agent.agent.reasoning_loop | [Patient-DEM] Iter 1: 9 unsatisfied items, next_tool=segment
+2026-08-22 23:15:07,184 INFO     freqscout_agent.tools.segment | Segmentation[Patient-DEM]: running LVSA U-Net consensus across 13 images.
+2026-08-22 23:15:07,253 INFO     freqscout_agent.tools.segment | Segmentation done for Patient-DEM (source slice 8 @ 50 Hz, method=lvsa_unet_consensus).
+2026-08-22 23:15:07,253 INFO     freqscout_agent.agent.reasoning_loop | [Patient-DEM] Iter 2: 8 unsatisfied items, next_tool=banding
+2026-08-22 23:15:07,342 INFO     freqscout_agent.agent.reasoning_loop | [Patient-DEM] Iter 3: 7 unsatisfied items, next_tool=quality
+2026-08-22 23:15:07,345 INFO     freqscout_agent.agent.reasoning_loop | [Patient-DEM] Iter 4: 6 unsatisfied items, next_tool=physics
+2026-08-22 23:15:07,346 INFO     freqscout_agent.tools.physics | Physics[Patient-DEM]: 13 slices, GT_slice=8, GT_Hz=50.0, TR=None ms
+2026-08-22 23:15:07,346 INFO     freqscout_agent.agent.reasoning_loop | [Patient-DEM] Iter 5: 5 unsatisfied items, next_tool=vlm
+/home/tukl/Agentic_Experiments_Cardiac_MRI/venv/lib/python3.13/site-packages/bitsandbytes/backends/cuda/ops.py:957: UserWarning: inner dimension (3420) is not aligned for fast kernel with blocksize=64, falling back to slower implementation.
+  warn(
+2026-08-22 23:15:12,472 INFO     freqscout_agent.tools.vlm_describe | VLM[Patient-DEM][8 @ 50 Hz]: verdict=acceptable severity=mild
+2026-08-22 23:15:17,411 INFO     freqscout_agent.tools.vlm_describe | VLM[Patient-DEM][6 @ 0 Hz]: verdict=optimal severity=none
+2026-08-22 23:15:22,343 INFO     freqscout_agent.tools.vlm_describe | VLM[Patient-DEM][10 @ 100 Hz]: verdict=acceptable severity=mild
+2026-08-22 23:15:22,343 INFO     freqscout_agent.agent.reasoning_loop | [Patient-DEM] Iter 6: 4 unsatisfied items, next_tool=retrieve
+2026-08-22 23:15:22,343 INFO     freqscout_agent.agent.reasoning_loop | [Patient-DEM] Iter 7: 3 unsatisfied items, next_tool=None
+2026-08-22 23:15:22,343 INFO     freqscout_agent.agent.consistency | Consistency[Patient-DEM]: neural=8 cv=8 vlm=6 conf=0.60 (medium) | 2 disagreements
+2026-08-22 23:15:27,288 INFO     freqscout_agent.tools.vlm_describe | VLM[Patient-DEM][0 @ -150 Hz]: verdict=acceptable severity=mild
+2026-08-22 23:15:32,232 INFO     freqscout_agent.tools.vlm_describe | VLM[Patient-DEM][5 @ -25 Hz]: verdict=acceptable severity=mild
+2026-08-22 23:15:37,168 INFO     freqscout_agent.tools.vlm_describe | VLM[Patient-DEM][6 @ 0 Hz]: verdict=optimal severity=none
+2026-08-22 23:15:42,292 INFO     freqscout_agent.tools.vlm_describe | VLM[Patient-DEM][8 @ 50 Hz]: verdict=acceptable severity=mild
+2026-08-22 23:15:42,292 INFO     freqscout_agent.agent.reasoning_loop | Disagreement re-check: ran VLM on 4 disputed slices.
+2026-08-22 23:15:42,292 INFO     freqscout_agent.agent.consistency | Consistency[Patient-DEM]: neural=8 cv=8 vlm=6 conf=0.60 (medium) | 2 disagreements
+2026-08-22 23:15:42,292 INFO     freqscout_agent.agent.reasoning_loop | [Patient-DEM] Loop done after 7 iters (no_further_tools). Confidence=0.60 (medium).
+2026-08-22 23:15:42,293 INFO     freqscout_agent.generation.stage_a_findings | Stage-A done: recommend slice 8 (+50 Hz), conf=0.76, acceptable=5 rejected=6
+2026-08-22 23:15:42,293 INFO     freqscout_agent.generation.stage_b_narrative | Stage-B narrative generated for Patient-DEM (1720 chars).
+2026-08-22 23:15:42,293 WARNING  freqscout_agent.generation.repair | Repair found 1 issues for patient Patient-DEM.
+2026-08-22 23:15:42,294 INFO     freqscout_agent.pipeline | Outputs saved to agent_outputs_exp10_7B/Patient-DEM.
+2026-08-22 23:15:42,309 INFO     freqscout_agent.pipeline | Loaded 13 DICOM frames for patient Patient-FAJ from Dr-Dataset/1st_cohort_SAX/Patient-FAJ.
+2026-08-22 23:15:42,309 INFO     freqscout_agent.pipeline | Running pipeline for patient Patient-FAJ (13 slices).
+2026-08-22 23:15:42,309 INFO     freqscout_agent.agent.reasoning_loop | [Patient-FAJ] Iter 0: 10 unsatisfied items, next_tool=neural
+2026-08-22 23:15:42,309 INFO     freqscout_agent.tools.neural_scorer | NeuralRanker[Patient-FAJ]: top1=6 (0.219 conf), method=exp5_loocv
+2026-08-22 23:15:42,309 INFO     freqscout_agent.agent.reasoning_loop | [Patient-FAJ] Iter 1: 9 unsatisfied items, next_tool=segment
+2026-08-22 23:15:42,309 INFO     freqscout_agent.tools.segment | Segmentation[Patient-FAJ]: running LVSA U-Net consensus across 13 images.
+2026-08-22 23:15:42,378 INFO     freqscout_agent.tools.segment | Segmentation done for Patient-FAJ (source slice 6 @ 0 Hz, method=lvsa_unet_consensus).
+2026-08-22 23:15:42,379 INFO     freqscout_agent.agent.reasoning_loop | [Patient-FAJ] Iter 2: 8 unsatisfied items, next_tool=banding
+2026-08-22 23:15:42,479 INFO     freqscout_agent.agent.reasoning_loop | [Patient-FAJ] Iter 3: 7 unsatisfied items, next_tool=quality
+2026-08-22 23:15:42,481 INFO     freqscout_agent.agent.reasoning_loop | [Patient-FAJ] Iter 4: 6 unsatisfied items, next_tool=physics
+2026-08-22 23:15:42,482 INFO     freqscout_agent.tools.physics | Physics[Patient-FAJ]: 13 slices, GT_slice=8, GT_Hz=50.0, TR=None ms
+2026-08-22 23:15:42,482 INFO     freqscout_agent.agent.reasoning_loop | [Patient-FAJ] Iter 5: 5 unsatisfied items, next_tool=vlm
+/home/tukl/Agentic_Experiments_Cardiac_MRI/venv/lib/python3.13/site-packages/bitsandbytes/backends/cuda/ops.py:957: UserWarning: inner dimension (3420) is not aligned for fast kernel with blocksize=64, falling back to slower implementation.
+  warn(
+2026-08-22 23:15:47,624 INFO     freqscout_agent.tools.vlm_describe | VLM[Patient-FAJ][6 @ 0 Hz]: verdict=optimal severity=none
+2026-08-22 23:15:52,560 INFO     freqscout_agent.tools.vlm_describe | VLM[Patient-FAJ][8 @ 50 Hz]: verdict=acceptable severity=mild
+2026-08-22 23:15:57,498 INFO     freqscout_agent.tools.vlm_describe | VLM[Patient-FAJ][9 @ 75 Hz]: verdict=acceptable severity=mild
+2026-08-22 23:15:57,498 INFO     freqscout_agent.agent.reasoning_loop | [Patient-FAJ] Iter 6: 4 unsatisfied items, next_tool=retrieve
+2026-08-22 23:15:57,498 INFO     freqscout_agent.agent.reasoning_loop | [Patient-FAJ] Iter 7: 3 unsatisfied items, next_tool=None
+2026-08-22 23:15:57,498 INFO     freqscout_agent.agent.consistency | Consistency[Patient-FAJ]: neural=6 cv=3 vlm=6 conf=0.20 (low) | 2 disagreements
+2026-08-22 23:16:02,447 INFO     freqscout_agent.tools.vlm_describe | VLM[Patient-FAJ][0 @ -150 Hz]: verdict=acceptable severity=mild
+2026-08-22 23:16:07,399 INFO     freqscout_agent.tools.vlm_describe | VLM[Patient-FAJ][3 @ -75 Hz]: verdict=acceptable severity=mild
+2026-08-22 23:16:12,337 INFO     freqscout_agent.tools.vlm_describe | VLM[Patient-FAJ][5 @ -25 Hz]: verdict=acceptable severity=mild
+2026-08-22 23:16:17,467 INFO     freqscout_agent.tools.vlm_describe | VLM[Patient-FAJ][6 @ 0 Hz]: verdict=optimal severity=none
+2026-08-22 23:16:22,409 INFO     freqscout_agent.tools.vlm_describe | VLM[Patient-FAJ][7 @ 25 Hz]: verdict=acceptable severity=mild
+2026-08-22 23:16:22,409 INFO     freqscout_agent.agent.reasoning_loop | Disagreement re-check: ran VLM on 5 disputed slices.
+2026-08-22 23:16:22,409 INFO     freqscout_agent.agent.consistency | Consistency[Patient-FAJ]: neural=6 cv=3 vlm=6 conf=0.20 (low) | 2 disagreements
+2026-08-22 23:16:22,409 INFO     freqscout_agent.agent.reasoning_loop | [Patient-FAJ] Loop done after 7 iters (no_further_tools). Confidence=0.20 (low).
+2026-08-22 23:16:22,410 INFO     freqscout_agent.generation.stage_a_findings | Stage-A done: recommend slice 8 (+50 Hz), conf=0.23, acceptable=4 rejected=8
+2026-08-22 23:16:22,410 INFO     freqscout_agent.generation.stage_b_narrative | Stage-B narrative generated for Patient-FAJ (1791 chars).
+2026-08-22 23:16:22,410 WARNING  freqscout_agent.generation.repair | Repair found 4 issues for patient Patient-FAJ.
+2026-08-22 23:16:22,411 INFO     freqscout_agent.pipeline | Outputs saved to agent_outputs_exp10_7B/Patient-FAJ.
+2026-08-22 23:16:22,426 INFO     freqscout_agent.pipeline | Loaded 13 DICOM frames for patient Patient-FEC from Dr-Dataset/1st_cohort_SAX/Patient-FEC.
+2026-08-22 23:16:22,426 INFO     freqscout_agent.pipeline | Running pipeline for patient Patient-FEC (13 slices).
+2026-08-22 23:16:22,426 INFO     freqscout_agent.agent.reasoning_loop | [Patient-FEC] Iter 0: 10 unsatisfied items, next_tool=neural
+2026-08-22 23:16:22,426 INFO     freqscout_agent.tools.neural_scorer | NeuralRanker[Patient-FEC]: top1=5 (0.162 conf), method=exp5_loocv
+2026-08-22 23:16:22,426 INFO     freqscout_agent.agent.reasoning_loop | [Patient-FEC] Iter 1: 9 unsatisfied items, next_tool=segment
+2026-08-22 23:16:22,426 INFO     freqscout_agent.tools.segment | Segmentation[Patient-FEC]: running LVSA U-Net consensus across 13 images.
+2026-08-22 23:16:22,496 INFO     freqscout_agent.tools.segment | Segmentation done for Patient-FEC (source slice 5 @ -25 Hz, method=lvsa_unet_consensus).
+2026-08-22 23:16:22,496 INFO     freqscout_agent.agent.reasoning_loop | [Patient-FEC] Iter 2: 8 unsatisfied items, next_tool=banding
+2026-08-22 23:16:22,578 INFO     freqscout_agent.agent.reasoning_loop | [Patient-FEC] Iter 3: 7 unsatisfied items, next_tool=quality
+2026-08-22 23:16:22,581 INFO     freqscout_agent.agent.reasoning_loop | [Patient-FEC] Iter 4: 6 unsatisfied items, next_tool=physics
+2026-08-22 23:16:22,581 INFO     freqscout_agent.tools.physics | Physics[Patient-FEC]: 13 slices, GT_slice=7, GT_Hz=25.0, TR=None ms
+2026-08-22 23:16:22,581 INFO     freqscout_agent.agent.reasoning_loop | [Patient-FEC] Iter 5: 5 unsatisfied items, next_tool=vlm
+/home/tukl/Agentic_Experiments_Cardiac_MRI/venv/lib/python3.13/site-packages/bitsandbytes/backends/cuda/ops.py:957: UserWarning: inner dimension (3420) is not aligned for fast kernel with blocksize=64, falling back to slower implementation.
+  warn(
+2026-08-22 23:16:27,525 INFO     freqscout_agent.tools.vlm_describe | VLM[Patient-FEC][5 @ -25 Hz]: verdict=optimal severity=none
+2026-08-22 23:16:32,471 INFO     freqscout_agent.tools.vlm_describe | VLM[Patient-FEC][7 @ 25 Hz]: verdict=acceptable severity=mild
+2026-08-22 23:16:37,406 INFO     freqscout_agent.tools.vlm_describe | VLM[Patient-FEC][9 @ 75 Hz]: verdict=acceptable severity=mild
+2026-08-22 23:16:37,406 INFO     freqscout_agent.agent.reasoning_loop | [Patient-FEC] Iter 6: 4 unsatisfied items, next_tool=retrieve
+2026-08-22 23:16:37,406 INFO     freqscout_agent.agent.reasoning_loop | [Patient-FEC] Iter 7: 3 unsatisfied items, next_tool=None
+2026-08-22 23:16:37,406 INFO     freqscout_agent.agent.consistency | Consistency[Patient-FEC]: neural=5 cv=8 vlm=5 conf=0.15 (low) | 2 disagreements
+2026-08-22 23:16:42,338 INFO     freqscout_agent.tools.vlm_describe | VLM[Patient-FEC][0 @ -150 Hz]: verdict=acceptable severity=mild
+2026-08-22 23:16:47,282 INFO     freqscout_agent.tools.vlm_describe | VLM[Patient-FEC][2 @ -100 Hz]: verdict=acceptable severity=mild
+2026-08-22 23:16:52,223 INFO     freqscout_agent.tools.vlm_describe | VLM[Patient-FEC][5 @ -25 Hz]: verdict=optimal severity=none
+2026-08-22 23:16:57,162 INFO     freqscout_agent.tools.vlm_describe | VLM[Patient-FEC][8 @ 50 Hz]: verdict=acceptable severity=mild
+2026-08-22 23:16:57,162 INFO     freqscout_agent.agent.reasoning_loop | Disagreement re-check: ran VLM on 4 disputed slices.
+2026-08-22 23:16:57,162 INFO     freqscout_agent.agent.consistency | Consistency[Patient-FEC]: neural=5 cv=8 vlm=5 conf=0.15 (low) | 2 disagreements
+2026-08-22 23:16:57,162 INFO     freqscout_agent.agent.reasoning_loop | [Patient-FEC] Loop done after 7 iters (no_further_tools). Confidence=0.15 (low).
+2026-08-22 23:16:57,162 INFO     freqscout_agent.generation.stage_a_findings | Stage-A done: recommend slice 7 (+25 Hz), conf=0.10, acceptable=11 rejected=1
+2026-08-22 23:16:57,163 INFO     freqscout_agent.generation.stage_b_narrative | Stage-B narrative generated for Patient-FEC (1407 chars).
+2026-08-22 23:16:57,163 WARNING  freqscout_agent.generation.repair | Repair found 3 issues for patient Patient-FEC.
+2026-08-22 23:16:57,163 INFO     freqscout_agent.pipeline | Outputs saved to agent_outputs_exp10_7B/Patient-FEC.
+2026-08-22 23:16:57,179 INFO     freqscout_agent.pipeline | Loaded 13 DICOM frames for patient Patient-GJ from Dr-Dataset/1st_cohort_SAX/Patient-GJ.
+2026-08-22 23:16:57,179 INFO     freqscout_agent.pipeline | Running pipeline for patient Patient-GJ (13 slices).
+2026-08-22 23:16:57,179 INFO     freqscout_agent.agent.reasoning_loop | [Patient-GJ] Iter 0: 10 unsatisfied items, next_tool=neural
+2026-08-22 23:16:57,179 INFO     freqscout_agent.tools.neural_scorer | NeuralRanker[Patient-GJ]: top1=10 (0.273 conf), method=exp5_loocv
+2026-08-22 23:16:57,179 INFO     freqscout_agent.agent.reasoning_loop | [Patient-GJ] Iter 1: 9 unsatisfied items, next_tool=segment
+2026-08-22 23:16:57,179 INFO     freqscout_agent.tools.segment | Segmentation[Patient-GJ]: running LVSA U-Net consensus across 13 images.
+2026-08-22 23:16:57,248 INFO     freqscout_agent.tools.segment | Segmentation done for Patient-GJ (source slice 10 @ 100 Hz, method=lvsa_unet_consensus).
+2026-08-22 23:16:57,248 INFO     freqscout_agent.agent.reasoning_loop | [Patient-GJ] Iter 2: 8 unsatisfied items, next_tool=banding
+2026-08-22 23:16:57,371 INFO     freqscout_agent.agent.reasoning_loop | [Patient-GJ] Iter 3: 7 unsatisfied items, next_tool=quality
+2026-08-22 23:16:57,373 INFO     freqscout_agent.agent.reasoning_loop | [Patient-GJ] Iter 4: 6 unsatisfied items, next_tool=physics
+2026-08-22 23:16:57,374 INFO     freqscout_agent.tools.physics | Physics[Patient-GJ]: 13 slices, GT_slice=8, GT_Hz=50.0, TR=None ms
+2026-08-22 23:16:57,374 INFO     freqscout_agent.agent.reasoning_loop | [Patient-GJ] Iter 5: 5 unsatisfied items, next_tool=vlm
+/home/tukl/Agentic_Experiments_Cardiac_MRI/venv/lib/python3.13/site-packages/bitsandbytes/backends/cuda/ops.py:957: UserWarning: inner dimension (3420) is not aligned for fast kernel with blocksize=64, falling back to slower implementation.
+  warn(
+2026-08-22 23:17:02,311 INFO     freqscout_agent.tools.vlm_describe | VLM[Patient-GJ][10 @ 100 Hz]: verdict=acceptable severity=mild
+2026-08-22 23:17:07,244 INFO     freqscout_agent.tools.vlm_describe | VLM[Patient-GJ][7 @ 25 Hz]: verdict=acceptable severity=mild
+2026-08-22 23:17:12,187 INFO     freqscout_agent.tools.vlm_describe | VLM[Patient-GJ][9 @ 75 Hz]: verdict=acceptable severity=mild
+2026-08-22 23:17:12,188 INFO     freqscout_agent.agent.reasoning_loop | [Patient-GJ] Iter 6: 4 unsatisfied items, next_tool=retrieve
+2026-08-22 23:17:12,188 INFO     freqscout_agent.agent.reasoning_loop | [Patient-GJ] Iter 7: 3 unsatisfied items, next_tool=None
+2026-08-22 23:17:12,188 INFO     freqscout_agent.agent.consistency | Consistency[Patient-GJ]: neural=10 cv=8 vlm=10 conf=0.35 (medium) | 2 disagreements
+2026-08-22 23:17:17,315 INFO     freqscout_agent.tools.vlm_describe | VLM[Patient-GJ][0 @ -150 Hz]: verdict=acceptable severity=mild
+2026-08-22 23:17:22,251 INFO     freqscout_agent.tools.vlm_describe | VLM[Patient-GJ][1 @ -125 Hz]: verdict=acceptable severity=mild
+2026-08-22 23:17:27,198 INFO     freqscout_agent.tools.vlm_describe | VLM[Patient-GJ][5 @ -25 Hz]: verdict=acceptable severity=mild
+2026-08-22 23:17:32,147 INFO     freqscout_agent.tools.vlm_describe | VLM[Patient-GJ][8 @ 50 Hz]: verdict=acceptable severity=mild
+2026-08-22 23:17:37,089 INFO     freqscout_agent.tools.vlm_describe | VLM[Patient-GJ][10 @ 100 Hz]: verdict=acceptable severity=mild
+2026-08-22 23:17:37,089 INFO     freqscout_agent.agent.reasoning_loop | Disagreement re-check: ran VLM on 5 disputed slices.
+2026-08-22 23:17:37,090 INFO     freqscout_agent.agent.consistency | Consistency[Patient-GJ]: neural=10 cv=8 vlm=10 conf=0.35 (medium) | 2 disagreements
+2026-08-22 23:17:37,090 INFO     freqscout_agent.agent.reasoning_loop | [Patient-GJ] Loop done after 7 iters (no_further_tools). Confidence=0.35 (medium).
+2026-08-22 23:17:37,090 INFO     freqscout_agent.generation.stage_a_findings | Stage-A done: recommend slice 7 (+25 Hz), conf=0.33, acceptable=9 rejected=3
+2026-08-22 23:17:37,090 INFO     freqscout_agent.generation.stage_b_narrative | Stage-B narrative generated for Patient-GJ (1664 chars).
+2026-08-22 23:17:37,091 WARNING  freqscout_agent.generation.repair | Repair found 5 issues for patient Patient-GJ.
+2026-08-22 23:17:37,091 INFO     freqscout_agent.pipeline | Outputs saved to agent_outputs_exp10_7B/Patient-GJ.
+2026-08-22 23:17:37,106 INFO     freqscout_agent.pipeline | Loaded 13 DICOM frames for patient Patient-HMJ from Dr-Dataset/1st_cohort_SAX/Patient-HMJ.
+2026-08-22 23:17:37,107 INFO     freqscout_agent.pipeline | Running pipeline for patient Patient-HMJ (13 slices).
+2026-08-22 23:17:37,107 INFO     freqscout_agent.agent.reasoning_loop | [Patient-HMJ] Iter 0: 10 unsatisfied items, next_tool=neural
+2026-08-22 23:17:37,107 INFO     freqscout_agent.tools.neural_scorer | NeuralRanker[Patient-HMJ]: top1=4 (0.234 conf), method=exp5_loocv
+2026-08-22 23:17:37,107 INFO     freqscout_agent.agent.reasoning_loop | [Patient-HMJ] Iter 1: 9 unsatisfied items, next_tool=segment
+2026-08-22 23:17:37,107 INFO     freqscout_agent.tools.segment | Segmentation[Patient-HMJ]: running LVSA U-Net consensus across 13 images.
+2026-08-22 23:17:37,176 INFO     freqscout_agent.tools.segment | Segmentation done for Patient-HMJ (source slice 4 @ -50 Hz, method=lvsa_unet_consensus).
+2026-08-22 23:17:37,176 INFO     freqscout_agent.agent.reasoning_loop | [Patient-HMJ] Iter 2: 8 unsatisfied items, next_tool=banding
+2026-08-22 23:17:37,271 INFO     freqscout_agent.agent.reasoning_loop | [Patient-HMJ] Iter 3: 7 unsatisfied items, next_tool=quality
+2026-08-22 23:17:37,273 INFO     freqscout_agent.agent.reasoning_loop | [Patient-HMJ] Iter 4: 6 unsatisfied items, next_tool=physics
+2026-08-22 23:17:37,274 INFO     freqscout_agent.tools.physics | Physics[Patient-HMJ]: 13 slices, GT_slice=7, GT_Hz=25.0, TR=None ms
+2026-08-22 23:17:37,274 INFO     freqscout_agent.agent.reasoning_loop | [Patient-HMJ] Iter 5: 5 unsatisfied items, next_tool=vlm
+/home/tukl/Agentic_Experiments_Cardiac_MRI/venv/lib/python3.13/site-packages/bitsandbytes/backends/cuda/ops.py:957: UserWarning: inner dimension (3420) is not aligned for fast kernel with blocksize=64, falling back to slower implementation.
+  warn(
+2026-08-22 23:17:42,226 INFO     freqscout_agent.tools.vlm_describe | VLM[Patient-HMJ][4 @ -50 Hz]: verdict=acceptable severity=mild
+2026-08-22 23:17:47,170 INFO     freqscout_agent.tools.vlm_describe | VLM[Patient-HMJ][5 @ -25 Hz]: verdict=acceptable severity=mild
+2026-08-22 23:17:52,107 INFO     freqscout_agent.tools.vlm_describe | VLM[Patient-HMJ][6 @ 0 Hz]: verdict=optimal severity=none
+2026-08-22 23:17:52,107 INFO     freqscout_agent.agent.reasoning_loop | [Patient-HMJ] Iter 6: 4 unsatisfied items, next_tool=retrieve
+2026-08-22 23:17:52,107 INFO     freqscout_agent.agent.reasoning_loop | [Patient-HMJ] Iter 7: 3 unsatisfied items, next_tool=None
+2026-08-22 23:17:52,107 INFO     freqscout_agent.agent.consistency | Consistency[Patient-HMJ]: neural=4 cv=8 vlm=6 conf=0.10 (low) | 3 disagreements
+2026-08-22 23:17:57,051 INFO     freqscout_agent.tools.vlm_describe | VLM[Patient-HMJ][0 @ -150 Hz]: verdict=acceptable severity=mild
+2026-08-22 23:18:02,007 INFO     freqscout_agent.tools.vlm_describe | VLM[Patient-HMJ][4 @ -50 Hz]: verdict=acceptable severity=mild
+2026-08-22 23:18:06,943 INFO     freqscout_agent.tools.vlm_describe | VLM[Patient-HMJ][5 @ -25 Hz]: verdict=acceptable severity=mild
+2026-08-22 23:18:11,903 INFO     freqscout_agent.tools.vlm_describe | VLM[Patient-HMJ][6 @ 0 Hz]: verdict=optimal severity=none
+2026-08-22 23:18:16,992 INFO     freqscout_agent.tools.vlm_describe | VLM[Patient-HMJ][8 @ 50 Hz]: verdict=optimal severity=none
+2026-08-22 23:18:16,992 INFO     freqscout_agent.tools.vlm_describe | VLM[Patient-HMJ]: demoted 1 duplicate 'optimal' verdicts to 'acceptable'.
+2026-08-22 23:18:16,992 INFO     freqscout_agent.agent.reasoning_loop | Disagreement re-check: ran VLM on 5 disputed slices.
+2026-08-22 23:18:16,993 INFO     freqscout_agent.agent.consistency | Consistency[Patient-HMJ]: neural=4 cv=8 vlm=6 conf=0.10 (low) | 3 disagreements
+2026-08-22 23:18:16,993 INFO     freqscout_agent.agent.reasoning_loop | [Patient-HMJ] Loop done after 7 iters (no_further_tools). Confidence=0.10 (low).
+2026-08-22 23:18:16,993 INFO     freqscout_agent.generation.stage_a_findings | Stage-A done: recommend slice 6 (+0 Hz), conf=0.05, acceptable=9 rejected=3
+2026-08-22 23:18:16,993 INFO     freqscout_agent.generation.stage_b_narrative | Stage-B narrative generated for Patient-HMJ (1774 chars).
+2026-08-22 23:18:16,994 WARNING  freqscout_agent.generation.repair | Repair found 6 issues for patient Patient-HMJ.
+2026-08-22 23:18:16,994 INFO     freqscout_agent.pipeline | Outputs saved to agent_outputs_exp10_7B/Patient-HMJ.
+2026-08-22 23:18:17,009 INFO     freqscout_agent.pipeline | Loaded 13 DICOM frames for patient Patient-HRJ from Dr-Dataset/1st_cohort_SAX/Patient-HRJ.
+2026-08-22 23:18:17,010 INFO     freqscout_agent.pipeline | Running pipeline for patient Patient-HRJ (13 slices).
+2026-08-22 23:18:17,010 INFO     freqscout_agent.agent.reasoning_loop | [Patient-HRJ] Iter 0: 10 unsatisfied items, next_tool=neural
+2026-08-22 23:18:17,010 INFO     freqscout_agent.tools.neural_scorer | NeuralRanker[Patient-HRJ]: top1=8 (0.287 conf), method=exp5_loocv
+2026-08-22 23:18:17,010 INFO     freqscout_agent.agent.reasoning_loop | [Patient-HRJ] Iter 1: 9 unsatisfied items, next_tool=segment
+2026-08-22 23:18:17,010 INFO     freqscout_agent.tools.segment | Segmentation[Patient-HRJ]: running LVSA U-Net consensus across 13 images.
+2026-08-22 23:18:17,080 INFO     freqscout_agent.tools.segment | Segmentation done for Patient-HRJ (source slice 8 @ 50 Hz, method=lvsa_unet_consensus).
+2026-08-22 23:18:17,080 INFO     freqscout_agent.agent.reasoning_loop | [Patient-HRJ] Iter 2: 8 unsatisfied items, next_tool=banding
+2026-08-22 23:18:17,257 INFO     freqscout_agent.agent.reasoning_loop | [Patient-HRJ] Iter 3: 7 unsatisfied items, next_tool=quality
+2026-08-22 23:18:17,260 INFO     freqscout_agent.agent.reasoning_loop | [Patient-HRJ] Iter 4: 6 unsatisfied items, next_tool=physics
+2026-08-22 23:18:17,261 INFO     freqscout_agent.tools.physics | Physics[Patient-HRJ]: 13 slices, GT_slice=6, GT_Hz=0.0, TR=None ms
+2026-08-22 23:18:17,261 INFO     freqscout_agent.agent.reasoning_loop | [Patient-HRJ] Iter 5: 5 unsatisfied items, next_tool=vlm
+/home/tukl/Agentic_Experiments_Cardiac_MRI/venv/lib/python3.13/site-packages/bitsandbytes/backends/cuda/ops.py:957: UserWarning: inner dimension (3420) is not aligned for fast kernel with blocksize=64, falling back to slower implementation.
+  warn(
+2026-08-22 23:18:22,195 INFO     freqscout_agent.tools.vlm_describe | VLM[Patient-HRJ][8 @ 50 Hz]: verdict=acceptable severity=mild
+2026-08-22 23:18:27,149 INFO     freqscout_agent.tools.vlm_describe | VLM[Patient-HRJ][9 @ 75 Hz]: verdict=acceptable severity=mild
+2026-08-22 23:18:32,091 INFO     freqscout_agent.tools.vlm_describe | VLM[Patient-HRJ][7 @ 25 Hz]: verdict=acceptable severity=mild
+2026-08-22 23:18:32,091 INFO     freqscout_agent.agent.reasoning_loop | [Patient-HRJ] Iter 6: 4 unsatisfied items, next_tool=retrieve
+2026-08-22 23:18:32,091 INFO     freqscout_agent.agent.reasoning_loop | [Patient-HRJ] Iter 7: 3 unsatisfied items, next_tool=None
+2026-08-22 23:18:32,091 INFO     freqscout_agent.agent.consistency | Consistency[Patient-HRJ]: neural=8 cv=6 vlm=8 conf=0.25 (low) | 2 disagreements
+2026-08-22 23:18:37,044 INFO     freqscout_agent.tools.vlm_describe | VLM[Patient-HRJ][0 @ -150 Hz]: verdict=acceptable severity=mild
+2026-08-22 23:18:41,989 INFO     freqscout_agent.tools.vlm_describe | VLM[Patient-HRJ][5 @ -25 Hz]: verdict=acceptable severity=mild
+2026-08-22 23:18:47,098 INFO     freqscout_agent.tools.vlm_describe | VLM[Patient-HRJ][6 @ 0 Hz]: verdict=optimal severity=none
+2026-08-22 23:18:52,057 INFO     freqscout_agent.tools.vlm_describe | VLM[Patient-HRJ][8 @ 50 Hz]: verdict=acceptable severity=mild
+2026-08-22 23:18:52,057 INFO     freqscout_agent.agent.reasoning_loop | Disagreement re-check: ran VLM on 4 disputed slices.
+2026-08-22 23:18:52,058 INFO     freqscout_agent.agent.consistency | Consistency[Patient-HRJ]: neural=8 cv=6 vlm=6 conf=0.29 (low) | 2 disagreements
+2026-08-22 23:18:52,058 INFO     freqscout_agent.agent.reasoning_loop | [Patient-HRJ] Loop done after 7 iters (no_further_tools). Confidence=0.29 (low).
+2026-08-22 23:18:52,058 INFO     freqscout_agent.generation.stage_a_findings | Stage-A done: recommend slice 6 (+0 Hz), conf=0.14, acceptable=8 rejected=4
+2026-08-22 23:18:52,058 INFO     freqscout_agent.generation.stage_b_narrative | Stage-B narrative generated for Patient-HRJ (1765 chars).
+2026-08-22 23:18:52,059 WARNING  freqscout_agent.generation.repair | Repair found 4 issues for patient Patient-HRJ.
+2026-08-22 23:18:52,059 INFO     freqscout_agent.pipeline | Outputs saved to agent_outputs_exp10_7B/Patient-HRJ.
+2026-08-22 23:18:52,074 INFO     freqscout_agent.pipeline | Loaded 13 DICOM frames for patient Patient-IAM from Dr-Dataset/1st_cohort_SAX/Patient-IAM.
+2026-08-22 23:18:52,075 INFO     freqscout_agent.pipeline | Running pipeline for patient Patient-IAM (13 slices).
+2026-08-22 23:18:52,075 INFO     freqscout_agent.agent.reasoning_loop | [Patient-IAM] Iter 0: 10 unsatisfied items, next_tool=neural
+2026-08-22 23:18:52,075 INFO     freqscout_agent.tools.neural_scorer | NeuralRanker[Patient-IAM]: top1=7 (0.347 conf), method=exp5_loocv
+2026-08-22 23:18:52,075 INFO     freqscout_agent.agent.reasoning_loop | [Patient-IAM] Iter 1: 9 unsatisfied items, next_tool=segment
+2026-08-22 23:18:52,075 INFO     freqscout_agent.tools.segment | Segmentation[Patient-IAM]: running LVSA U-Net consensus across 13 images.
+2026-08-22 23:18:52,143 INFO     freqscout_agent.tools.segment | Segmentation done for Patient-IAM (source slice 7 @ 25 Hz, method=lvsa_unet_consensus).
+2026-08-22 23:18:52,144 INFO     freqscout_agent.agent.reasoning_loop | [Patient-IAM] Iter 2: 8 unsatisfied items, next_tool=banding
+2026-08-22 23:18:52,237 INFO     freqscout_agent.agent.reasoning_loop | [Patient-IAM] Iter 3: 7 unsatisfied items, next_tool=quality
+2026-08-22 23:18:52,240 INFO     freqscout_agent.agent.reasoning_loop | [Patient-IAM] Iter 4: 6 unsatisfied items, next_tool=physics
+2026-08-22 23:18:52,241 INFO     freqscout_agent.tools.physics | Physics[Patient-IAM]: 13 slices, GT_slice=7, GT_Hz=25.0, TR=None ms
+2026-08-22 23:18:52,241 INFO     freqscout_agent.agent.reasoning_loop | [Patient-IAM] Iter 5: 5 unsatisfied items, next_tool=vlm
+/home/tukl/Agentic_Experiments_Cardiac_MRI/venv/lib/python3.13/site-packages/bitsandbytes/backends/cuda/ops.py:957: UserWarning: inner dimension (3420) is not aligned for fast kernel with blocksize=64, falling back to slower implementation.
+  warn(
+2026-08-22 23:18:57,191 INFO     freqscout_agent.tools.vlm_describe | VLM[Patient-IAM][7 @ 25 Hz]: verdict=acceptable severity=mild
+2026-08-22 23:19:02,283 INFO     freqscout_agent.tools.vlm_describe | VLM[Patient-IAM][6 @ 0 Hz]: verdict=optimal severity=none
+2026-08-22 23:19:07,219 INFO     freqscout_agent.tools.vlm_describe | VLM[Patient-IAM][9 @ 75 Hz]: verdict=acceptable severity=mild
+2026-08-22 23:19:07,219 INFO     freqscout_agent.agent.reasoning_loop | [Patient-IAM] Iter 6: 4 unsatisfied items, next_tool=retrieve
+2026-08-22 23:19:07,219 INFO     freqscout_agent.agent.reasoning_loop | [Patient-IAM] Iter 7: 3 unsatisfied items, next_tool=None
+2026-08-22 23:19:07,219 INFO     freqscout_agent.agent.consistency | Consistency[Patient-IAM]: neural=7 cv=6 vlm=6 conf=0.19 (low) | 2 disagreements
+2026-08-22 23:19:12,351 INFO     freqscout_agent.tools.vlm_describe | VLM[Patient-IAM][0 @ -150 Hz]: verdict=acceptable severity=mild
+2026-08-22 23:19:17,287 INFO     freqscout_agent.tools.vlm_describe | VLM[Patient-IAM][2 @ -100 Hz]: verdict=acceptable severity=mild
+2026-08-22 23:19:22,223 INFO     freqscout_agent.tools.vlm_describe | VLM[Patient-IAM][5 @ -25 Hz]: verdict=acceptable severity=mild
+2026-08-22 23:19:27,310 INFO     freqscout_agent.tools.vlm_describe | VLM[Patient-IAM][6 @ 0 Hz]: verdict=optimal severity=none
+2026-08-22 23:19:32,240 INFO     freqscout_agent.tools.vlm_describe | VLM[Patient-IAM][7 @ 25 Hz]: verdict=acceptable severity=mild
+2026-08-22 23:19:32,240 INFO     freqscout_agent.agent.reasoning_loop | Disagreement re-check: ran VLM on 5 disputed slices.
+2026-08-22 23:19:32,240 INFO     freqscout_agent.agent.consistency | Consistency[Patient-IAM]: neural=7 cv=6 vlm=6 conf=0.19 (low) | 2 disagreements
+2026-08-22 23:19:32,240 INFO     freqscout_agent.agent.reasoning_loop | [Patient-IAM] Loop done after 7 iters (no_further_tools). Confidence=0.19 (low).
+2026-08-22 23:19:32,241 INFO     freqscout_agent.generation.stage_a_findings | Stage-A done: recommend slice 6 (+0 Hz), conf=0.06, acceptable=7 rejected=4
+2026-08-22 23:19:32,241 INFO     freqscout_agent.generation.stage_b_narrative | Stage-B narrative generated for Patient-IAM (1774 chars).
+2026-08-22 23:19:32,241 WARNING  freqscout_agent.generation.repair | Repair found 4 issues for patient Patient-IAM.
+2026-08-22 23:19:32,241 INFO     freqscout_agent.pipeline | Outputs saved to agent_outputs_exp10_7B/Patient-IAM.
+2026-08-22 23:19:32,257 INFO     freqscout_agent.pipeline | Loaded 13 DICOM frames for patient Patient-INA from Dr-Dataset/1st_cohort_SAX/Patient-INA.
+2026-08-22 23:19:32,257 INFO     freqscout_agent.pipeline | Running pipeline for patient Patient-INA (13 slices).
+2026-08-22 23:19:32,257 INFO     freqscout_agent.agent.reasoning_loop | [Patient-INA] Iter 0: 10 unsatisfied items, next_tool=neural
+2026-08-22 23:19:32,257 INFO     freqscout_agent.tools.neural_scorer | NeuralRanker[Patient-INA]: top1=10 (0.187 conf), method=exp5_loocv
+2026-08-22 23:19:32,257 INFO     freqscout_agent.agent.reasoning_loop | [Patient-INA] Iter 1: 9 unsatisfied items, next_tool=segment
+2026-08-22 23:19:32,257 INFO     freqscout_agent.tools.segment | Segmentation[Patient-INA]: running LVSA U-Net consensus across 13 images.
+2026-08-22 23:19:32,326 INFO     freqscout_agent.tools.segment | Segmentation done for Patient-INA (source slice 10 @ 100 Hz, method=lvsa_unet_consensus).
+2026-08-22 23:19:32,327 INFO     freqscout_agent.agent.reasoning_loop | [Patient-INA] Iter 2: 8 unsatisfied items, next_tool=banding
+2026-08-22 23:19:32,410 INFO     freqscout_agent.agent.reasoning_loop | [Patient-INA] Iter 3: 7 unsatisfied items, next_tool=quality
+2026-08-22 23:19:32,412 INFO     freqscout_agent.agent.reasoning_loop | [Patient-INA] Iter 4: 6 unsatisfied items, next_tool=physics
+2026-08-22 23:19:32,413 INFO     freqscout_agent.tools.physics | Physics[Patient-INA]: 13 slices, GT_slice=10, GT_Hz=100.0, TR=None ms
+2026-08-22 23:19:32,413 INFO     freqscout_agent.agent.reasoning_loop | [Patient-INA] Iter 5: 5 unsatisfied items, next_tool=vlm
+/home/tukl/Agentic_Experiments_Cardiac_MRI/venv/lib/python3.13/site-packages/bitsandbytes/backends/cuda/ops.py:957: UserWarning: inner dimension (3420) is not aligned for fast kernel with blocksize=64, falling back to slower implementation.
+  warn(
+2026-08-22 23:19:37,359 INFO     freqscout_agent.tools.vlm_describe | VLM[Patient-INA][10 @ 100 Hz]: verdict=acceptable severity=mild
+2026-08-22 23:19:42,309 INFO     freqscout_agent.tools.vlm_describe | VLM[Patient-INA][8 @ 50 Hz]: verdict=acceptable severity=mild
+2026-08-22 23:19:47,401 INFO     freqscout_agent.tools.vlm_describe | VLM[Patient-INA][11 @ 125 Hz]: verdict=optimal severity=none
+2026-08-22 23:19:47,401 INFO     freqscout_agent.agent.reasoning_loop | [Patient-INA] Iter 6: 4 unsatisfied items, next_tool=retrieve
+2026-08-22 23:19:47,401 INFO     freqscout_agent.agent.reasoning_loop | [Patient-INA] Iter 7: 3 unsatisfied items, next_tool=None
+2026-08-22 23:19:47,401 INFO     freqscout_agent.agent.consistency | Consistency[Patient-INA]: neural=10 cv=10 vlm=11 conf=0.20 (low) | 2 disagreements
+2026-08-22 23:19:52,363 INFO     freqscout_agent.tools.vlm_describe | VLM[Patient-INA][0 @ -150 Hz]: verdict=acceptable severity=mild
+2026-08-22 23:19:57,303 INFO     freqscout_agent.tools.vlm_describe | VLM[Patient-INA][1 @ -125 Hz]: verdict=optimal severity=none
+2026-08-22 23:20:02,244 INFO     freqscout_agent.tools.vlm_describe | VLM[Patient-INA][2 @ -100 Hz]: verdict=acceptable severity=mild
+2026-08-22 23:20:07,188 INFO     freqscout_agent.tools.vlm_describe | VLM[Patient-INA][5 @ -25 Hz]: verdict=acceptable severity=mild
+2026-08-22 23:20:12,132 INFO     freqscout_agent.tools.vlm_describe | VLM[Patient-INA][10 @ 100 Hz]: verdict=acceptable severity=mild
+2026-08-22 23:20:17,234 INFO     freqscout_agent.tools.vlm_describe | VLM[Patient-INA][11 @ 125 Hz]: verdict=optimal severity=none
+2026-08-22 23:20:22,367 INFO     freqscout_agent.tools.vlm_describe | VLM[Patient-INA][12 @ 150 Hz]: verdict=optimal severity=none
+2026-08-22 23:20:22,367 INFO     freqscout_agent.tools.vlm_describe | VLM[Patient-INA]: demoted 2 duplicate 'optimal' verdicts to 'acceptable'.
+2026-08-22 23:20:22,367 INFO     freqscout_agent.agent.reasoning_loop | Disagreement re-check: ran VLM on 7 disputed slices.
+2026-08-22 23:20:22,368 INFO     freqscout_agent.agent.consistency | Consistency[Patient-INA]: neural=10 cv=10 vlm=11 conf=0.20 (low) | 2 disagreements
+2026-08-22 23:20:22,368 INFO     freqscout_agent.agent.reasoning_loop | [Patient-INA] Loop done after 7 iters (no_further_tools). Confidence=0.20 (low).
+2026-08-22 23:20:22,368 INFO     freqscout_agent.generation.stage_a_findings | Stage-A done: recommend slice 10 (+100 Hz), conf=0.31, acceptable=9 rejected=3
+2026-08-22 23:20:22,368 INFO     freqscout_agent.generation.stage_b_narrative | Stage-B narrative generated for Patient-INA (1694 chars).
+2026-08-22 23:20:22,368 WARNING  freqscout_agent.generation.repair | Repair found 4 issues for patient Patient-INA.
+2026-08-22 23:20:22,369 INFO     freqscout_agent.pipeline | Outputs saved to agent_outputs_exp10_7B/Patient-INA.
+2026-08-22 23:20:22,377 INFO     freqscout_agent.pipeline | Loaded 7 DICOM frames for patient Patient-KP from Dr-Dataset/1st_cohort_SAX/Patient-KP.
+2026-08-22 23:20:22,378 INFO     freqscout_agent.pipeline | Running pipeline for patient Patient-KP (7 slices).
+2026-08-22 23:20:22,378 INFO     freqscout_agent.agent.reasoning_loop | [Patient-KP] Iter 0: 10 unsatisfied items, next_tool=neural
+2026-08-22 23:20:22,378 INFO     freqscout_agent.tools.neural_scorer | NeuralRanker[Patient-KP]: top1=6 (0.324 conf), method=exp5_loocv
+2026-08-22 23:20:22,378 INFO     freqscout_agent.agent.reasoning_loop | [Patient-KP] Iter 1: 9 unsatisfied items, next_tool=segment
+2026-08-22 23:20:22,378 INFO     freqscout_agent.tools.segment | Segmentation[Patient-KP]: running LVSA U-Net consensus across 7 images.
+2026-08-22 23:20:22,414 WARNING  freqscout_agent.tools.segment | LV pool not detected for Patient-KP – using image centre.
+2026-08-22 23:20:22,416 INFO     freqscout_agent.tools.segment | Segmentation done for Patient-KP (source slice 6 @ 150 Hz, method=lvsa_unet_consensus).
+2026-08-22 23:20:22,416 INFO     freqscout_agent.agent.reasoning_loop | [Patient-KP] Iter 2: 8 unsatisfied items, next_tool=banding
+2026-08-22 23:20:22,499 INFO     freqscout_agent.agent.reasoning_loop | [Patient-KP] Iter 3: 7 unsatisfied items, next_tool=quality
+2026-08-22 23:20:22,500 INFO     freqscout_agent.agent.reasoning_loop | [Patient-KP] Iter 4: 6 unsatisfied items, next_tool=physics
+2026-08-22 23:20:22,501 INFO     freqscout_agent.tools.physics | Physics[Patient-KP]: 7 slices, GT_slice=5, GT_Hz=100.0, TR=None ms
+2026-08-22 23:20:22,501 INFO     freqscout_agent.agent.reasoning_loop | [Patient-KP] Iter 5: 5 unsatisfied items, next_tool=vlm
+/home/tukl/Agentic_Experiments_Cardiac_MRI/venv/lib/python3.13/site-packages/bitsandbytes/backends/cuda/ops.py:957: UserWarning: inner dimension (3420) is not aligned for fast kernel with blocksize=64, falling back to slower implementation.
+  warn(
+2026-08-22 23:20:27,626 INFO     freqscout_agent.tools.vlm_describe | VLM[Patient-KP][6 @ 150 Hz]: verdict=acceptable severity=mild
+2026-08-22 23:20:32,560 INFO     freqscout_agent.tools.vlm_describe | VLM[Patient-KP][3 @ 0 Hz]: verdict=optimal severity=none
+2026-08-22 23:20:37,499 INFO     freqscout_agent.tools.vlm_describe | VLM[Patient-KP][4 @ 50 Hz]: verdict=acceptable severity=mild
+2026-08-22 23:20:37,499 INFO     freqscout_agent.agent.reasoning_loop | [Patient-KP] Iter 6: 4 unsatisfied items, next_tool=retrieve
+2026-08-22 23:20:37,499 INFO     freqscout_agent.agent.reasoning_loop | [Patient-KP] Iter 7: 3 unsatisfied items, next_tool=None
+2026-08-22 23:20:37,499 INFO     freqscout_agent.agent.consistency | Consistency[Patient-KP]: neural=6 cv=0 vlm=3 conf=0.23 (low) | 3 disagreements
+2026-08-22 23:20:42,468 INFO     freqscout_agent.tools.vlm_describe | VLM[Patient-KP][0 @ -150 Hz]: verdict=acceptable severity=mild
+2026-08-22 23:20:47,470 INFO     freqscout_agent.tools.vlm_describe | VLM[Patient-KP][1 @ -100 Hz]: verdict=acceptable severity=mild
+2026-08-22 23:20:52,414 INFO     freqscout_agent.tools.vlm_describe | VLM[Patient-KP][3 @ 0 Hz]: verdict=optimal severity=none
+2026-08-22 23:20:57,564 INFO     freqscout_agent.tools.vlm_describe | VLM[Patient-KP][5 @ 100 Hz]: verdict=acceptable severity=mild
+2026-08-22 23:21:02,724 INFO     freqscout_agent.tools.vlm_describe | VLM[Patient-KP][6 @ 150 Hz]: verdict=acceptable severity=mild
+2026-08-22 23:21:02,724 INFO     freqscout_agent.agent.reasoning_loop | Disagreement re-check: ran VLM on 5 disputed slices.
+2026-08-22 23:21:02,725 INFO     freqscout_agent.agent.consistency | Consistency[Patient-KP]: neural=6 cv=0 vlm=3 conf=0.23 (low) | 3 disagreements
+2026-08-22 23:21:02,725 INFO     freqscout_agent.agent.reasoning_loop | [Patient-KP] Loop done after 7 iters (no_further_tools). Confidence=0.23 (low).
+2026-08-22 23:21:02,725 INFO     freqscout_agent.generation.stage_a_findings | Stage-A done: recommend slice 3 (+0 Hz), conf=0.23, acceptable=6 rejected=0
+2026-08-22 23:21:02,725 INFO     freqscout_agent.generation.stage_b_narrative | Stage-B narrative generated for Patient-KP (1366 chars).
+2026-08-22 23:21:02,725 WARNING  freqscout_agent.generation.repair | Repair found 2 issues for patient Patient-KP.
+2026-08-22 23:21:02,726 INFO     freqscout_agent.pipeline | Outputs saved to agent_outputs_exp10_7B/Patient-KP.
+2026-08-22 23:21:02,741 INFO     freqscout_agent.pipeline | Loaded 13 DICOM frames for patient Patient-MJ from Dr-Dataset/1st_cohort_SAX/Patient-MJ.
+2026-08-22 23:21:02,742 INFO     freqscout_agent.pipeline | Running pipeline for patient Patient-MJ (13 slices).
+2026-08-22 23:21:02,742 INFO     freqscout_agent.agent.reasoning_loop | [Patient-MJ] Iter 0: 10 unsatisfied items, next_tool=neural
+2026-08-22 23:21:02,742 INFO     freqscout_agent.tools.neural_scorer | NeuralRanker[Patient-MJ]: top1=7 (0.211 conf), method=exp5_loocv
+2026-08-22 23:21:02,742 INFO     freqscout_agent.agent.reasoning_loop | [Patient-MJ] Iter 1: 9 unsatisfied items, next_tool=segment
+2026-08-22 23:21:02,742 INFO     freqscout_agent.tools.segment | Segmentation[Patient-MJ]: running LVSA U-Net consensus across 13 images.
+2026-08-22 23:21:02,811 INFO     freqscout_agent.tools.segment | Segmentation done for Patient-MJ (source slice 7 @ 25 Hz, method=lvsa_unet_consensus).
+2026-08-22 23:21:02,811 INFO     freqscout_agent.agent.reasoning_loop | [Patient-MJ] Iter 2: 8 unsatisfied items, next_tool=banding
+2026-08-22 23:21:02,934 INFO     freqscout_agent.agent.reasoning_loop | [Patient-MJ] Iter 3: 7 unsatisfied items, next_tool=quality
+2026-08-22 23:21:02,937 INFO     freqscout_agent.agent.reasoning_loop | [Patient-MJ] Iter 4: 6 unsatisfied items, next_tool=physics
+2026-08-22 23:21:02,938 INFO     freqscout_agent.tools.physics | Physics[Patient-MJ]: 13 slices, GT_slice=6, GT_Hz=0.0, TR=None ms
+2026-08-22 23:21:02,938 INFO     freqscout_agent.agent.reasoning_loop | [Patient-MJ] Iter 5: 5 unsatisfied items, next_tool=vlm
+/home/tukl/Agentic_Experiments_Cardiac_MRI/venv/lib/python3.13/site-packages/bitsandbytes/backends/cuda/ops.py:957: UserWarning: inner dimension (3420) is not aligned for fast kernel with blocksize=64, falling back to slower implementation.
+  warn(
+2026-08-22 23:21:07,874 INFO     freqscout_agent.tools.vlm_describe | VLM[Patient-MJ][7 @ 25 Hz]: verdict=acceptable severity=mild
+2026-08-22 23:21:12,805 INFO     freqscout_agent.tools.vlm_describe | VLM[Patient-MJ][6 @ 0 Hz]: verdict=optimal severity=none
+2026-08-22 23:21:17,744 INFO     freqscout_agent.tools.vlm_describe | VLM[Patient-MJ][5 @ -25 Hz]: verdict=acceptable severity=mild
+2026-08-22 23:21:17,744 INFO     freqscout_agent.agent.reasoning_loop | [Patient-MJ] Iter 6: 4 unsatisfied items, next_tool=retrieve
+2026-08-22 23:21:17,744 INFO     freqscout_agent.agent.reasoning_loop | [Patient-MJ] Iter 7: 3 unsatisfied items, next_tool=None
+2026-08-22 23:21:17,744 INFO     freqscout_agent.agent.consistency | Consistency[Patient-MJ]: neural=7 cv=4 vlm=6 conf=0.10 (low) | 3 disagreements
+2026-08-22 23:21:22,863 INFO     freqscout_agent.tools.vlm_describe | VLM[Patient-MJ][0 @ -150 Hz]: verdict=acceptable severity=mild
+2026-08-22 23:21:27,801 INFO     freqscout_agent.tools.vlm_describe | VLM[Patient-MJ][2 @ -100 Hz]: verdict=acceptable severity=mild
+2026-08-22 23:21:32,746 INFO     freqscout_agent.tools.vlm_describe | VLM[Patient-MJ][4 @ -50 Hz]: verdict=acceptable severity=mild
+2026-08-22 23:21:37,690 INFO     freqscout_agent.tools.vlm_describe | VLM[Patient-MJ][5 @ -25 Hz]: verdict=acceptable severity=mild
+2026-08-22 23:21:42,629 INFO     freqscout_agent.tools.vlm_describe | VLM[Patient-MJ][6 @ 0 Hz]: verdict=optimal severity=none
+2026-08-22 23:21:47,562 INFO     freqscout_agent.tools.vlm_describe | VLM[Patient-MJ][7 @ 25 Hz]: verdict=acceptable severity=mild
+2026-08-22 23:21:47,562 INFO     freqscout_agent.agent.reasoning_loop | Disagreement re-check: ran VLM on 6 disputed slices.
+2026-08-22 23:21:47,562 INFO     freqscout_agent.agent.consistency | Consistency[Patient-MJ]: neural=7 cv=4 vlm=6 conf=0.10 (low) | 3 disagreements
+2026-08-22 23:21:47,562 INFO     freqscout_agent.agent.reasoning_loop | [Patient-MJ] Loop done after 7 iters (no_further_tools). Confidence=0.10 (low).
+2026-08-22 23:21:47,563 INFO     freqscout_agent.generation.stage_a_findings | Stage-A done: recommend slice 4 (-50 Hz), conf=0.38, acceptable=10 rejected=2
+2026-08-22 23:21:47,563 INFO     freqscout_agent.generation.stage_b_narrative | Stage-B narrative generated for Patient-MJ (1657 chars).
+2026-08-22 23:21:47,563 WARNING  freqscout_agent.generation.repair | Repair found 4 issues for patient Patient-MJ.
+2026-08-22 23:21:47,564 INFO     freqscout_agent.pipeline | Outputs saved to agent_outputs_exp10_7B/Patient-MJ.
+2026-08-22 23:21:47,579 INFO     freqscout_agent.pipeline | Loaded 13 DICOM frames for patient Patient-MS from Dr-Dataset/1st_cohort_SAX/Patient-MS.
+2026-08-22 23:21:47,579 INFO     freqscout_agent.pipeline | Running pipeline for patient Patient-MS (13 slices).
+2026-08-22 23:21:47,579 INFO     freqscout_agent.agent.reasoning_loop | [Patient-MS] Iter 0: 10 unsatisfied items, next_tool=neural
+2026-08-22 23:21:47,579 INFO     freqscout_agent.tools.neural_scorer | NeuralRanker[Patient-MS]: top1=9 (0.238 conf), method=exp5_loocv
+2026-08-22 23:21:47,579 INFO     freqscout_agent.agent.reasoning_loop | [Patient-MS] Iter 1: 9 unsatisfied items, next_tool=segment
+2026-08-22 23:21:47,579 INFO     freqscout_agent.tools.segment | Segmentation[Patient-MS]: running LVSA U-Net consensus across 13 images.
+2026-08-22 23:21:47,648 INFO     freqscout_agent.tools.segment | Segmentation done for Patient-MS (source slice 9 @ 75 Hz, method=lvsa_unet_consensus).
+2026-08-22 23:21:47,648 INFO     freqscout_agent.agent.reasoning_loop | [Patient-MS] Iter 2: 8 unsatisfied items, next_tool=banding
+2026-08-22 23:21:47,799 INFO     freqscout_agent.agent.reasoning_loop | [Patient-MS] Iter 3: 7 unsatisfied items, next_tool=quality
+2026-08-22 23:21:47,802 INFO     freqscout_agent.agent.reasoning_loop | [Patient-MS] Iter 4: 6 unsatisfied items, next_tool=physics
+2026-08-22 23:21:47,803 INFO     freqscout_agent.tools.physics | Physics[Patient-MS]: 13 slices, GT_slice=8, GT_Hz=50.0, TR=None ms
+2026-08-22 23:21:47,803 INFO     freqscout_agent.agent.reasoning_loop | [Patient-MS] Iter 5: 5 unsatisfied items, next_tool=vlm
+/home/tukl/Agentic_Experiments_Cardiac_MRI/venv/lib/python3.13/site-packages/bitsandbytes/backends/cuda/ops.py:957: UserWarning: inner dimension (3420) is not aligned for fast kernel with blocksize=64, falling back to slower implementation.
+  warn(
+2026-08-22 23:21:52,930 INFO     freqscout_agent.tools.vlm_describe | VLM[Patient-MS][9 @ 75 Hz]: verdict=acceptable severity=mild
+2026-08-22 23:21:58,064 INFO     freqscout_agent.tools.vlm_describe | VLM[Patient-MS][12 @ 150 Hz]: verdict=acceptable severity=mild
+2026-08-22 23:22:03,022 INFO     freqscout_agent.tools.vlm_describe | VLM[Patient-MS][5 @ -25 Hz]: verdict=acceptable severity=mild
+2026-08-22 23:22:03,022 INFO     freqscout_agent.agent.reasoning_loop | [Patient-MS] Iter 6: 4 unsatisfied items, next_tool=retrieve
+2026-08-22 23:22:03,023 INFO     freqscout_agent.agent.reasoning_loop | [Patient-MS] Iter 7: 3 unsatisfied items, next_tool=None
+2026-08-22 23:22:03,023 INFO     freqscout_agent.agent.consistency | Consistency[Patient-MS]: neural=9 cv=8 vlm=9 conf=0.30 (low) | 2 disagreements
+2026-08-22 23:22:07,979 INFO     freqscout_agent.tools.vlm_describe | VLM[Patient-MS][0 @ -150 Hz]: verdict=acceptable severity=mild
+2026-08-22 23:22:12,919 INFO     freqscout_agent.tools.vlm_describe | VLM[Patient-MS][5 @ -25 Hz]: verdict=acceptable severity=mild
+2026-08-22 23:22:17,878 INFO     freqscout_agent.tools.vlm_describe | VLM[Patient-MS][7 @ 25 Hz]: verdict=acceptable severity=mild
+2026-08-22 23:22:22,813 INFO     freqscout_agent.tools.vlm_describe | VLM[Patient-MS][8 @ 50 Hz]: verdict=acceptable severity=mild
+2026-08-22 23:22:27,941 INFO     freqscout_agent.tools.vlm_describe | VLM[Patient-MS][9 @ 75 Hz]: verdict=acceptable severity=mild
+2026-08-22 23:22:27,941 INFO     freqscout_agent.agent.reasoning_loop | Disagreement re-check: ran VLM on 5 disputed slices.
+2026-08-22 23:22:27,941 INFO     freqscout_agent.agent.consistency | Consistency[Patient-MS]: neural=9 cv=8 vlm=9 conf=0.30 (low) | 2 disagreements
+2026-08-22 23:22:27,941 INFO     freqscout_agent.agent.reasoning_loop | [Patient-MS] Loop done after 7 iters (no_further_tools). Confidence=0.30 (low).
+2026-08-22 23:22:27,942 INFO     freqscout_agent.generation.stage_a_findings | Stage-A done: recommend slice 6 (+0 Hz), conf=0.11, acceptable=10 rejected=2
+2026-08-22 23:22:27,942 INFO     freqscout_agent.generation.stage_b_narrative | Stage-B narrative generated for Patient-MS (1546 chars).
+2026-08-22 23:22:27,942 WARNING  freqscout_agent.generation.repair | Repair found 4 issues for patient Patient-MS.
+2026-08-22 23:22:27,943 INFO     freqscout_agent.pipeline | Outputs saved to agent_outputs_exp10_7B/Patient-MS.
+2026-08-22 23:22:27,958 INFO     freqscout_agent.pipeline | Loaded 13 DICOM frames for patient Patient-MSR from Dr-Dataset/1st_cohort_SAX/Patient-MSR.
+2026-08-22 23:22:27,958 INFO     freqscout_agent.pipeline | Running pipeline for patient Patient-MSR (13 slices).
+2026-08-22 23:22:27,958 INFO     freqscout_agent.agent.reasoning_loop | [Patient-MSR] Iter 0: 10 unsatisfied items, next_tool=neural
+2026-08-22 23:22:27,958 INFO     freqscout_agent.tools.neural_scorer | NeuralRanker[Patient-MSR]: top1=10 (0.289 conf), method=exp5_loocv
+2026-08-22 23:22:27,958 INFO     freqscout_agent.agent.reasoning_loop | [Patient-MSR] Iter 1: 9 unsatisfied items, next_tool=segment
+2026-08-22 23:22:27,958 INFO     freqscout_agent.tools.segment | Segmentation[Patient-MSR]: running LVSA U-Net consensus across 13 images.
+2026-08-22 23:22:28,026 INFO     freqscout_agent.tools.segment | Segmentation done for Patient-MSR (source slice 10 @ 100 Hz, method=lvsa_unet_consensus).
+2026-08-22 23:22:28,027 INFO     freqscout_agent.agent.reasoning_loop | [Patient-MSR] Iter 2: 8 unsatisfied items, next_tool=banding
+2026-08-22 23:22:28,149 INFO     freqscout_agent.agent.reasoning_loop | [Patient-MSR] Iter 3: 7 unsatisfied items, next_tool=quality
+2026-08-22 23:22:28,152 INFO     freqscout_agent.agent.reasoning_loop | [Patient-MSR] Iter 4: 6 unsatisfied items, next_tool=physics
+2026-08-22 23:22:28,153 INFO     freqscout_agent.tools.physics | Physics[Patient-MSR]: 13 slices, GT_slice=9, GT_Hz=75.0, TR=None ms
+2026-08-22 23:22:28,153 INFO     freqscout_agent.agent.reasoning_loop | [Patient-MSR] Iter 5: 5 unsatisfied items, next_tool=vlm
+/home/tukl/Agentic_Experiments_Cardiac_MRI/venv/lib/python3.13/site-packages/bitsandbytes/backends/cuda/ops.py:957: UserWarning: inner dimension (3420) is not aligned for fast kernel with blocksize=64, falling back to slower implementation.
+  warn(
+2026-08-22 23:22:33,097 INFO     freqscout_agent.tools.vlm_describe | VLM[Patient-MSR][10 @ 100 Hz]: verdict=acceptable severity=mild
+2026-08-22 23:22:38,034 INFO     freqscout_agent.tools.vlm_describe | VLM[Patient-MSR][8 @ 50 Hz]: verdict=acceptable severity=mild
+2026-08-22 23:22:43,165 INFO     freqscout_agent.tools.vlm_describe | VLM[Patient-MSR][11 @ 125 Hz]: verdict=acceptable severity=mild
+2026-08-22 23:22:43,165 INFO     freqscout_agent.agent.reasoning_loop | [Patient-MSR] Iter 6: 4 unsatisfied items, next_tool=retrieve
+2026-08-22 23:22:43,165 INFO     freqscout_agent.agent.reasoning_loop | [Patient-MSR] Iter 7: 3 unsatisfied items, next_tool=None
+2026-08-22 23:22:43,166 INFO     freqscout_agent.agent.consistency | Consistency[Patient-MSR]: neural=10 cv=9 vlm=10 conf=0.32 (low) | 2 disagreements
+2026-08-22 23:22:48,108 INFO     freqscout_agent.tools.vlm_describe | VLM[Patient-MSR][0 @ -150 Hz]: verdict=acceptable severity=mild
+2026-08-22 23:22:53,049 INFO     freqscout_agent.tools.vlm_describe | VLM[Patient-MSR][1 @ -125 Hz]: verdict=acceptable severity=mild
+2026-08-22 23:22:58,170 INFO     freqscout_agent.tools.vlm_describe | VLM[Patient-MSR][5 @ -25 Hz]: verdict=acceptable severity=mild
+2026-08-22 23:23:03,105 INFO     freqscout_agent.tools.vlm_describe | VLM[Patient-MSR][7 @ 25 Hz]: verdict=acceptable severity=mild
+2026-08-22 23:23:08,047 INFO     freqscout_agent.tools.vlm_describe | VLM[Patient-MSR][9 @ 75 Hz]: verdict=acceptable severity=mild
+2026-08-22 23:23:12,988 INFO     freqscout_agent.tools.vlm_describe | VLM[Patient-MSR][10 @ 100 Hz]: verdict=acceptable severity=mild
+2026-08-22 23:23:12,989 INFO     freqscout_agent.agent.reasoning_loop | Disagreement re-check: ran VLM on 6 disputed slices.
+2026-08-22 23:23:12,989 INFO     freqscout_agent.agent.consistency | Consistency[Patient-MSR]: neural=10 cv=9 vlm=10 conf=0.32 (low) | 2 disagreements
+2026-08-22 23:23:12,989 INFO     freqscout_agent.agent.reasoning_loop | [Patient-MSR] Loop done after 7 iters (no_further_tools). Confidence=0.32 (low).
+2026-08-22 23:23:12,989 INFO     freqscout_agent.generation.stage_a_findings | Stage-A done: recommend slice 8 (+50 Hz), conf=0.20, acceptable=7 rejected=5
+2026-08-22 23:23:12,989 INFO     freqscout_agent.generation.stage_b_narrative | Stage-B narrative generated for Patient-MSR (1775 chars).
+2026-08-22 23:23:12,990 WARNING  freqscout_agent.generation.repair | Repair found 3 issues for patient Patient-MSR.
+2026-08-22 23:23:12,990 INFO     freqscout_agent.pipeline | Outputs saved to agent_outputs_exp10_7B/Patient-MSR.
+2026-08-22 23:23:13,006 INFO     freqscout_agent.pipeline | Loaded 13 DICOM frames for patient Patient-OAF from Dr-Dataset/1st_cohort_SAX/Patient-OAF.
+2026-08-22 23:23:13,006 INFO     freqscout_agent.pipeline | Running pipeline for patient Patient-OAF (13 slices).
+2026-08-22 23:23:13,006 INFO     freqscout_agent.agent.reasoning_loop | [Patient-OAF] Iter 0: 10 unsatisfied items, next_tool=neural
+2026-08-22 23:23:13,006 INFO     freqscout_agent.tools.neural_scorer | NeuralRanker[Patient-OAF]: top1=7 (0.185 conf), method=exp5_loocv
+2026-08-22 23:23:13,006 INFO     freqscout_agent.agent.reasoning_loop | [Patient-OAF] Iter 1: 9 unsatisfied items, next_tool=segment
+2026-08-22 23:23:13,006 INFO     freqscout_agent.tools.segment | Segmentation[Patient-OAF]: running LVSA U-Net consensus across 13 images.
+2026-08-22 23:23:13,075 INFO     freqscout_agent.tools.segment | Segmentation done for Patient-OAF (source slice 7 @ 25 Hz, method=lvsa_unet_consensus).
+2026-08-22 23:23:13,075 INFO     freqscout_agent.agent.reasoning_loop | [Patient-OAF] Iter 2: 8 unsatisfied items, next_tool=banding
+2026-08-22 23:23:13,198 INFO     freqscout_agent.agent.reasoning_loop | [Patient-OAF] Iter 3: 7 unsatisfied items, next_tool=quality
+2026-08-22 23:23:13,201 INFO     freqscout_agent.agent.reasoning_loop | [Patient-OAF] Iter 4: 6 unsatisfied items, next_tool=physics
+2026-08-22 23:23:13,202 INFO     freqscout_agent.tools.physics | Physics[Patient-OAF]: 13 slices, GT_slice=8, GT_Hz=50.0, TR=None ms
+2026-08-22 23:23:13,202 INFO     freqscout_agent.agent.reasoning_loop | [Patient-OAF] Iter 5: 5 unsatisfied items, next_tool=vlm
+/home/tukl/Agentic_Experiments_Cardiac_MRI/venv/lib/python3.13/site-packages/bitsandbytes/backends/cuda/ops.py:957: UserWarning: inner dimension (3420) is not aligned for fast kernel with blocksize=64, falling back to slower implementation.
+  warn(
+2026-08-22 23:23:18,137 INFO     freqscout_agent.tools.vlm_describe | VLM[Patient-OAF][7 @ 25 Hz]: verdict=acceptable severity=mild
+2026-08-22 23:23:23,263 INFO     freqscout_agent.tools.vlm_describe | VLM[Patient-OAF][6 @ 0 Hz]: verdict=optimal severity=none
+2026-08-22 23:23:28,199 INFO     freqscout_agent.tools.vlm_describe | VLM[Patient-OAF][8 @ 50 Hz]: verdict=acceptable severity=mild
+2026-08-22 23:23:28,199 INFO     freqscout_agent.agent.reasoning_loop | [Patient-OAF] Iter 6: 4 unsatisfied items, next_tool=retrieve
+2026-08-22 23:23:28,200 INFO     freqscout_agent.agent.reasoning_loop | [Patient-OAF] Iter 7: 3 unsatisfied items, next_tool=None
+2026-08-22 23:23:28,200 INFO     freqscout_agent.agent.consistency | Consistency[Patient-OAF]: neural=7 cv=7 vlm=6 conf=0.17 (low) | 2 disagreements
+2026-08-22 23:23:33,130 INFO     freqscout_agent.tools.vlm_describe | VLM[Patient-OAF][0 @ -150 Hz]: verdict=acceptable severity=mild
+2026-08-22 23:23:38,261 INFO     freqscout_agent.tools.vlm_describe | VLM[Patient-OAF][2 @ -100 Hz]: verdict=acceptable severity=mild
+2026-08-22 23:23:43,190 INFO     freqscout_agent.tools.vlm_describe | VLM[Patient-OAF][5 @ -25 Hz]: verdict=acceptable severity=mild
+2026-08-22 23:23:48,310 INFO     freqscout_agent.tools.vlm_describe | VLM[Patient-OAF][6 @ 0 Hz]: verdict=optimal severity=none
+2026-08-22 23:23:53,252 INFO     freqscout_agent.tools.vlm_describe | VLM[Patient-OAF][7 @ 25 Hz]: verdict=acceptable severity=mild
+2026-08-22 23:23:53,252 INFO     freqscout_agent.agent.reasoning_loop | Disagreement re-check: ran VLM on 5 disputed slices.
+2026-08-22 23:23:53,252 INFO     freqscout_agent.agent.consistency | Consistency[Patient-OAF]: neural=7 cv=7 vlm=6 conf=0.17 (low) | 2 disagreements
+2026-08-22 23:23:53,252 INFO     freqscout_agent.agent.reasoning_loop | [Patient-OAF] Loop done after 7 iters (no_further_tools). Confidence=0.17 (low).
+2026-08-22 23:23:53,253 INFO     freqscout_agent.generation.stage_a_findings | Stage-A done: recommend slice 7 (+25 Hz), conf=0.18, acceptable=11 rejected=0
+2026-08-22 23:23:53,253 INFO     freqscout_agent.generation.stage_b_narrative | Stage-B narrative generated for Patient-OAF (1317 chars).
+2026-08-22 23:23:53,253 WARNING  freqscout_agent.generation.repair | Repair found 2 issues for patient Patient-OAF.
+2026-08-22 23:23:53,254 INFO     freqscout_agent.pipeline | Outputs saved to agent_outputs_exp10_7B/Patient-OAF.
+2026-08-22 23:23:53,269 INFO     freqscout_agent.pipeline | Loaded 13 DICOM frames for patient Patient-PJ from Dr-Dataset/1st_cohort_SAX/Patient-PJ.
+2026-08-22 23:23:53,269 INFO     freqscout_agent.pipeline | Running pipeline for patient Patient-PJ (13 slices).
+2026-08-22 23:23:53,269 INFO     freqscout_agent.agent.reasoning_loop | [Patient-PJ] Iter 0: 10 unsatisfied items, next_tool=neural
+2026-08-22 23:23:53,269 INFO     freqscout_agent.tools.neural_scorer | NeuralRanker[Patient-PJ]: top1=9 (0.243 conf), method=exp5_loocv
+2026-08-22 23:23:53,269 INFO     freqscout_agent.agent.reasoning_loop | [Patient-PJ] Iter 1: 9 unsatisfied items, next_tool=segment
+2026-08-22 23:23:53,269 INFO     freqscout_agent.tools.segment | Segmentation[Patient-PJ]: running LVSA U-Net consensus across 13 images.
+2026-08-22 23:23:53,338 INFO     freqscout_agent.tools.segment | Segmentation done for Patient-PJ (source slice 9 @ 75 Hz, method=lvsa_unet_consensus).
+2026-08-22 23:23:53,339 INFO     freqscout_agent.agent.reasoning_loop | [Patient-PJ] Iter 2: 8 unsatisfied items, next_tool=banding
+2026-08-22 23:23:53,440 INFO     freqscout_agent.agent.reasoning_loop | [Patient-PJ] Iter 3: 7 unsatisfied items, next_tool=quality
+2026-08-22 23:23:53,443 INFO     freqscout_agent.agent.reasoning_loop | [Patient-PJ] Iter 4: 6 unsatisfied items, next_tool=physics
+2026-08-22 23:23:53,444 INFO     freqscout_agent.tools.physics | Physics[Patient-PJ]: 13 slices, GT_slice=7, GT_Hz=25.0, TR=None ms
+2026-08-22 23:23:53,444 INFO     freqscout_agent.agent.reasoning_loop | [Patient-PJ] Iter 5: 5 unsatisfied items, next_tool=vlm
+/home/tukl/Agentic_Experiments_Cardiac_MRI/venv/lib/python3.13/site-packages/bitsandbytes/backends/cuda/ops.py:957: UserWarning: inner dimension (3420) is not aligned for fast kernel with blocksize=64, falling back to slower implementation.
+  warn(
+2026-08-22 23:23:58,373 INFO     freqscout_agent.tools.vlm_describe | VLM[Patient-PJ][9 @ 75 Hz]: verdict=acceptable severity=mild
+2026-08-22 23:24:03,309 INFO     freqscout_agent.tools.vlm_describe | VLM[Patient-PJ][8 @ 50 Hz]: verdict=acceptable severity=mild
+2026-08-22 23:24:08,248 INFO     freqscout_agent.tools.vlm_describe | VLM[Patient-PJ][7 @ 25 Hz]: verdict=acceptable severity=mild
+2026-08-22 23:24:08,248 INFO     freqscout_agent.agent.reasoning_loop | [Patient-PJ] Iter 6: 4 unsatisfied items, next_tool=retrieve
+2026-08-22 23:24:08,248 INFO     freqscout_agent.agent.reasoning_loop | [Patient-PJ] Iter 7: 3 unsatisfied items, next_tool=None
+2026-08-22 23:24:08,248 INFO     freqscout_agent.agent.consistency | Consistency[Patient-PJ]: neural=9 cv=8 vlm=9 conf=0.10 (low) | 2 disagreements
+2026-08-22 23:24:13,369 INFO     freqscout_agent.tools.vlm_describe | VLM[Patient-PJ][0 @ -150 Hz]: verdict=acceptable severity=mild
+2026-08-22 23:24:18,306 INFO     freqscout_agent.tools.vlm_describe | VLM[Patient-PJ][5 @ -25 Hz]: verdict=acceptable severity=mild
+2026-08-22 23:24:23,243 INFO     freqscout_agent.tools.vlm_describe | VLM[Patient-PJ][7 @ 25 Hz]: verdict=acceptable severity=mild
+2026-08-22 23:24:28,180 INFO     freqscout_agent.tools.vlm_describe | VLM[Patient-PJ][8 @ 50 Hz]: verdict=acceptable severity=mild
+2026-08-22 23:24:33,114 INFO     freqscout_agent.tools.vlm_describe | VLM[Patient-PJ][9 @ 75 Hz]: verdict=acceptable severity=mild
+2026-08-22 23:24:33,114 INFO     freqscout_agent.agent.reasoning_loop | Disagreement re-check: ran VLM on 5 disputed slices.
+2026-08-22 23:24:33,114 INFO     freqscout_agent.agent.consistency | Consistency[Patient-PJ]: neural=9 cv=8 vlm=9 conf=0.10 (low) | 2 disagreements
+2026-08-22 23:24:33,114 INFO     freqscout_agent.agent.reasoning_loop | [Patient-PJ] Loop done after 7 iters (no_further_tools). Confidence=0.10 (low).
+2026-08-22 23:24:33,115 INFO     freqscout_agent.generation.stage_a_findings | Stage-A done: recommend slice 8 (+50 Hz), conf=0.32, acceptable=6 rejected=6
+2026-08-22 23:24:33,115 INFO     freqscout_agent.generation.stage_b_narrative | Stage-B narrative generated for Patient-PJ (1784 chars).
+2026-08-22 23:24:33,115 WARNING  freqscout_agent.generation.repair | Repair found 2 issues for patient Patient-PJ.
+2026-08-22 23:24:33,116 INFO     freqscout_agent.pipeline | Outputs saved to agent_outputs_exp10_7B/Patient-PJ.
+2026-08-22 23:24:33,131 INFO     freqscout_agent.pipeline | Loaded 13 DICOM frames for patient Patient-RAK from Dr-Dataset/1st_cohort_SAX/Patient-RAK.
+2026-08-22 23:24:33,131 INFO     freqscout_agent.pipeline | Running pipeline for patient Patient-RAK (13 slices).
+2026-08-22 23:24:33,131 INFO     freqscout_agent.agent.reasoning_loop | [Patient-RAK] Iter 0: 10 unsatisfied items, next_tool=neural
+2026-08-22 23:24:33,131 INFO     freqscout_agent.tools.neural_scorer | NeuralRanker[Patient-RAK]: top1=7 (0.227 conf), method=exp5_loocv
+2026-08-22 23:24:33,132 INFO     freqscout_agent.agent.reasoning_loop | [Patient-RAK] Iter 1: 9 unsatisfied items, next_tool=segment
+2026-08-22 23:24:33,132 INFO     freqscout_agent.tools.segment | Segmentation[Patient-RAK]: running LVSA U-Net consensus across 13 images.
+2026-08-22 23:24:33,199 INFO     freqscout_agent.tools.segment | Segmentation done for Patient-RAK (source slice 7 @ 25 Hz, method=lvsa_unet_consensus).
+2026-08-22 23:24:33,200 INFO     freqscout_agent.agent.reasoning_loop | [Patient-RAK] Iter 2: 8 unsatisfied items, next_tool=banding
+2026-08-22 23:24:33,315 INFO     freqscout_agent.agent.reasoning_loop | [Patient-RAK] Iter 3: 7 unsatisfied items, next_tool=quality
+2026-08-22 23:24:33,317 INFO     freqscout_agent.agent.reasoning_loop | [Patient-RAK] Iter 4: 6 unsatisfied items, next_tool=physics
+2026-08-22 23:24:33,318 INFO     freqscout_agent.tools.physics | Physics[Patient-RAK]: 13 slices, GT_slice=6, GT_Hz=0.0, TR=None ms
+2026-08-22 23:24:33,318 INFO     freqscout_agent.agent.reasoning_loop | [Patient-RAK] Iter 5: 5 unsatisfied items, next_tool=vlm
+/home/tukl/Agentic_Experiments_Cardiac_MRI/venv/lib/python3.13/site-packages/bitsandbytes/backends/cuda/ops.py:957: UserWarning: inner dimension (3420) is not aligned for fast kernel with blocksize=64, falling back to slower implementation.
+  warn(
+2026-08-22 23:24:38,258 INFO     freqscout_agent.tools.vlm_describe | VLM[Patient-RAK][7 @ 25 Hz]: verdict=acceptable severity=mild
+2026-08-22 23:24:43,081 INFO     freqscout_agent.tools.vlm_describe | VLM[Patient-RAK][10 @ 100 Hz]: verdict=acceptable severity=mild
+2026-08-22 23:24:48,022 INFO     freqscout_agent.tools.vlm_describe | VLM[Patient-RAK][9 @ 75 Hz]: verdict=acceptable severity=mild
+2026-08-22 23:24:48,022 INFO     freqscout_agent.agent.reasoning_loop | [Patient-RAK] Iter 6: 4 unsatisfied items, next_tool=retrieve
+2026-08-22 23:24:48,023 INFO     freqscout_agent.agent.reasoning_loop | [Patient-RAK] Iter 7: 3 unsatisfied items, next_tool=None
+2026-08-22 23:24:48,023 INFO     freqscout_agent.agent.consistency | Consistency[Patient-RAK]: neural=7 cv=6 vlm=7 conf=0.11 (low) | 2 disagreements
+2026-08-22 23:24:53,141 INFO     freqscout_agent.tools.vlm_describe | VLM[Patient-RAK][0 @ -150 Hz]: verdict=acceptable severity=mild
+2026-08-22 23:24:58,269 INFO     freqscout_agent.tools.vlm_describe | VLM[Patient-RAK][2 @ -100 Hz]: verdict=acceptable severity=mild
+2026-08-22 23:25:03,212 INFO     freqscout_agent.tools.vlm_describe | VLM[Patient-RAK][5 @ -25 Hz]: verdict=acceptable severity=mild
+2026-08-22 23:25:08,355 INFO     freqscout_agent.tools.vlm_describe | VLM[Patient-RAK][6 @ 0 Hz]: verdict=optimal severity=none
+2026-08-22 23:25:13,292 INFO     freqscout_agent.tools.vlm_describe | VLM[Patient-RAK][7 @ 25 Hz]: verdict=acceptable severity=mild
+2026-08-22 23:25:13,293 INFO     freqscout_agent.agent.reasoning_loop | Disagreement re-check: ran VLM on 5 disputed slices.
+2026-08-22 23:25:13,293 INFO     freqscout_agent.agent.consistency | Consistency[Patient-RAK]: neural=7 cv=6 vlm=6 conf=0.15 (low) | 2 disagreements
+2026-08-22 23:25:13,293 INFO     freqscout_agent.agent.reasoning_loop | [Patient-RAK] Loop done after 7 iters (no_further_tools). Confidence=0.15 (low).
+2026-08-22 23:25:13,293 INFO     freqscout_agent.generation.stage_a_findings | Stage-A done: recommend slice 7 (+25 Hz), conf=0.26, acceptable=9 rejected=3
+2026-08-22 23:25:13,293 INFO     freqscout_agent.generation.stage_b_narrative | Stage-B narrative generated for Patient-RAK (1708 chars).
+2026-08-22 23:25:13,294 WARNING  freqscout_agent.generation.repair | Repair found 4 issues for patient Patient-RAK.
+2026-08-22 23:25:13,294 INFO     freqscout_agent.pipeline | Outputs saved to agent_outputs_exp10_7B/Patient-RAK.
+2026-08-22 23:25:13,310 INFO     freqscout_agent.pipeline | Loaded 13 DICOM frames for patient Patient-RK from Dr-Dataset/1st_cohort_SAX/Patient-RK.
+2026-08-22 23:25:13,310 INFO     freqscout_agent.pipeline | Running pipeline for patient Patient-RK (13 slices).
+2026-08-22 23:25:13,310 INFO     freqscout_agent.agent.reasoning_loop | [Patient-RK] Iter 0: 10 unsatisfied items, next_tool=neural
+2026-08-22 23:25:13,310 INFO     freqscout_agent.tools.neural_scorer | NeuralRanker[Patient-RK]: top1=6 (0.189 conf), method=exp5_loocv
+2026-08-22 23:25:13,310 INFO     freqscout_agent.agent.reasoning_loop | [Patient-RK] Iter 1: 9 unsatisfied items, next_tool=segment
+2026-08-22 23:25:13,310 INFO     freqscout_agent.tools.segment | Segmentation[Patient-RK]: running LVSA U-Net consensus across 13 images.
+2026-08-22 23:25:13,378 INFO     freqscout_agent.tools.segment | Segmentation done for Patient-RK (source slice 6 @ 0 Hz, method=lvsa_unet_consensus).
+2026-08-22 23:25:13,378 INFO     freqscout_agent.agent.reasoning_loop | [Patient-RK] Iter 2: 8 unsatisfied items, next_tool=banding
+2026-08-22 23:25:13,472 INFO     freqscout_agent.agent.reasoning_loop | [Patient-RK] Iter 3: 7 unsatisfied items, next_tool=quality
+2026-08-22 23:25:13,474 INFO     freqscout_agent.agent.reasoning_loop | [Patient-RK] Iter 4: 6 unsatisfied items, next_tool=physics
+2026-08-22 23:25:13,476 INFO     freqscout_agent.tools.physics | Physics[Patient-RK]: 13 slices, GT_slice=8, GT_Hz=50.0, TR=None ms
+2026-08-22 23:25:13,476 INFO     freqscout_agent.agent.reasoning_loop | [Patient-RK] Iter 5: 5 unsatisfied items, next_tool=vlm
+/home/tukl/Agentic_Experiments_Cardiac_MRI/venv/lib/python3.13/site-packages/bitsandbytes/backends/cuda/ops.py:957: UserWarning: inner dimension (3420) is not aligned for fast kernel with blocksize=64, falling back to slower implementation.
+  warn(
+2026-08-22 23:25:18,411 INFO     freqscout_agent.tools.vlm_describe | VLM[Patient-RK][6 @ 0 Hz]: verdict=optimal severity=none
+2026-08-22 23:25:23,353 INFO     freqscout_agent.tools.vlm_describe | VLM[Patient-RK][9 @ 75 Hz]: verdict=acceptable severity=mild
+2026-08-22 23:25:28,438 INFO     freqscout_agent.tools.vlm_describe | VLM[Patient-RK][5 @ -25 Hz]: verdict=optimal severity=none
+2026-08-22 23:25:28,438 INFO     freqscout_agent.tools.vlm_describe | VLM[Patient-RK]: demoted 1 duplicate 'optimal' verdicts to 'acceptable'.
+2026-08-22 23:25:28,438 INFO     freqscout_agent.agent.reasoning_loop | [Patient-RK] Iter 6: 4 unsatisfied items, next_tool=retrieve
+2026-08-22 23:25:28,439 INFO     freqscout_agent.agent.reasoning_loop | [Patient-RK] Iter 7: 3 unsatisfied items, next_tool=None
+2026-08-22 23:25:28,439 INFO     freqscout_agent.agent.consistency | Consistency[Patient-RK]: neural=6 cv=7 vlm=6 conf=0.15 (low) | 2 disagreements
+2026-08-22 23:25:33,368 INFO     freqscout_agent.tools.vlm_describe | VLM[Patient-RK][0 @ -150 Hz]: verdict=acceptable severity=mild
+2026-08-22 23:25:38,355 INFO     freqscout_agent.tools.vlm_describe | VLM[Patient-RK][2 @ -100 Hz]: verdict=acceptable severity=mild
+2026-08-22 23:25:43,440 INFO     freqscout_agent.tools.vlm_describe | VLM[Patient-RK][5 @ -25 Hz]: verdict=optimal severity=none
+2026-08-22 23:25:48,395 INFO     freqscout_agent.tools.vlm_describe | VLM[Patient-RK][6 @ 0 Hz]: verdict=optimal severity=none
+2026-08-22 23:25:53,337 INFO     freqscout_agent.tools.vlm_describe | VLM[Patient-RK][7 @ 25 Hz]: verdict=acceptable severity=mild
+2026-08-22 23:25:53,337 INFO     freqscout_agent.tools.vlm_describe | VLM[Patient-RK]: demoted 1 duplicate 'optimal' verdicts to 'acceptable'.
+2026-08-22 23:25:53,337 INFO     freqscout_agent.agent.reasoning_loop | Disagreement re-check: ran VLM on 5 disputed slices.
+2026-08-22 23:25:53,338 INFO     freqscout_agent.agent.consistency | Consistency[Patient-RK]: neural=6 cv=7 vlm=6 conf=0.15 (low) | 2 disagreements
+2026-08-22 23:25:53,338 INFO     freqscout_agent.agent.reasoning_loop | [Patient-RK] Loop done after 7 iters (no_further_tools). Confidence=0.15 (low).
+2026-08-22 23:25:53,338 INFO     freqscout_agent.generation.stage_a_findings | Stage-A done: recommend slice 8 (+50 Hz), conf=0.07, acceptable=7 rejected=5
+2026-08-22 23:25:53,338 INFO     freqscout_agent.generation.stage_b_narrative | Stage-B narrative generated for Patient-RK (1739 chars).
+2026-08-22 23:25:53,339 WARNING  freqscout_agent.generation.repair | Repair found 1 issues for patient Patient-RK.
+2026-08-22 23:25:53,339 INFO     freqscout_agent.pipeline | Outputs saved to agent_outputs_exp10_7B/Patient-RK.
+2026-08-22 23:25:53,354 INFO     freqscout_agent.pipeline | Loaded 13 DICOM frames for patient Patient-SK from Dr-Dataset/1st_cohort_SAX/Patient-SK.
+2026-08-22 23:25:53,355 INFO     freqscout_agent.pipeline | Running pipeline for patient Patient-SK (13 slices).
+2026-08-22 23:25:53,355 INFO     freqscout_agent.agent.reasoning_loop | [Patient-SK] Iter 0: 10 unsatisfied items, next_tool=neural
+2026-08-22 23:25:53,355 INFO     freqscout_agent.tools.neural_scorer | NeuralRanker[Patient-SK]: top1=9 (0.260 conf), method=exp5_loocv
+2026-08-22 23:25:53,355 INFO     freqscout_agent.agent.reasoning_loop | [Patient-SK] Iter 1: 9 unsatisfied items, next_tool=segment
+2026-08-22 23:25:53,355 INFO     freqscout_agent.tools.segment | Segmentation[Patient-SK]: running LVSA U-Net consensus across 13 images.
+2026-08-22 23:25:53,423 INFO     freqscout_agent.tools.segment | Segmentation done for Patient-SK (source slice 9 @ 75 Hz, method=lvsa_unet_consensus).
+2026-08-22 23:25:53,424 INFO     freqscout_agent.agent.reasoning_loop | [Patient-SK] Iter 2: 8 unsatisfied items, next_tool=banding
+2026-08-22 23:25:53,537 INFO     freqscout_agent.agent.reasoning_loop | [Patient-SK] Iter 3: 7 unsatisfied items, next_tool=quality
+2026-08-22 23:25:53,539 INFO     freqscout_agent.agent.reasoning_loop | [Patient-SK] Iter 4: 6 unsatisfied items, next_tool=physics
+2026-08-22 23:25:53,540 INFO     freqscout_agent.tools.physics | Physics[Patient-SK]: 13 slices, GT_slice=7, GT_Hz=25.0, TR=None ms
+2026-08-22 23:25:53,540 INFO     freqscout_agent.agent.reasoning_loop | [Patient-SK] Iter 5: 5 unsatisfied items, next_tool=vlm
+/home/tukl/Agentic_Experiments_Cardiac_MRI/venv/lib/python3.13/site-packages/bitsandbytes/backends/cuda/ops.py:957: UserWarning: inner dimension (3420) is not aligned for fast kernel with blocksize=64, falling back to slower implementation.
+  warn(
+2026-08-22 23:25:58,481 INFO     freqscout_agent.tools.vlm_describe | VLM[Patient-SK][9 @ 75 Hz]: verdict=acceptable severity=mild
+2026-08-22 23:26:03,626 INFO     freqscout_agent.tools.vlm_describe | VLM[Patient-SK][12 @ 150 Hz]: verdict=acceptable severity=mild
+2026-08-22 23:26:08,558 INFO     freqscout_agent.tools.vlm_describe | VLM[Patient-SK][6 @ 0 Hz]: verdict=optimal severity=none
+2026-08-22 23:26:08,558 INFO     freqscout_agent.agent.reasoning_loop | [Patient-SK] Iter 6: 4 unsatisfied items, next_tool=retrieve
+2026-08-22 23:26:08,558 INFO     freqscout_agent.agent.reasoning_loop | [Patient-SK] Iter 7: 3 unsatisfied items, next_tool=None
+2026-08-22 23:26:08,558 INFO     freqscout_agent.agent.consistency | Consistency[Patient-SK]: neural=9 cv=10 vlm=6 conf=0.27 (low) | 3 disagreements
+2026-08-22 23:26:13,490 INFO     freqscout_agent.tools.vlm_describe | VLM[Patient-SK][0 @ -150 Hz]: verdict=acceptable severity=mild
+2026-08-22 23:26:18,440 INFO     freqscout_agent.tools.vlm_describe | VLM[Patient-SK][1 @ -125 Hz]: verdict=acceptable severity=mild
+2026-08-22 23:26:23,375 INFO     freqscout_agent.tools.vlm_describe | VLM[Patient-SK][5 @ -25 Hz]: verdict=acceptable severity=mild
+2026-08-22 23:26:28,327 INFO     freqscout_agent.tools.vlm_describe | VLM[Patient-SK][6 @ 0 Hz]: verdict=optimal severity=none
+2026-08-22 23:26:33,269 INFO     freqscout_agent.tools.vlm_describe | VLM[Patient-SK][7 @ 25 Hz]: verdict=acceptable severity=mild
+2026-08-22 23:26:38,228 INFO     freqscout_agent.tools.vlm_describe | VLM[Patient-SK][9 @ 75 Hz]: verdict=acceptable severity=mild
+2026-08-22 23:26:43,158 INFO     freqscout_agent.tools.vlm_describe | VLM[Patient-SK][10 @ 100 Hz]: verdict=acceptable severity=mild
+2026-08-22 23:26:43,158 INFO     freqscout_agent.agent.reasoning_loop | Disagreement re-check: ran VLM on 7 disputed slices.
+2026-08-22 23:26:43,158 INFO     freqscout_agent.agent.consistency | Consistency[Patient-SK]: neural=9 cv=10 vlm=6 conf=0.27 (low) | 3 disagreements
+2026-08-22 23:26:43,158 INFO     freqscout_agent.agent.reasoning_loop | [Patient-SK] Loop done after 7 iters (no_further_tools). Confidence=0.27 (low).
+2026-08-22 23:26:43,159 INFO     freqscout_agent.generation.stage_a_findings | Stage-A done: recommend slice 6 (+0 Hz), conf=0.40, acceptable=9 rejected=2
+2026-08-22 23:26:43,159 INFO     freqscout_agent.generation.stage_b_narrative | Stage-B narrative generated for Patient-SK (1601 chars).
+2026-08-22 23:26:43,159 WARNING  freqscout_agent.generation.repair | Repair found 5 issues for patient Patient-SK.
+2026-08-22 23:26:43,160 INFO     freqscout_agent.pipeline | Outputs saved to agent_outputs_exp10_7B/Patient-SK.
+2026-08-22 23:26:43,175 INFO     freqscout_agent.pipeline | Loaded 13 DICOM frames for patient Patient-SWJ from Dr-Dataset/1st_cohort_SAX/Patient-SWJ.
+2026-08-22 23:26:43,175 INFO     freqscout_agent.pipeline | Running pipeline for patient Patient-SWJ (13 slices).
+2026-08-22 23:26:43,175 INFO     freqscout_agent.agent.reasoning_loop | [Patient-SWJ] Iter 0: 10 unsatisfied items, next_tool=neural
+2026-08-22 23:26:43,175 INFO     freqscout_agent.tools.neural_scorer | NeuralRanker[Patient-SWJ]: top1=7 (0.191 conf), method=exp5_loocv
+2026-08-22 23:26:43,175 INFO     freqscout_agent.agent.reasoning_loop | [Patient-SWJ] Iter 1: 9 unsatisfied items, next_tool=segment
+2026-08-22 23:26:43,175 INFO     freqscout_agent.tools.segment | Segmentation[Patient-SWJ]: running LVSA U-Net consensus across 13 images.
+2026-08-22 23:26:43,244 INFO     freqscout_agent.tools.segment | Segmentation done for Patient-SWJ (source slice 7 @ 25 Hz, method=lvsa_unet_consensus).
+2026-08-22 23:26:43,244 INFO     freqscout_agent.agent.reasoning_loop | [Patient-SWJ] Iter 2: 8 unsatisfied items, next_tool=banding
+2026-08-22 23:26:43,337 INFO     freqscout_agent.agent.reasoning_loop | [Patient-SWJ] Iter 3: 7 unsatisfied items, next_tool=quality
+2026-08-22 23:26:43,339 INFO     freqscout_agent.agent.reasoning_loop | [Patient-SWJ] Iter 4: 6 unsatisfied items, next_tool=physics
+2026-08-22 23:26:43,340 INFO     freqscout_agent.tools.physics | Physics[Patient-SWJ]: 13 slices, GT_slice=6, GT_Hz=0.0, TR=None ms
+2026-08-22 23:26:43,340 INFO     freqscout_agent.agent.reasoning_loop | [Patient-SWJ] Iter 5: 5 unsatisfied items, next_tool=vlm
+/home/tukl/Agentic_Experiments_Cardiac_MRI/venv/lib/python3.13/site-packages/bitsandbytes/backends/cuda/ops.py:957: UserWarning: inner dimension (3420) is not aligned for fast kernel with blocksize=64, falling back to slower implementation.
+  warn(
+2026-08-22 23:26:48,273 INFO     freqscout_agent.tools.vlm_describe | VLM[Patient-SWJ][7 @ 25 Hz]: verdict=acceptable severity=mild
+2026-08-22 23:26:53,373 INFO     freqscout_agent.tools.vlm_describe | VLM[Patient-SWJ][6 @ 0 Hz]: verdict=optimal severity=none
+2026-08-22 23:26:58,299 INFO     freqscout_agent.tools.vlm_describe | VLM[Patient-SWJ][4 @ -50 Hz]: verdict=acceptable severity=mild
+2026-08-22 23:26:58,300 INFO     freqscout_agent.agent.reasoning_loop | [Patient-SWJ] Iter 6: 4 unsatisfied items, next_tool=retrieve
+2026-08-22 23:26:58,300 INFO     freqscout_agent.agent.reasoning_loop | [Patient-SWJ] Iter 7: 3 unsatisfied items, next_tool=None
+2026-08-22 23:26:58,300 INFO     freqscout_agent.agent.consistency | Consistency[Patient-SWJ]: neural=7 cv=6 vlm=6 conf=0.12 (low) | 2 disagreements
+2026-08-22 23:27:03,231 INFO     freqscout_agent.tools.vlm_describe | VLM[Patient-SWJ][0 @ -150 Hz]: verdict=acceptable severity=mild
+2026-08-22 23:27:08,344 INFO     freqscout_agent.tools.vlm_describe | VLM[Patient-SWJ][2 @ -100 Hz]: verdict=acceptable severity=mild
+2026-08-22 23:27:13,278 INFO     freqscout_agent.tools.vlm_describe | VLM[Patient-SWJ][5 @ -25 Hz]: verdict=acceptable severity=mild
+2026-08-22 23:27:18,364 INFO     freqscout_agent.tools.vlm_describe | VLM[Patient-SWJ][6 @ 0 Hz]: verdict=optimal severity=none
+2026-08-22 23:27:23,296 INFO     freqscout_agent.tools.vlm_describe | VLM[Patient-SWJ][7 @ 25 Hz]: verdict=acceptable severity=mild
+2026-08-22 23:27:23,296 INFO     freqscout_agent.agent.reasoning_loop | Disagreement re-check: ran VLM on 5 disputed slices.
+2026-08-22 23:27:23,296 INFO     freqscout_agent.agent.consistency | Consistency[Patient-SWJ]: neural=7 cv=6 vlm=6 conf=0.12 (low) | 2 disagreements
+2026-08-22 23:27:23,296 INFO     freqscout_agent.agent.reasoning_loop | [Patient-SWJ] Loop done after 7 iters (no_further_tools). Confidence=0.12 (low).
+2026-08-22 23:27:23,297 INFO     freqscout_agent.generation.stage_a_findings | Stage-A done: recommend slice 6 (+0 Hz), conf=0.05, acceptable=8 rejected=4
+2026-08-22 23:27:23,297 INFO     freqscout_agent.generation.stage_b_narrative | Stage-B narrative generated for Patient-SWJ (1734 chars).
+2026-08-22 23:27:23,297 WARNING  freqscout_agent.generation.repair | Repair found 4 issues for patient Patient-SWJ.
+2026-08-22 23:27:23,298 INFO     freqscout_agent.pipeline | Outputs saved to agent_outputs_exp10_7B/Patient-SWJ.
+2026-08-22 23:27:23,313 INFO     freqscout_agent.pipeline | Loaded 13 DICOM frames for patient Patient-TL from Dr-Dataset/1st_cohort_SAX/Patient-TL.
+2026-08-22 23:27:23,313 INFO     freqscout_agent.pipeline | Running pipeline for patient Patient-TL (13 slices).
+2026-08-22 23:27:23,313 INFO     freqscout_agent.agent.reasoning_loop | [Patient-TL] Iter 0: 10 unsatisfied items, next_tool=neural
+2026-08-22 23:27:23,313 INFO     freqscout_agent.tools.neural_scorer | NeuralRanker[Patient-TL]: top1=6 (0.161 conf), method=exp5_loocv
+2026-08-22 23:27:23,313 INFO     freqscout_agent.agent.reasoning_loop | [Patient-TL] Iter 1: 9 unsatisfied items, next_tool=segment
+2026-08-22 23:27:23,313 INFO     freqscout_agent.tools.segment | Segmentation[Patient-TL]: running LVSA U-Net consensus across 13 images.
+2026-08-22 23:27:23,382 INFO     freqscout_agent.tools.segment | Segmentation done for Patient-TL (source slice 6 @ 0 Hz, method=lvsa_unet_consensus).
+2026-08-22 23:27:23,382 INFO     freqscout_agent.agent.reasoning_loop | [Patient-TL] Iter 2: 8 unsatisfied items, next_tool=banding
+2026-08-22 23:27:23,486 INFO     freqscout_agent.agent.reasoning_loop | [Patient-TL] Iter 3: 7 unsatisfied items, next_tool=quality
+2026-08-22 23:27:23,489 INFO     freqscout_agent.agent.reasoning_loop | [Patient-TL] Iter 4: 6 unsatisfied items, next_tool=physics
+2026-08-22 23:27:23,490 INFO     freqscout_agent.tools.physics | Physics[Patient-TL]: 13 slices, GT_slice=8, GT_Hz=50.0, TR=None ms
+2026-08-22 23:27:23,490 INFO     freqscout_agent.agent.reasoning_loop | [Patient-TL] Iter 5: 5 unsatisfied items, next_tool=vlm
+/home/tukl/Agentic_Experiments_Cardiac_MRI/venv/lib/python3.13/site-packages/bitsandbytes/backends/cuda/ops.py:957: UserWarning: inner dimension (3420) is not aligned for fast kernel with blocksize=64, falling back to slower implementation.
+  warn(
+2026-08-22 23:27:28,618 INFO     freqscout_agent.tools.vlm_describe | VLM[Patient-TL][6 @ 0 Hz]: verdict=optimal severity=none
+2026-08-22 23:27:33,550 INFO     freqscout_agent.tools.vlm_describe | VLM[Patient-TL][9 @ 75 Hz]: verdict=acceptable severity=mild
+2026-08-22 23:27:38,478 INFO     freqscout_agent.tools.vlm_describe | VLM[Patient-TL][8 @ 50 Hz]: verdict=acceptable severity=mild
+2026-08-22 23:27:38,478 INFO     freqscout_agent.agent.reasoning_loop | [Patient-TL] Iter 6: 4 unsatisfied items, next_tool=retrieve
+2026-08-22 23:27:38,478 INFO     freqscout_agent.agent.reasoning_loop | [Patient-TL] Iter 7: 3 unsatisfied items, next_tool=None
+2026-08-22 23:27:38,479 INFO     freqscout_agent.agent.consistency | Consistency[Patient-TL]: neural=6 cv=7 vlm=6 conf=0.22 (low) | 2 disagreements
+2026-08-22 23:27:43,412 INFO     freqscout_agent.tools.vlm_describe | VLM[Patient-TL][0 @ -150 Hz]: verdict=acceptable severity=mild
+2026-08-22 23:27:48,344 INFO     freqscout_agent.tools.vlm_describe | VLM[Patient-TL][2 @ -100 Hz]: verdict=acceptable severity=mild
+2026-08-22 23:27:53,280 INFO     freqscout_agent.tools.vlm_describe | VLM[Patient-TL][5 @ -25 Hz]: verdict=acceptable severity=mild
+2026-08-22 23:27:58,407 INFO     freqscout_agent.tools.vlm_describe | VLM[Patient-TL][6 @ 0 Hz]: verdict=optimal severity=none
+2026-08-22 23:28:03,343 INFO     freqscout_agent.tools.vlm_describe | VLM[Patient-TL][7 @ 25 Hz]: verdict=acceptable severity=mild
+2026-08-22 23:28:03,343 INFO     freqscout_agent.agent.reasoning_loop | Disagreement re-check: ran VLM on 5 disputed slices.
+2026-08-22 23:28:03,343 INFO     freqscout_agent.agent.consistency | Consistency[Patient-TL]: neural=6 cv=7 vlm=6 conf=0.22 (low) | 2 disagreements
+2026-08-22 23:28:03,343 INFO     freqscout_agent.agent.reasoning_loop | [Patient-TL] Loop done after 7 iters (no_further_tools). Confidence=0.22 (low).
+2026-08-22 23:28:03,344 INFO     freqscout_agent.generation.stage_a_findings | Stage-A done: recommend slice 6 (+0 Hz), conf=0.16, acceptable=8 rejected=4
+2026-08-22 23:28:03,344 INFO     freqscout_agent.generation.stage_b_narrative | Stage-B narrative generated for Patient-TL (1837 chars).
+2026-08-22 23:28:03,344 WARNING  freqscout_agent.generation.repair | Repair found 5 issues for patient Patient-TL.
+2026-08-22 23:28:03,345 INFO     freqscout_agent.pipeline | Outputs saved to agent_outputs_exp10_7B/Patient-TL.
+2026-08-22 23:28:03,360 INFO     freqscout_agent.pipeline | Loaded 13 DICOM frames for patient Patient-WBC from Dr-Dataset/1st_cohort_SAX/Patient-WBC.
+2026-08-22 23:28:03,360 INFO     freqscout_agent.pipeline | Running pipeline for patient Patient-WBC (13 slices).
+2026-08-22 23:28:03,360 INFO     freqscout_agent.agent.reasoning_loop | [Patient-WBC] Iter 0: 10 unsatisfied items, next_tool=neural
+2026-08-22 23:28:03,360 INFO     freqscout_agent.tools.neural_scorer | NeuralRanker[Patient-WBC]: top1=7 (0.269 conf), method=exp5_loocv
+2026-08-22 23:28:03,360 INFO     freqscout_agent.agent.reasoning_loop | [Patient-WBC] Iter 1: 9 unsatisfied items, next_tool=segment
+2026-08-22 23:28:03,361 INFO     freqscout_agent.tools.segment | Segmentation[Patient-WBC]: running LVSA U-Net consensus across 13 images.
+2026-08-22 23:28:03,429 INFO     freqscout_agent.tools.segment | Segmentation done for Patient-WBC (source slice 7 @ 25 Hz, method=lvsa_unet_consensus).
+2026-08-22 23:28:03,429 INFO     freqscout_agent.agent.reasoning_loop | [Patient-WBC] Iter 2: 8 unsatisfied items, next_tool=banding
+2026-08-22 23:28:03,507 INFO     freqscout_agent.agent.reasoning_loop | [Patient-WBC] Iter 3: 7 unsatisfied items, next_tool=quality
+2026-08-22 23:28:03,510 INFO     freqscout_agent.agent.reasoning_loop | [Patient-WBC] Iter 4: 6 unsatisfied items, next_tool=physics
+2026-08-22 23:28:03,511 INFO     freqscout_agent.tools.physics | Physics[Patient-WBC]: 13 slices, GT_slice=7, GT_Hz=25.0, TR=None ms
+2026-08-22 23:28:03,511 INFO     freqscout_agent.agent.reasoning_loop | [Patient-WBC] Iter 5: 5 unsatisfied items, next_tool=vlm
+/home/tukl/Agentic_Experiments_Cardiac_MRI/venv/lib/python3.13/site-packages/bitsandbytes/backends/cuda/ops.py:957: UserWarning: inner dimension (3420) is not aligned for fast kernel with blocksize=64, falling back to slower implementation.
+  warn(
+2026-08-22 23:28:08,445 INFO     freqscout_agent.tools.vlm_describe | VLM[Patient-WBC][7 @ 25 Hz]: verdict=acceptable severity=mild
+2026-08-22 23:28:13,382 INFO     freqscout_agent.tools.vlm_describe | VLM[Patient-WBC][6 @ 0 Hz]: verdict=optimal severity=none
+2026-08-22 23:28:18,505 INFO     freqscout_agent.tools.vlm_describe | VLM[Patient-WBC][8 @ 50 Hz]: verdict=optimal severity=none
+2026-08-22 23:28:18,505 INFO     freqscout_agent.tools.vlm_describe | VLM[Patient-WBC]: demoted 1 duplicate 'optimal' verdicts to 'acceptable'.
+2026-08-22 23:28:18,505 INFO     freqscout_agent.agent.reasoning_loop | [Patient-WBC] Iter 6: 4 unsatisfied items, next_tool=retrieve
+2026-08-22 23:28:18,505 INFO     freqscout_agent.agent.reasoning_loop | [Patient-WBC] Iter 7: 3 unsatisfied items, next_tool=None
+2026-08-22 23:28:18,505 INFO     freqscout_agent.agent.consistency | Consistency[Patient-WBC]: neural=7 cv=8 vlm=6 conf=0.17 (low) | 3 disagreements
+2026-08-22 23:28:23,633 INFO     freqscout_agent.tools.vlm_describe | VLM[Patient-WBC][0 @ -150 Hz]: verdict=acceptable severity=mild
+2026-08-22 23:28:28,773 INFO     freqscout_agent.tools.vlm_describe | VLM[Patient-WBC][2 @ -100 Hz]: verdict=acceptable severity=mild
+2026-08-22 23:28:33,715 INFO     freqscout_agent.tools.vlm_describe | VLM[Patient-WBC][5 @ -25 Hz]: verdict=acceptable severity=mild
+2026-08-22 23:28:38,647 INFO     freqscout_agent.tools.vlm_describe | VLM[Patient-WBC][6 @ 0 Hz]: verdict=optimal severity=none
+2026-08-22 23:28:43,586 INFO     freqscout_agent.tools.vlm_describe | VLM[Patient-WBC][7 @ 25 Hz]: verdict=acceptable severity=mild
+2026-08-22 23:28:48,710 INFO     freqscout_agent.tools.vlm_describe | VLM[Patient-WBC][8 @ 50 Hz]: verdict=optimal severity=none
+2026-08-22 23:28:48,710 INFO     freqscout_agent.tools.vlm_describe | VLM[Patient-WBC]: demoted 1 duplicate 'optimal' verdicts to 'acceptable'.
+2026-08-22 23:28:48,710 INFO     freqscout_agent.agent.reasoning_loop | Disagreement re-check: ran VLM on 6 disputed slices.
+2026-08-22 23:28:48,710 INFO     freqscout_agent.agent.consistency | Consistency[Patient-WBC]: neural=7 cv=8 vlm=6 conf=0.17 (low) | 3 disagreements
+2026-08-22 23:28:48,710 INFO     freqscout_agent.agent.reasoning_loop | [Patient-WBC] Loop done after 7 iters (no_further_tools). Confidence=0.17 (low).
+2026-08-22 23:28:48,711 INFO     freqscout_agent.generation.stage_a_findings | Stage-A done: recommend slice 7 (+25 Hz), conf=0.34, acceptable=5 rejected=5
+2026-08-22 23:28:48,711 INFO     freqscout_agent.generation.stage_b_narrative | Stage-B narrative generated for Patient-WBC (1754 chars).
+2026-08-22 23:28:48,711 WARNING  freqscout_agent.generation.repair | Repair found 2 issues for patient Patient-WBC.
+2026-08-22 23:28:48,712 INFO     freqscout_agent.pipeline | Outputs saved to agent_outputs_exp10_7B/Patient-WBC.
+2026-08-22 23:28:48,727 INFO     freqscout_agent.pipeline | Loaded 13 DICOM frames for patient Patient-WMR from Dr-Dataset/1st_cohort_SAX/Patient-WMR.
+2026-08-22 23:28:48,727 INFO     freqscout_agent.pipeline | Running pipeline for patient Patient-WMR (13 slices).
+2026-08-22 23:28:48,727 INFO     freqscout_agent.agent.reasoning_loop | [Patient-WMR] Iter 0: 10 unsatisfied items, next_tool=neural
+2026-08-22 23:28:48,727 INFO     freqscout_agent.tools.neural_scorer | NeuralRanker[Patient-WMR]: top1=6 (0.176 conf), method=exp5_loocv
+2026-08-22 23:28:48,727 INFO     freqscout_agent.agent.reasoning_loop | [Patient-WMR] Iter 1: 9 unsatisfied items, next_tool=segment
+2026-08-22 23:28:48,727 INFO     freqscout_agent.tools.segment | Segmentation[Patient-WMR]: running LVSA U-Net consensus across 13 images.
+2026-08-22 23:28:48,796 INFO     freqscout_agent.tools.segment | Segmentation done for Patient-WMR (source slice 6 @ 0 Hz, method=lvsa_unet_consensus).
+2026-08-22 23:28:48,796 INFO     freqscout_agent.agent.reasoning_loop | [Patient-WMR] Iter 2: 8 unsatisfied items, next_tool=banding
+2026-08-22 23:28:48,913 INFO     freqscout_agent.agent.reasoning_loop | [Patient-WMR] Iter 3: 7 unsatisfied items, next_tool=quality
+2026-08-22 23:28:48,916 INFO     freqscout_agent.agent.reasoning_loop | [Patient-WMR] Iter 4: 6 unsatisfied items, next_tool=physics
+2026-08-22 23:28:48,917 INFO     freqscout_agent.tools.physics | Physics[Patient-WMR]: 13 slices, GT_slice=7, GT_Hz=25.0, TR=None ms
+2026-08-22 23:28:48,917 INFO     freqscout_agent.agent.reasoning_loop | [Patient-WMR] Iter 5: 5 unsatisfied items, next_tool=vlm
+/home/tukl/Agentic_Experiments_Cardiac_MRI/venv/lib/python3.13/site-packages/bitsandbytes/backends/cuda/ops.py:957: UserWarning: inner dimension (3420) is not aligned for fast kernel with blocksize=64, falling back to slower implementation.
+  warn(
+2026-08-22 23:28:54,046 INFO     freqscout_agent.tools.vlm_describe | VLM[Patient-WMR][6 @ 0 Hz]: verdict=optimal severity=none
+2026-08-22 23:28:58,994 INFO     freqscout_agent.tools.vlm_describe | VLM[Patient-WMR][8 @ 50 Hz]: verdict=acceptable severity=mild
+2026-08-22 23:29:04,112 INFO     freqscout_agent.tools.vlm_describe | VLM[Patient-WMR][3 @ -75 Hz]: verdict=acceptable severity=mild
+2026-08-22 23:29:04,112 INFO     freqscout_agent.agent.reasoning_loop | [Patient-WMR] Iter 6: 4 unsatisfied items, next_tool=retrieve
+2026-08-22 23:29:04,113 INFO     freqscout_agent.agent.reasoning_loop | [Patient-WMR] Iter 7: 3 unsatisfied items, next_tool=None
+2026-08-22 23:29:04,113 INFO     freqscout_agent.agent.consistency | Consistency[Patient-WMR]: neural=6 cv=7 vlm=6 conf=0.19 (low) | 2 disagreements
+2026-08-22 23:29:09,049 INFO     freqscout_agent.tools.vlm_describe | VLM[Patient-WMR][0 @ -150 Hz]: verdict=acceptable severity=mild
+2026-08-22 23:29:14,180 INFO     freqscout_agent.tools.vlm_describe | VLM[Patient-WMR][2 @ -100 Hz]: verdict=acceptable severity=mild
+2026-08-22 23:29:19,298 INFO     freqscout_agent.tools.vlm_describe | VLM[Patient-WMR][5 @ -25 Hz]: verdict=acceptable severity=mild
+2026-08-22 23:29:24,426 INFO     freqscout_agent.tools.vlm_describe | VLM[Patient-WMR][6 @ 0 Hz]: verdict=optimal severity=none
+2026-08-22 23:29:29,366 INFO     freqscout_agent.tools.vlm_describe | VLM[Patient-WMR][7 @ 25 Hz]: verdict=acceptable severity=mild
+2026-08-22 23:29:29,366 INFO     freqscout_agent.agent.reasoning_loop | Disagreement re-check: ran VLM on 5 disputed slices.
+2026-08-22 23:29:29,366 INFO     freqscout_agent.agent.consistency | Consistency[Patient-WMR]: neural=6 cv=7 vlm=6 conf=0.19 (low) | 2 disagreements
+2026-08-22 23:29:29,366 INFO     freqscout_agent.agent.reasoning_loop | [Patient-WMR] Loop done after 7 iters (no_further_tools). Confidence=0.19 (low).
+2026-08-22 23:29:29,367 INFO     freqscout_agent.generation.stage_a_findings | Stage-A done: recommend slice 6 (+0 Hz), conf=0.21, acceptable=6 rejected=6
+2026-08-22 23:29:29,367 INFO     freqscout_agent.generation.stage_b_narrative | Stage-B narrative generated for Patient-WMR (1673 chars).
+2026-08-22 23:29:29,367 WARNING  freqscout_agent.generation.repair | Repair found 1 issues for patient Patient-WMR.
+2026-08-22 23:29:29,368 INFO     freqscout_agent.pipeline | Outputs saved to agent_outputs_exp10_7B/Patient-WMR.
+
+=======================================================
+  AGENTIC FREQUENCY SCOUT – PROXY EVALUATION
+=======================================================
+  Patients evaluated  : 26
+  Top-1 accuracy      : 0.423  (42.3%)
+  Top-3 accuracy      : 0.692  (69.2%)
+  Clinical (±1 step)  : 0.769  (76.9%)
+  Acceptable-set hit  : 0.731  (73.1%)
+  Mean offset MAE     : 22.1 Hz
+  Conf (correct)      : 0.240
+  Conf (wrong)        : 0.241
+  ECE                 : 0.220
+  Hallucination rate  : 0.000
+  Evidence agreement  : full=0 partial=0 conflicted=26
+=======================================================
+2026-08-22 23:29:29,368 INFO     freqscout_agent.eval.proxy_metrics | ADRE case analysis saved to agent_outputs_exp10_7B/adre_cases.json.
+2026-08-22 23:29:29,368 INFO     exp9 | === Done: 26/26 patients succeeded ===
+2026-08-22 23:29:29,368 INFO     exp9 |   Patient-BEV      rec=+0     Hz  conf=low
+2026-08-22 23:29:29,368 INFO     exp9 |   Patient-BGT      rec=+0     Hz  conf=medium
+2026-08-22 23:29:29,368 INFO     exp9 |   Patient-BVE      rec=-25    Hz  conf=low
+2026-08-22 23:29:29,368 INFO     exp9 |   Patient-CEA      rec=-50    Hz  conf=medium
+2026-08-22 23:29:29,369 INFO     exp9 |   Patient-CEJP     rec=-25    Hz  conf=low
+2026-08-22 23:29:29,369 INFO     exp9 |   Patient-DEM      rec=+50    Hz  conf=high
+2026-08-22 23:29:29,369 INFO     exp9 |   Patient-FAJ      rec=+50    Hz  conf=low
+2026-08-22 23:29:29,369 INFO     exp9 |   Patient-FEC      rec=+25    Hz  conf=low
+2026-08-22 23:29:29,369 INFO     exp9 |   Patient-GJ       rec=+25    Hz  conf=low
+2026-08-22 23:29:29,369 INFO     exp9 |   Patient-HMJ      rec=+0     Hz  conf=low
+2026-08-22 23:29:29,369 INFO     exp9 |   Patient-HRJ      rec=+0     Hz  conf=low
+2026-08-22 23:29:29,369 INFO     exp9 |   Patient-IAM      rec=+0     Hz  conf=low
+2026-08-22 23:29:29,369 INFO     exp9 |   Patient-INA      rec=+100   Hz  conf=low
+2026-08-22 23:29:29,369 INFO     exp9 |   Patient-KP       rec=+0     Hz  conf=low
+2026-08-22 23:29:29,369 INFO     exp9 |   Patient-MJ       rec=-50    Hz  conf=medium
+2026-08-22 23:29:29,369 INFO     exp9 |   Patient-MS       rec=+0     Hz  conf=low
+2026-08-22 23:29:29,369 INFO     exp9 |   Patient-MSR      rec=+50    Hz  conf=low
+2026-08-22 23:29:29,369 INFO     exp9 |   Patient-OAF      rec=+25    Hz  conf=low
+2026-08-22 23:29:29,369 INFO     exp9 |   Patient-PJ       rec=+50    Hz  conf=low
+2026-08-22 23:29:29,369 INFO     exp9 |   Patient-RAK      rec=+25    Hz  conf=low
+2026-08-22 23:29:29,369 INFO     exp9 |   Patient-RK       rec=+50    Hz  conf=low
+2026-08-22 23:29:29,369 INFO     exp9 |   Patient-SK       rec=+0     Hz  conf=medium
+2026-08-22 23:29:29,369 INFO     exp9 |   Patient-SWJ      rec=+0     Hz  conf=low
+2026-08-22 23:29:29,369 INFO     exp9 |   Patient-TL       rec=+0     Hz  conf=low
+2026-08-22 23:29:29,369 INFO     exp9 |   Patient-WBC      rec=+25    Hz  conf=low
+2026-08-22 23:29:29,369 INFO     exp9 |   Patient-WMR      rec=+0     Hz  conf=low
+
+All done. Reports saved to: /home/tukl/Agentic_Experiments_Cardiac_MRI/agent_outputs_exp10_7B
+Log file: exp9_pipeline.log

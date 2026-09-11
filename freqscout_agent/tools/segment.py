@@ -49,9 +49,13 @@ class SegmentationResult:
         return self.mask == 3
 
     @property
+    def rv_mask(self) -> np.ndarray:
+        return self.mask == 1
+
+    @property
     def cardiac_roi_mask(self) -> np.ndarray:
-        """Union of myocardium and LV pool."""
-        return (self.mask == 2) | (self.mask == 3)
+        """Union of myocardium, LV pool, and RV."""
+        return (self.mask == 1) | (self.mask == 2) | (self.mask == 3)
 
 
 # ---------------------------------------------------------------------------

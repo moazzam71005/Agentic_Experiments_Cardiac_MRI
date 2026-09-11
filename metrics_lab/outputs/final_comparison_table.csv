@@ -1,0 +1,17 @@
+Method,Top-1,±1 step,MAE (Hz)
+argmax(mu_myo),4.0%  (1/25),8.0%  (2/25),106.0
+argmax(snr_myo),4.0%  (1/25),12.0%  (3/25),106.0
+argmax(homogeneity),44.0%  (11/25),80.0%  (20/25),27.0
+argmax(cnr),0.0%  (0/25),4.0%  (1/25),114.0
+argmax(contrast_ratio),0.0%  (0/25),8.0%  (2/25),110.0
+argmin(banded_fraction_myo),40.0%  (10/25),76.0%  (19/25),25.0
+argmin(banding_burden),4.0%  (1/25),4.0%  (1/25),150.0
+argmax(edge_sharpness_boundary),0.0%  (0/25),4.0%  (1/25),126.0
+argmax(laplacian_variance),4.0%  (1/25),12.0%  (3/25),97.0
+argmin(temporal_std_sweep),20.0%  (5/25),52.0%  (13/25),49.0
+argmin(local_signal_drop),0.0%  (0/25),0.0%  (0/25),161.0
+argmax(cnn_score) EfficientNet-B0,44.0%  (11/25),72.0%  (18/25),24.0
+Composite — equal weight,16.0%  (4/25),44.0%  (11/25),46.0
+Composite — physics-informed,36.0%  (9/25),72.0%  (18/25),28.0
+Composite — grid search (in-sample),56.0%  (14/25),84.0%  (21/25),17.0
+=== Prior pipeline (Exp10) ===,42.3%  (11/26),76.9%  (20/26),22.1

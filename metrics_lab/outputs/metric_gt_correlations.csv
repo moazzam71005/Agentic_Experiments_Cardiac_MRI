@@ -1,0 +1,9 @@
+Metric,Corr_with_GT,Direction
+banded_fraction_myo,-0.3017,↓ lower=better
+homogeneity,0.284,↑ higher=better
+edge_sharpness_boundary,-0.1706,↓ lower=better
+cnr,-0.1103,↓ lower=better
+banding_burden,-0.1003,↓ lower=better
+temporal_std_sweep,-0.0835,↓ lower=better
+mu_myo,0.046,↑ higher=better
+snr_myo,0.0259,↑ higher=better

@@ -1,0 +1,11 @@
+{
+  "neural_top1": 5,
+  "cv_top1": 5,
+  "vlm_top1": 4,
+  "confidence": 0.2804494382022472,
+  "confidence_label": "low",
+  "disagreements": [
+    "Neural ranker picks slice 5 (-25 Hz) but VLM rates slice 4 (-50 Hz) as optimal.",
+    "CV (lowest banded_fraction_myo) favours slice 5 (-25 Hz) but VLM prefers slice 4 (-50 Hz)."
+  ]
+}

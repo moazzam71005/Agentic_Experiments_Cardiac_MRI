@@ -1,0 +1,31 @@
+1. CLINICAL QUESTION
+Frequency scout — select the RF offset that keeps the bSSFP null outside the LV myocardium and blood pool for subsequent CINE.
+
+2. REJECTED OFFSETS (hard veto)
+Hard veto — bSSFP null enters the cardiac ROI:
+  - slice 0 (-150 Hz): high intra-myocardial banded fraction (25% > 25%): probable null approaching myocardial wall — suboptimal
+  - slice 1 (-125 Hz): high intra-myocardial banded fraction (35% > 25%): probable null approaching myocardial wall — suboptimal
+  - slice 2 (-100 Hz): high intra-myocardial banded fraction (27% > 25%): probable null approaching myocardial wall — suboptimal
+  - slice 9 (+75 Hz): high intra-myocardial banded fraction (36% > 25%): probable null approaching myocardial wall — suboptimal
+  - slice 10 (+100 Hz): bSSFP null crosses myocardium (anterior, lateral, septal sector): banding burden 75% — REJECT
+
+3. MYOCARDIAL PASSBAND
+Passband peak at +0 Hz (slice 6). At peak: banded fraction 7.7%, homogeneity 0.74, CNR 5.1.
+
+4. PRIMARY RECOMMENDATION
+Primary selection: +0 Hz (slice 6). passband peak: myocardial signal most uniform (banded fraction 7.7%, homogeneity 0.74); banding null outside cardiac ROI — OPTIMAL Myocardial homogeneity 0.74, CNR 5.1, intra-myocardial banded fraction 7.7%.
+
+5. ACCEPTABLE NEIGHBOURS (±25 Hz)
+Clinically acceptable neighbour(s) within the passband window (±1 scout step) — usable if primary is unavailable:
+  - -25 Hz (acceptable): near-passband: banded fraction 8.5%, homogeneity 0.58 — acceptable (25 Hz from peak)
+  - +25 Hz (optimal): near-passband: banded fraction 6.0%, homogeneity 0.59; banding anterior — acceptable (25 Hz from peak)
+
+6. EVIDENCE RECONCILIATION
+  - Neural top-1 → +0 Hz (slice 6)
+  - CV (lowest banded_fraction_myo) → +25 Hz (slice 7)
+  - VLM preferred → +0 Hz (slice 6)
+  - Selector (Exp10 fusion) → +0 Hz; agreement=conflicted
+  - Conflicts: Neural ranker picks slice 6 (+0 Hz) but CV (lowest banded_fraction_myo) favours slice 7 (+25 Hz).; CV (lowest banded_fraction_myo) favours slice 7 (+25 Hz) but VLM prefers slice 6 (+0 Hz).
+
+7. CONFIDENCE
+LOW (score 0.23). Basis: flat passband (bfm margin 1.7%). Evidence sources: physics, banding, retrieve, segment, consistency, neural, quality, vlm.

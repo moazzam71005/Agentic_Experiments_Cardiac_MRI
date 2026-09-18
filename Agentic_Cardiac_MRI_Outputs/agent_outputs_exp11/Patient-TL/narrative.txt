@@ -1,0 +1,30 @@
+1. CLINICAL QUESTION
+Frequency scout — select the RF offset that keeps the bSSFP null outside the LV myocardium and blood pool for subsequent CINE.
+
+2. REJECTED OFFSETS (hard veto)
+Hard veto — bSSFP null enters the cardiac ROI:
+  - slice 0 (-150 Hz): high intra-myocardial banded fraction (30% > 25%): probable null approaching myocardial wall — suboptimal
+  - slice 1 (-125 Hz): high intra-myocardial banded fraction (32% > 25%): probable null approaching myocardial wall — suboptimal
+  - slice 2 (-100 Hz): bSSFP null crosses myocardium (septal sector): banding burden 71% — REJECT
+  - slice 5 (-25 Hz): bSSFP null crosses myocardium (anterior, septal sector): banding burden 73% — REJECT
+  - slice 8 (+50 Hz): bSSFP null crosses myocardium (anterior, septal sector): banding burden 68% — REJECT
+
+3. MYOCARDIAL PASSBAND
+Passband peak at +0 Hz (slice 6). At peak: banded fraction 6.9%, homogeneity 0.71, CNR 1.5.
+
+4. PRIMARY RECOMMENDATION
+Primary selection: +0 Hz (slice 6). passband peak: myocardial signal most uniform (banded fraction 6.9%, homogeneity 0.71); banding null outside cardiac ROI — OPTIMAL Myocardial homogeneity 0.71, CNR 1.5, intra-myocardial banded fraction 6.9%.
+
+5. ACCEPTABLE NEIGHBOURS (±25 Hz)
+Clinically acceptable neighbour(s) within the passband window (±1 scout step) — usable if primary is unavailable:
+  - +25 Hz (optimal): near-passband: banded fraction 7.4%, homogeneity 0.60; banding anterior — acceptable (25 Hz from peak)
+
+6. EVIDENCE RECONCILIATION
+  - Neural top-1 → +0 Hz (slice 6)
+  - CV (lowest banded_fraction_myo) → +0 Hz (slice 6)
+  - VLM preferred → -25 Hz (slice 5)
+  - Selector (Exp10 fusion) → +0 Hz; agreement=conflicted
+  - Conflicts: Neural ranker picks slice 6 (+0 Hz) but VLM rates slice 5 (-25 Hz) as optimal.; CV (lowest banded_fraction_myo) favours slice 6 (+0 Hz) but VLM prefers slice 5 (-25 Hz).
+
+7. CONFIDENCE
+LOW (score 0.23). Basis: flat passband (bfm margin 0.6%). Evidence sources: physics, banding, retrieve, segment, consistency, neural, quality, vlm.

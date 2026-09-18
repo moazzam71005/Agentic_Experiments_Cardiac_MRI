@@ -1,0 +1,30 @@
+1. CLINICAL QUESTION
+Frequency scout — select the RF offset that keeps the bSSFP null outside the LV myocardium and blood pool for subsequent CINE.
+
+2. REJECTED OFFSETS (hard veto)
+Hard veto — bSSFP null enters the cardiac ROI:
+  - slice 0 (-150 Hz): high intra-myocardial banded fraction (27% > 25%): probable null approaching myocardial wall — suboptimal
+  - slice 1 (-125 Hz): high intra-myocardial banded fraction (34% > 25%): probable null approaching myocardial wall — suboptimal
+  - slice 2 (-100 Hz): bSSFP null crosses myocardium (lateral sector): banding burden 65% — REJECT
+  - slice 3 (-75 Hz): high intra-myocardial banded fraction (29% > 25%): probable null approaching myocardial wall — suboptimal
+  - slice 8 (+50 Hz): bSSFP null crosses myocardium (anterior, septal sector): banding burden 63% — REJECT
+
+3. MYOCARDIAL PASSBAND
+Passband peak at -25 Hz (slice 5). At peak: banded fraction 7.3%, homogeneity 0.63, CNR 2.1.
+
+4. PRIMARY RECOMMENDATION
+Primary selection: +0 Hz (slice 6). near-passband: banded fraction 7.0%, homogeneity 0.64 — acceptable (25 Hz from peak) Myocardial homogeneity 0.64, CNR 1.2, intra-myocardial banded fraction 7.0%. Note: fused primary differs from passband peak (-25 Hz); peak remains listed as an acceptable neighbour when in-set.
+
+5. ACCEPTABLE NEIGHBOURS (±25 Hz)
+Clinically acceptable neighbour(s) within the passband window (±1 scout step) — usable if primary is unavailable:
+  - -25 Hz (optimal): passband peak: myocardial signal most uniform (banded fraction 7.3%, homogeneity 0.63); banding null outside cardiac ROI — OPTIMAL
+
+6. EVIDENCE RECONCILIATION
+  - Neural top-1 → +75 Hz (slice 9)
+  - CV (lowest banded_fraction_myo) → +0 Hz (slice 6)
+  - VLM preferred → -100 Hz (slice 2)
+  - Selector (Exp10 fusion) → +0 Hz; agreement=conflicted
+  - Conflicts: Neural ranker picks slice 9 (+75 Hz) but CV (lowest banded_fraction_myo) favours slice 6 (+0 Hz).; Neural ranker picks slice 9 (+75 Hz) but VLM rates slice 2 (-100 Hz) as optimal.; CV (lowest banded_fraction_myo) favours slice 6 (+0 Hz) but VLM prefers slice 2 (-100 Hz).
+
+7. CONFIDENCE
+LOW (score 0.22). Basis: flat passband (bfm margin 0.3%). Evidence sources: physics, banding, retrieve, segment, consistency, neural, quality, vlm.

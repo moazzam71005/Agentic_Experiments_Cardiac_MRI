@@ -1,0 +1,18 @@
+{
+  "holdout_test_patients": 5,
+  "test_patient_list": [
+    "Patient-BGT",
+    "Patient-BVE",
+    "Patient-GJ",
+    "Patient-MJ",
+    "Patient-WMR"
+  ],
+  "audit_passed_count": 5,
+  "audit_pass_rate": "100.0%",
+  "mean_section_coverage": 1.0,
+  "mean_hz_faithfulness": 1.0,
+  "hallucination_rate": "0.0%",
+  "top1_exact_accuracy": "60.0%",
+  "clinical_window_accuracy": "60.0%",
+  "mean_absolute_error_hz": "20.0 Hz"
+}

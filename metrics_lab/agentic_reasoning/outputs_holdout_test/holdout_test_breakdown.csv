@@ -1,0 +1,6 @@
+patient_id,gt_image,gt_hz,pred_image,pred_hz,err_steps,err_hz,is_top1,is_pm1
+Patient-BGT,7,0.0,7,0.0,0,0.0,True,True
+Patient-BVE,6,-25.0,6,-25.0,0,0.0,True,True
+Patient-GJ,9,50.0,9,50.0,0,0.0,True,True
+Patient-MJ,7,0.0,5,-50.0,2,50.0,False,False
+Patient-WMR,8,25.0,6,-25.0,2,50.0,False,False

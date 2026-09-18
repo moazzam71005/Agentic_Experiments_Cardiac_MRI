@@ -1,0 +1,29 @@
+1. CLINICAL QUESTION
+Frequency scout — select the RF offset that keeps the bSSFP null outside the LV myocardium and blood pool for subsequent CINE.
+
+2. REJECTED OFFSETS (hard veto)
+Hard veto — bSSFP null enters the cardiac ROI:
+  - slice 0 (-150 Hz): bSSFP null crosses myocardium (anterior, lateral, septal sector): banding burden 98% — REJECT
+  - slice 1 (-125 Hz): bSSFP null crosses myocardium (anterior, lateral sector): banding burden 81% — REJECT
+  - slice 2 (-100 Hz): bSSFP null crosses myocardium (anterior, septal sector): banding burden 93% — REJECT
+  - slice 3 (-75 Hz): bSSFP null crosses myocardium (anterior, septal sector): banding burden 68% — REJECT
+  - slice 4 (-50 Hz): bSSFP null crosses myocardium (anterior, septal sector): banding burden 100% — REJECT
+
+3. MYOCARDIAL PASSBAND
+Passband peak at +0 Hz (slice 6). At peak: banded fraction 5.5%, homogeneity 0.75, CNR 0.8.
+
+4. PRIMARY RECOMMENDATION
+Primary selection: +0 Hz (slice 6). passband peak: myocardial signal most uniform (banded fraction 5.5%, homogeneity 0.75); banding null outside cardiac ROI — OPTIMAL Myocardial homogeneity 0.75, CNR 0.8, intra-myocardial banded fraction 5.5%.
+
+5. ACCEPTABLE NEIGHBOURS (±25 Hz)
+No other offsets fall in the passband acceptable window for this sweep.
+
+6. EVIDENCE RECONCILIATION
+  - Neural top-1 → +0 Hz (slice 6)
+  - CV (lowest banded_fraction_myo) → +0 Hz (slice 6)
+  - VLM preferred → -150 Hz (slice 0)
+  - Selector (Exp10 fusion) → +0 Hz; agreement=conflicted
+  - Conflicts: Neural ranker picks slice 6 (+0 Hz) but VLM rates slice 0 (-150 Hz) as optimal.; CV (lowest banded_fraction_myo) favours slice 6 (+0 Hz) but VLM prefers slice 0 (-150 Hz).
+
+7. CONFIDENCE
+MEDIUM (score 0.47). Basis: primary within ±1 step of passband peak (peak idx 6, primary 6); bfm margin 9.6%. Evidence sources: physics, banding, retrieve, segment, consistency, neural, quality, vlm.

@@ -1,0 +1,114 @@
+{
+  "iterations": [
+    {
+      "iteration": 0,
+      "unsatisfied": [
+        "seg_done",
+        "band_all_slices",
+        "quality_all_slices",
+        "neural_scored",
+        "physics_attached",
+        "vlm_described",
+        "knowledge_retrieved",
+        "cross_consistency",
+        "alternatives_identified",
+        "recommendation_justified"
+      ],
+      "next_tool": "neural",
+      "reasoning": "Running neural to satisfy: Neural ranker scores obtained for all slices."
+    },
+    {
+      "iteration": 1,
+      "unsatisfied": [
+        "seg_done",
+        "band_all_slices",
+        "quality_all_slices",
+        "physics_attached",
+        "vlm_described",
+        "knowledge_retrieved",
+        "cross_consistency",
+        "alternatives_identified",
+        "recommendation_justified"
+      ],
+      "next_tool": "segment",
+      "reasoning": "Running segment to satisfy: LV/myocardium segmentation mask obtained for the top-ranked slice."
+    },
+    {
+      "iteration": 2,
+      "unsatisfied": [
+        "band_all_slices",
+        "quality_all_slices",
+        "physics_attached",
+        "vlm_described",
+        "knowledge_retrieved",
+        "cross_consistency",
+        "alternatives_identified",
+        "recommendation_justified"
+      ],
+      "next_tool": "banding",
+      "reasoning": "Running banding to satisfy: Banding detection run on all 13 offset images using the propagated mask."
+    },
+    {
+      "iteration": 3,
+      "unsatisfied": [
+        "quality_all_slices",
+        "physics_attached",
+        "vlm_described",
+        "knowledge_retrieved",
+        "cross_consistency",
+        "alternatives_identified",
+        "recommendation_justified"
+      ],
+      "next_tool": "quality",
+      "reasoning": "Running quality to satisfy: Quality metrics (CoV, CNR, SNR) computed for all 13 offset images."
+    },
+    {
+      "iteration": 4,
+      "unsatisfied": [
+        "physics_attached",
+        "vlm_described",
+        "knowledge_retrieved",
+        "cross_consistency",
+        "alternatives_identified",
+        "recommendation_justified"
+      ],
+      "next_tool": "physics",
+      "reasoning": "Running physics to satisfy: Frequency offset Hz values attached from the Excel ground-truth file."
+    },
+    {
+      "iteration": 5,
+      "unsatisfied": [
+        "vlm_described",
+        "knowledge_retrieved",
+        "cross_consistency",
+        "alternatives_identified",
+        "recommendation_justified"
+      ],
+      "next_tool": "vlm",
+      "reasoning": "Running vlm to satisfy: VLM description of banding/quality obtained for at least the top-3 candidates."
+    },
+    {
+      "iteration": 6,
+      "unsatisfied": [
+        "knowledge_retrieved",
+        "cross_consistency",
+        "alternatives_identified",
+        "recommendation_justified"
+      ],
+      "next_tool": "retrieve",
+      "reasoning": "Running retrieve to satisfy: Clinical knowledge retrieved for at least one query (banding location + quality)."
+    },
+    {
+      "iteration": 7,
+      "unsatisfied": [
+        "cross_consistency",
+        "alternatives_identified",
+        "recommendation_justified"
+      ],
+      "next_tool": null,
+      "reasoning": "No further tools needed; checklist gap is a synthesis step."
+    }
+  ],
+  "terminated_at": 7,
+  "termination_reason": "no_further_tools"
+}

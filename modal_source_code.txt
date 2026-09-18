@@ -1,0 +1,157 @@
+import time
+import pandas as pd
+from selenium import webdriver
+from selenium.webdriver.common.by import By
+from selenium.webdriver.common.keys import Keys
+from selenium.webdriver.chrome.service import Service
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
+from webdriver_manager.chrome import ChromeDriverManager
+
+# 1. Load your project titles
+titles_to_search = [
+    "HYDRO-WASTE: Hydroponic Systems for Water Treatment and Sustainable Nutrient Recovery",
+    "CLEAN-CARB: Carbon-Based Solutions for Efficient Nutrient Management in Wastewater",
+    "QUICK-PATH: Quaternary Innovative Control of Pathogens and Micropollutants in Wastewater",
+    "La pratique du jardinage alimentaire domestique des personnes immigrantes de la ville de Moncton : objectifs et potentiel d’intégration",
+    # Paste the rest of your titles here...
+]
+
+def setup_driver():
+    options = webdriver.ChromeOptions()
+    options.add_argument("--start-maximized")
+    return webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=options)
+
+def get_table_metadata(driver, label):
+    """Extracts exact metadata from the detailRow tables in the PrimeNG modal."""
+    try:
+        # Looks for the table row containing the label, then grabs the data cell next to it
+        xpath = f"//tr[contains(@class, 'detailRow')]/td[contains(normalize-space(), '{label}')]/following-sibling::td"
+        elem = driver.find_element(By.XPATH, xpath)
+        # Using javascript to grab innerText handles nested spans cleanly
+        return driver.execute_script("return arguments[0].innerText;", elem).strip()
+    except Exception:
+        return "N/A"
+
+def get_tab_text(driver, tab_name_partial):
+    """Clicks the tab by its partial name (e.g. 'Student Role') and extracts the visible text."""
+    try:
+        # Find the tab header link
+        tab_link = driver.find_element(By.XPATH, f"//a[@role='tab' and .//span[contains(text(), '{tab_name_partial}')]]")
+        
+        # Click it
+        driver.execute_script("arguments[0].click();", tab_link)
+        time.sleep(0.3) # Wait briefly for PrimeNG tab transition
+        
+        # The link tells us exactly which panel ID it controls
+        panel_id = tab_link.get_attribute("aria-controls")
+        panel = driver.find_element(By.ID, panel_id)
+        
+        return panel.text.strip()
+    except Exception:
+        return "N/A"
+
+def scrape_mitacs_projects():
+    driver = setup_driver()
+    wait = WebDriverWait(driver, 10)
+    
+    print("Navigating to Mitacs portal...")
+    driver.get("https://globalink.mitacs.ca/#/student/application/projects")
+    
+    input("\n🛑 ACTION REQUIRED: \n1. Log in to the portal.\n2. Go to the Projects page.\n3. Press ENTER here in the terminal to start scraping...\n")
+    
+    scraped_data = []
+
+    for title in titles_to_search:
+        print(f"\nSearching for: {title[:60]}...")
+        try:
+            # --- 1. FIND SEARCH BOX & TYPE ---
+            # Based on your HTML, the search box is right after a div containing 'Keyword search'
+            search_box = wait.until(EC.element_to_be_clickable((By.XPATH, "//div[text()='Keyword search']/following::input[contains(@class, 'p-inputtext')][1]")))
+            
+            search_box.click()
+            time.sleep(0.2)
+            search_box.send_keys(Keys.CONTROL + "a")
+            search_box.send_keys(Keys.BACKSPACE)
+            time.sleep(0.5)
+            search_box.send_keys(title)
+            time.sleep(1) 
+            
+            # --- 2. CLICK SEARCH ---
+            # Based on your HTML: <button><span class="p-button-label">Search and Filter</span></button>
+            search_btn = wait.until(EC.element_to_be_clickable((By.XPATH, "//button[.//span[text()='Search and Filter']]")))
+            driver.execute_script("arguments[0].click();", search_btn)
+            time.sleep(3.5) # Wait for network request to fetch projects
+            
+            # --- 3. CLICK VIEW DETAIL ---
+            view_detail_btn = wait.until(EC.presence_of_element_located((By.XPATH, "(//button[.//span[text()='View Detail']])[1]")))
+            driver.execute_script("arguments[0].click();", view_detail_btn)
+            
+            # Wait until the modal title appears
+            wait.until(EC.presence_of_element_located((By.XPATH, "//span[contains(@class, 'p-dialog-title')]")))
+            time.sleep(1) 
+            
+            # --- 4. EXTRACT TABLE METADATA ---
+            supervisor = get_table_metadata(driver, 'Faculty supervisor') 
+            specialization = get_table_metadata(driver, 'Specialization')
+            university = get_table_metadata(driver, 'Faculty University') 
+            province = get_table_metadata(driver, 'Faculty Province')
+            campus = get_table_metadata(driver, 'Faculty Campus')
+            location = get_table_metadata(driver, 'Project Location')
+            academic_bg = get_table_metadata(driver, 'Preferred student academic background')
+            language = get_table_metadata(driver, 'Language')
+
+            # --- 5. EXTRACT TABS ---
+            # We use partial matches because sometimes it says "Role" and sometimes "Roles"
+            description = get_tab_text(driver, 'Project Description')
+            student_roles = get_tab_text(driver, 'Student Role') 
+            required_skills = get_tab_text(driver, 'Required Skill')
+
+            scraped_data.append({
+                "Title": title,
+                "Description": description,
+                "Student Roles": student_roles,
+                "Required Skills": required_skills,
+                "Faculty Supervisor": supervisor,
+                "Specialization": specialization,
+                "Academic Background": academic_bg,
+                "University": university,
+                "Campus": campus,
+                "Province": province,
+                "Location": location,
+                "Language": language,
+                "Status": "Found"
+            })
+            print(f"✅ Successfully scraped!")
+            
+            # --- 6. CLOSE MODAL ---
+            # Based on your HTML: <button class="... p-dialog-header-close ...">
+            close_btn = driver.find_element(By.XPATH, "//button[contains(@class, 'p-dialog-header-close')]")
+            driver.execute_script("arguments[0].click();", close_btn)
+            time.sleep(1) 
+
+        except Exception as e:
+            print(f"❌ Failed: Could not locate project or data.")
+            scraped_data.append({
+                "Title": title,
+                "Description": None, "Student Roles": None, "Required Skills": None,
+                "Faculty Supervisor": None, "Specialization": None, "Academic Background": None,
+                "University": None, "Campus": None, "Province": None, 
+                "Location": None, "Language": None,
+                "Status": "Not Found"
+            })
+            try:
+                # Emergency close if it got stuck open
+                close_btn = driver.find_element(By.XPATH, "//button[contains(@class, 'p-dialog-header-close')]")
+                driver.execute_script("arguments[0].click();", close_btn)
+                time.sleep(1)
+            except: pass
+
+    # Save to CSV
+    df = pd.DataFrame(scraped_data)
+    df.to_csv("mitacs_projects_final.csv", index=False)
+    print("\n🎉 Scraping complete. Saved to 'mitacs_projects_final.csv'.")
+    driver.quit()
+
+if __name__ == "__main__":
+    scrape_mitacs_projects()

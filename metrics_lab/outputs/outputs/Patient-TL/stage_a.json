@@ -1,0 +1,248 @@
+{
+  "patient_id": "Patient-TL",
+  "recommended_offset": {
+    "image_no": 8,
+    "offset_hz": 25.0,
+    "composite_score": 0.9821,
+    "confidence": 0.82,
+    "confidence_label": "high",
+    "confidence_basis": "Passband plateau consensus: CNN (#8) and Physics (#8) agree within clinical tolerance window (\u00b125 Hz)."
+  },
+  "acceptable_alternatives": [
+    {
+      "image_no": 7,
+      "offset_hz": 0.0,
+      "delta_hz": -25.0,
+      "banded_fraction_myo": 0.0172,
+      "homogeneity": 0.6926
+    }
+  ],
+  "rejected_offsets": [
+    {
+      "image_no": 1,
+      "offset_hz": -150.0,
+      "banded_fraction_myo": 0.2857,
+      "affected_sectors": "none"
+    },
+    {
+      "image_no": 2,
+      "offset_hz": -125.0,
+      "banded_fraction_myo": 0.3167,
+      "affected_sectors": "none"
+    },
+    {
+      "image_no": 3,
+      "offset_hz": -100.0,
+      "banded_fraction_myo": 0.2392,
+      "affected_sectors": "septal"
+    },
+    {
+      "image_no": 4,
+      "offset_hz": -75.0,
+      "banded_fraction_myo": 0.0912,
+      "affected_sectors": "none"
+    },
+    {
+      "image_no": 6,
+      "offset_hz": -25.0,
+      "banded_fraction_myo": 0.105,
+      "affected_sectors": "septal"
+    },
+    {
+      "image_no": 11,
+      "offset_hz": 100.0,
+      "banded_fraction_myo": 0.1566,
+      "affected_sectors": "none"
+    },
+    {
+      "image_no": 12,
+      "offset_hz": 125.0,
+      "banded_fraction_myo": 0.253,
+      "affected_sectors": "none"
+    },
+    {
+      "image_no": 13,
+      "offset_hz": 150.0,
+      "banded_fraction_myo": 0.284,
+      "affected_sectors": "none"
+    }
+  ],
+  "consistency_summary": {
+    "status": "passband_plateau",
+    "cnn_pick": "#8 (+25 Hz)",
+    "physics_pick": "#8 (+25 Hz)",
+    "homogeneity_pick": "#7 (+0 Hz)",
+    "disagreements": []
+  },
+  "per_slice": [
+    {
+      "image_no": 1,
+      "offset_hz": -150.0,
+      "composite_score": 0.4588,
+      "cnn_score": 0.0015,
+      "banded_fraction_myo": 0.2857,
+      "homogeneity": 0.4527,
+      "cnr": 0.62,
+      "temporal_std_sweep": 0.0215,
+      "band_sectors": "none",
+      "verdict": "rejected",
+      "reason": "Severe off-resonance dark banding intersecting myocardium (banded fraction = 28.6%); affected sectors: none."
+    },
+    {
+      "image_no": 2,
+      "offset_hz": -125.0,
+      "composite_score": 0.3874,
+      "cnn_score": 0.0,
+      "banded_fraction_myo": 0.3167,
+      "homogeneity": 0.3297,
+      "cnr": 1.04,
+      "temporal_std_sweep": 0.0289,
+      "band_sectors": "none",
+      "verdict": "rejected",
+      "reason": "Severe off-resonance dark banding intersecting myocardium (banded fraction = 31.7%); affected sectors: none."
+    },
+    {
+      "image_no": 3,
+      "offset_hz": -100.0,
+      "composite_score": 0.5134,
+      "cnn_score": 0.0,
+      "banded_fraction_myo": 0.2392,
+      "homogeneity": 0.461,
+      "cnr": 1.01,
+      "temporal_std_sweep": 0.0181,
+      "band_sectors": "septal",
+      "verdict": "rejected",
+      "reason": "Severe off-resonance dark banding intersecting myocardium (banded fraction = 23.9%); affected sectors: septal."
+    },
+    {
+      "image_no": 4,
+      "offset_hz": -75.0,
+      "composite_score": 0.681,
+      "cnn_score": 0.0,
+      "banded_fraction_myo": 0.0912,
+      "homogeneity": 0.6039,
+      "cnr": 1.37,
+      "temporal_std_sweep": 0.0288,
+      "band_sectors": "none",
+      "verdict": "rejected",
+      "reason": "Severe off-resonance dark banding intersecting myocardium (banded fraction = 9.1%); affected sectors: none."
+    },
+    {
+      "image_no": 5,
+      "offset_hz": -50.0,
+      "composite_score": 0.7357,
+      "cnn_score": 0.0002,
+      "banded_fraction_myo": 0.074,
+      "homogeneity": 0.6641,
+      "cnr": 1.83,
+      "temporal_std_sweep": 0.0404,
+      "band_sectors": "none",
+      "verdict": "suboptimal",
+      "reason": "Reduced signal homogeneity (0.664) or early peripheral phase roll-off."
+    },
+    {
+      "image_no": 6,
+      "offset_hz": -25.0,
+      "composite_score": 0.6584,
+      "cnn_score": 0.0152,
+      "banded_fraction_myo": 0.105,
+      "homogeneity": 0.5105,
+      "cnr": 1.07,
+      "temporal_std_sweep": 0.022,
+      "band_sectors": "septal",
+      "verdict": "rejected",
+      "reason": "Severe off-resonance dark banding intersecting myocardium (banded fraction = 10.5%); affected sectors: septal."
+    },
+    {
+      "image_no": 7,
+      "offset_hz": 0.0,
+      "composite_score": 0.9008,
+      "cnn_score": 0.1155,
+      "banded_fraction_myo": 0.0172,
+      "homogeneity": 0.6926,
+      "cnr": 1.08,
+      "temporal_std_sweep": 0.03,
+      "band_sectors": "none",
+      "verdict": "acceptable",
+      "reason": "Diagnostic passband plateau: acceptable myocardium homogeneity (0.693) and negligible banding (1.7%)."
+    },
+    {
+      "image_no": 8,
+      "offset_hz": 25.0,
+      "composite_score": 0.9821,
+      "cnn_score": 0.2111,
+      "banded_fraction_myo": 0.0155,
+      "homogeneity": 0.6797,
+      "cnr": 1.06,
+      "temporal_std_sweep": 0.0368,
+      "band_sectors": "none",
+      "verdict": "optimal",
+      "reason": "Global multi-metric peak: minimal intra-myocardial banding, high homogeneity, and strong CNN consensus."
+    },
+    {
+      "image_no": 9,
+      "offset_hz": 50.0,
+      "composite_score": 0.8699,
+      "cnn_score": 0.1751,
+      "banded_fraction_myo": 0.0757,
+      "homogeneity": 0.6084,
+      "cnr": 1.14,
+      "temporal_std_sweep": 0.0589,
+      "band_sectors": "none",
+      "verdict": "suboptimal",
+      "reason": "Reduced signal homogeneity (0.608) or early peripheral phase roll-off."
+    },
+    {
+      "image_no": 10,
+      "offset_hz": 75.0,
+      "composite_score": 0.8863,
+      "cnn_score": 0.1983,
+      "banded_fraction_myo": 0.0602,
+      "homogeneity": 0.6074,
+      "cnr": 1.63,
+      "temporal_std_sweep": 0.0368,
+      "band_sectors": "none",
+      "verdict": "suboptimal",
+      "reason": "Reduced signal homogeneity (0.607) or early peripheral phase roll-off."
+    },
+    {
+      "image_no": 11,
+      "offset_hz": 100.0,
+      "composite_score": 0.5863,
+      "cnn_score": 0.0037,
+      "banded_fraction_myo": 0.1566,
+      "homogeneity": 0.5119,
+      "cnr": 1.86,
+      "temporal_std_sweep": 0.016,
+      "band_sectors": "none",
+      "verdict": "rejected",
+      "reason": "Severe off-resonance dark banding intersecting myocardium (banded fraction = 15.7%); affected sectors: none."
+    },
+    {
+      "image_no": 12,
+      "offset_hz": 125.0,
+      "composite_score": 0.4845,
+      "cnn_score": 0.0003,
+      "banded_fraction_myo": 0.253,
+      "homogeneity": 0.4476,
+      "cnr": 1.64,
+      "temporal_std_sweep": 0.0132,
+      "band_sectors": "none",
+      "verdict": "rejected",
+      "reason": "Severe off-resonance dark banding intersecting myocardium (banded fraction = 25.3%); affected sectors: none."
+    },
+    {
+      "image_no": 13,
+      "offset_hz": 150.0,
+      "composite_score": 0.4437,
+      "cnn_score": 0.0035,
+      "banded_fraction_myo": 0.284,
+      "homogeneity": 0.4203,
+      "cnr": 0.62,
+      "temporal_std_sweep": 0.0145,
+      "band_sectors": "none",
+      "verdict": "rejected",
+      "reason": "Severe off-resonance dark banding intersecting myocardium (banded fraction = 28.4%); affected sectors: none."
+    }
+  ]
+}

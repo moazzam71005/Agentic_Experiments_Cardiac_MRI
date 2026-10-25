@@ -1,0 +1,10 @@
+{
+  "invoked": true,
+  "audit_passed": true,
+  "recommended_image": 11,
+  "offset_hz": 100.0,
+  "confidence": "high",
+  "rationale": "Image #11 is the only frame with a banded_fraction_myo (0.01282) well below the 0.08 rejection threshold, whereas the CNN-preferred Image #8 (0.09341) violates the critical banding rule, and Image #11 also offers the highest homogeneity (0.779) among viable candidates.",
+  "audit_notes": [],
+  "raw_response": "{\n\"recommended_image\": 11,\n\"offset_hz\": 100.0,\n\"confidence\": \"high\",\n\"rationale\": \"Image #11 is the only frame with a banded_fraction_myo (0.01282) well below the 0.08 rejection threshold, whereas the CNN-preferred Image #8 (0.09341) violates the critical banding rule, and Image #11 also offers the highest homogeneity (0.779) among viable candidates.\"\n}"
+}

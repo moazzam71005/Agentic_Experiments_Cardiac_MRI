@@ -1,0 +1,10 @@
+{
+  "invoked": true,
+  "audit_passed": true,
+  "recommended_image": 4,
+  "offset_hz": -75.0,
+  "confidence": "high",
+  "rationale": "Image #4 is selected because it possesses the highest homogeneity (0.7456) among the viable candidates and a BFM (0.0385) well below the rejection threshold, whereas the CNN-preferred Image #2 is rejected due to borderline myocardial banding (BFM 0.090) and lower homogeneity.",
+  "audit_notes": [],
+  "raw_response": "{\n\"recommended_image\": 4,\n\"offset_hz\": -75.0,\n\"confidence\": \"high\",\n\"rationale\": \"Image #4 is selected because it possesses the highest homogeneity (0.7456) among the viable candidates and a BFM (0.0385) well below the rejection threshold, whereas the CNN-preferred Image #2 is rejected due to borderline myocardial banding (BFM 0.090) and lower homogeneity.\"\n}"
+}

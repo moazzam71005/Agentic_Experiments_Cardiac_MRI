@@ -1,0 +1,10 @@
+{
+  "invoked": true,
+  "audit_passed": true,
+  "recommended_image": 9,
+  "offset_hz": 50.0,
+  "confidence": "high",
+  "rationale": "Image #9 is selected because it exhibits the lowest banded_fraction_myo (0.02368) among all non-rejected frames, which is the primary determinant for diagnostic quality in bSSFP imaging, despite having slightly lower homogeneity than Image #8.",
+  "audit_notes": [],
+  "raw_response": "{\n\"recommended_image\": 9,\n\"offset_hz\": 50.0,\n\"confidence\": \"high\",\n\"rationale\": \"Image #9 is selected because it exhibits the lowest banded_fraction_myo (0.02368) among all non-rejected frames, which is the primary determinant for diagnostic quality in bSSFP imaging, despite having slightly lower homogeneity than Image #8.\"\n}"
+}

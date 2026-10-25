@@ -1,0 +1,13 @@
+{
+  "invoked": true,
+  "audit_passed": false,
+  "recommended_image_no": 8,
+  "recommended_offset_hz": 25.0,
+  "confidence_score": 0.6,
+  "confidence_label": "medium",
+  "visual_banding_assessment": "",
+  "septal_contrast_assessment": "",
+  "clinical_rationale": "Fell back to composite Image #8 (+25 Hz) due to banding veto.",
+  "audit_notes": "Physics veto: Image #8 has BFM=0.0934 > 0.08",
+  "raw_response": ""
+}

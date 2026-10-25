@@ -1,0 +1,15 @@
+{
+  "invoked": true,
+  "audit_passed": false,
+  "recommended_image_no": 5,
+  "recommended_offset_hz": -50.0,
+  "confidence_score": 0.6,
+  "confidence_label": "medium",
+  "consensus_status": "fallback",
+  "physics_recommendation": {},
+  "contrast_recommendation": {},
+  "counterfactual_critique": "",
+  "clinical_summary": "Deterministic composite selection (Image #5, -50 Hz).",
+  "audit_notes": "Template mode \u2014 LLM debate bypassed",
+  "raw_responses": {}
+}

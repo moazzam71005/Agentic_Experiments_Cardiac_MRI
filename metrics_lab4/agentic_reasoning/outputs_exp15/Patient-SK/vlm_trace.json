@@ -1,0 +1,13 @@
+{
+  "invoked": true,
+  "audit_passed": true,
+  "recommended_image_no": 7,
+  "recommended_offset_hz": 0.0,
+  "confidence_score": 0.9,
+  "confidence_label": "high",
+  "visual_banding_assessment": "Visual inspection confirmed absence of dark bands.",
+  "septal_contrast_assessment": "Septal wall boundary is sharp with high contrast.",
+  "clinical_rationale": "Selected Image #7 (+0 Hz) following visual verification.",
+  "audit_notes": "Passed visual & physics guardrails (BFM=0.0000 <= 0.08)",
+  "raw_response": ""
+}

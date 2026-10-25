@@ -1,0 +1,10 @@
+{
+  "invoked": true,
+  "audit_passed": true,
+  "recommended_image": 9,
+  "offset_hz": 50.0,
+  "confidence": "high",
+  "rationale": "Image #9 offers the optimal balance of the lowest BFM among the top candidates (0.00858) and the highest homogeneity (0.8469), avoiding the higher temporal instability (TempStd) seen in the CNN-preferred Image #10.",
+  "audit_notes": [],
+  "raw_response": "{\n\"recommended_image\": 9,\n\"offset_hz\": 50.0,\n\"confidence\": \"high\",\n\"rationale\": \"Image #9 offers the optimal balance of the lowest BFM among the top candidates (0.00858) and the highest homogeneity (0.8469), avoiding the higher temporal instability (TempStd) seen in the CNN-preferred Image #10.\"\n}"
+}

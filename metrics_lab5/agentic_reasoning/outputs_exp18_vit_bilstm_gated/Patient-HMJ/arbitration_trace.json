@@ -1,0 +1,10 @@
+{
+  "invoked": true,
+  "audit_passed": true,
+  "recommended_image": 8,
+  "offset_hz": 25.0,
+  "confidence": "high",
+  "rationale": "Image #8 is selected because it offers the best balance of low banding (BFM 0.052) and high homogeneity (0.671), whereas Image #7, despite a higher CNN score, has a BFM of 0.078 which is dangerously close to the 0.08 rejection threshold for myocardial dark bands.",
+  "audit_notes": [],
+  "raw_response": "{\n\"recommended_image\": 8,\n\"offset_hz\": 25.0,\n\"confidence\": \"high\",\n\"rationale\": \"Image #8 is selected because it offers the best balance of low banding (BFM 0.052) and high homogeneity (0.671), whereas Image #7, despite a higher CNN score, has a BFM of 0.078 which is dangerously close to the 0.08 rejection threshold for myocardial dark bands.\"\n}"
+}

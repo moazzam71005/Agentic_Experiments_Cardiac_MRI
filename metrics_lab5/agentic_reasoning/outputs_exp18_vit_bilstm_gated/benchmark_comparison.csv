@@ -1,0 +1,9 @@
+Method,Top-1 (%),±1 Step (%),MAE (Hz)
+Center Slice (Naive 0 Hz),26.9,57.7,32.8
+Exp5 DINOv2-Large LOOCV,23.1,57.7,40.0
+Standalone Banded Frac (argmin BFM),40.0,76.0,25.0
+Standalone Homogeneity (1-CoV),44.0,80.0,27.0
+EfficientNet-B0 CNN (LOOCV),44.0,72.0,24.0
+Exp10 Fused Agent,42.3,76.9,22.1
+Exp12 Agentic Multi-Metric,48.0,76.0,24.0
+**Exp13 LLM Arbitration Loop**,48.0,92.0,15.5

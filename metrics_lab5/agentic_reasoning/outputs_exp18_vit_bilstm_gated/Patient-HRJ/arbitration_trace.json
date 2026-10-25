@@ -1,0 +1,10 @@
+{
+  "invoked": true,
+  "audit_passed": true,
+  "recommended_image": 7,
+  "offset_hz": 0.0,
+  "confidence": "high",
+  "rationale": "Image #7 is the only frame with zero myocardial banding (BFM=0.000) and the highest homogeneity (0.816), which are critical for diagnostic bSSFP quality, outweighing the slightly higher CNN score of Image #9 which exhibits borderline septal banding.",
+  "audit_notes": [],
+  "raw_response": "{\n\"recommended_image\": 7,\n\"offset_hz\": 0.0,\n\"confidence\": \"high\",\n\"rationale\": \"Image #7 is the only frame with zero myocardial banding (BFM=0.000) and the highest homogeneity (0.816), which are critical for diagnostic bSSFP quality, outweighing the slightly higher CNN score of Image #9 which exhibits borderline septal banding.\"\n}"
+}

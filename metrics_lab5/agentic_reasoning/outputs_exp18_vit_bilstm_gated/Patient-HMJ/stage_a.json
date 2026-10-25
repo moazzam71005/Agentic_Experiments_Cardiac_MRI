@@ -1,0 +1,261 @@
+{
+  "patient_id": "Patient-HMJ",
+  "decision_source": "llm_arbitrated",
+  "recommended_offset": {
+    "image_no": 8,
+    "offset_hz": 25.0,
+    "composite_score": 0.9341,
+    "confidence": 0.85,
+    "confidence_label": "high",
+    "confidence_basis": "LLM arbitration (Exp13): Image #8 is selected because it offers the best balance of low banding (BFM 0.052) and high homogeneity (0.671), whereas Image #7, despite a higher CNN score, has a BFM of 0.078 which is dangerously close to the 0.08 rejection threshold for myocardial dark bands."
+  },
+  "acceptable_alternatives": [],
+  "rejected_offsets": [
+    {
+      "image_no": 1,
+      "offset_hz": -150.0,
+      "banded_fraction_myo": 0.1636,
+      "affected_sectors": "none"
+    },
+    {
+      "image_no": 2,
+      "offset_hz": -125.0,
+      "banded_fraction_myo": 0.2937,
+      "affected_sectors": "none"
+    },
+    {
+      "image_no": 3,
+      "offset_hz": -100.0,
+      "banded_fraction_myo": 0.1338,
+      "affected_sectors": "none"
+    },
+    {
+      "image_no": 4,
+      "offset_hz": -75.0,
+      "banded_fraction_myo": 0.1078,
+      "affected_sectors": "anterior"
+    },
+    {
+      "image_no": 5,
+      "offset_hz": -50.0,
+      "banded_fraction_myo": 0.1747,
+      "affected_sectors": "anterior"
+    },
+    {
+      "image_no": 6,
+      "offset_hz": -25.0,
+      "banded_fraction_myo": 0.2454,
+      "affected_sectors": "none"
+    },
+    {
+      "image_no": 10,
+      "offset_hz": 75.0,
+      "banded_fraction_myo": 0.1301,
+      "affected_sectors": "none"
+    },
+    {
+      "image_no": 11,
+      "offset_hz": 100.0,
+      "banded_fraction_myo": 0.197,
+      "affected_sectors": "none"
+    },
+    {
+      "image_no": 12,
+      "offset_hz": 125.0,
+      "banded_fraction_myo": 0.316,
+      "affected_sectors": "none"
+    },
+    {
+      "image_no": 13,
+      "offset_hz": 150.0,
+      "banded_fraction_myo": 0.3457,
+      "affected_sectors": "none"
+    }
+  ],
+  "consistency_summary": {
+    "status": "borderline_veto",
+    "requires_arbitration": true,
+    "cnn_pick": "#7 (+0 Hz)",
+    "physics_pick": "#9 (+50 Hz)",
+    "homogeneity_pick": "#8 (+25 Hz)",
+    "disagreements": [
+      "CNN selected image #7 (+0 Hz) which has borderline myocardial banding (BFM=0.078, threshold=0.1). Routed to LLM arbitrator for context-sensitive resolution."
+    ]
+  },
+  "per_slice": [
+    {
+      "image_no": 1,
+      "offset_hz": -150.0,
+      "composite_score": 0.5979,
+      "cnn_score": 0.0723,
+      "banded_fraction_myo": 0.1636,
+      "homogeneity": 0.5606,
+      "cnr": 1.81,
+      "temporal_std_sweep": 0.0272,
+      "band_sectors": "none",
+      "verdict": "rejected",
+      "reason": "Severe off-resonance dark banding intersecting myocardium (banded fraction=16.4%); affected sectors: none."
+    },
+    {
+      "image_no": 2,
+      "offset_hz": -125.0,
+      "composite_score": 0.4411,
+      "cnn_score": 0.072,
+      "banded_fraction_myo": 0.2937,
+      "homogeneity": 0.3621,
+      "cnr": 2.4,
+      "temporal_std_sweep": 0.023,
+      "band_sectors": "none",
+      "verdict": "rejected",
+      "reason": "Severe off-resonance dark banding intersecting myocardium (banded fraction=29.4%); affected sectors: none."
+    },
+    {
+      "image_no": 3,
+      "offset_hz": -100.0,
+      "composite_score": 0.6692,
+      "cnn_score": 0.0722,
+      "banded_fraction_myo": 0.1338,
+      "homogeneity": 0.6182,
+      "cnr": 1.89,
+      "temporal_std_sweep": 0.0085,
+      "band_sectors": "none",
+      "verdict": "rejected",
+      "reason": "Severe off-resonance dark banding intersecting myocardium (banded fraction=13.4%); affected sectors: none."
+    },
+    {
+      "image_no": 4,
+      "offset_hz": -75.0,
+      "composite_score": 0.7023,
+      "cnn_score": 0.0734,
+      "banded_fraction_myo": 0.1078,
+      "homogeneity": 0.6006,
+      "cnr": 1.26,
+      "temporal_std_sweep": 0.0042,
+      "band_sectors": "anterior",
+      "verdict": "rejected",
+      "reason": "Severe off-resonance dark banding intersecting myocardium (banded fraction=10.8%); affected sectors: anterior."
+    },
+    {
+      "image_no": 5,
+      "offset_hz": -50.0,
+      "composite_score": 0.6966,
+      "cnn_score": 0.0777,
+      "banded_fraction_myo": 0.1747,
+      "homogeneity": 0.5319,
+      "cnr": 0.98,
+      "temporal_std_sweep": 0.0093,
+      "band_sectors": "anterior",
+      "verdict": "rejected",
+      "reason": "Severe off-resonance dark banding intersecting myocardium (banded fraction=17.5%); affected sectors: anterior."
+    },
+    {
+      "image_no": 6,
+      "offset_hz": -25.0,
+      "composite_score": 0.6967,
+      "cnn_score": 0.0848,
+      "banded_fraction_myo": 0.2454,
+      "homogeneity": 0.4238,
+      "cnr": 0.74,
+      "temporal_std_sweep": 0.0158,
+      "band_sectors": "none",
+      "verdict": "rejected",
+      "reason": "Severe off-resonance dark banding intersecting myocardium (banded fraction=24.5%); affected sectors: none."
+    },
+    {
+      "image_no": 7,
+      "offset_hz": 0.0,
+      "composite_score": 0.9404,
+      "cnn_score": 0.0893,
+      "banded_fraction_myo": 0.0781,
+      "homogeneity": 0.6306,
+      "cnr": 0.68,
+      "temporal_std_sweep": 0.0176,
+      "band_sectors": "none",
+      "verdict": "suboptimal",
+      "reason": "Reduced signal homogeneity (0.631) or early peripheral phase roll-off."
+    },
+    {
+      "image_no": 8,
+      "offset_hz": 25.0,
+      "composite_score": 0.9341,
+      "cnn_score": 0.0861,
+      "banded_fraction_myo": 0.052,
+      "homogeneity": 0.6708,
+      "cnr": 0.98,
+      "temporal_std_sweep": 0.0041,
+      "band_sectors": "anterior",
+      "verdict": "optimal",
+      "reason": "LLM-arbitrated peak: minimal intra-myocardial banding, high homogeneity, and strong CNN consensus."
+    },
+    {
+      "image_no": 9,
+      "offset_hz": 50.0,
+      "composite_score": 0.8184,
+      "cnn_score": 0.0783,
+      "banded_fraction_myo": 0.0409,
+      "homogeneity": 0.6263,
+      "cnr": 1.81,
+      "temporal_std_sweep": 0.0085,
+      "band_sectors": "none",
+      "verdict": "suboptimal",
+      "reason": "Reduced signal homogeneity (0.626) or early peripheral phase roll-off."
+    },
+    {
+      "image_no": 10,
+      "offset_hz": 75.0,
+      "composite_score": 0.6666,
+      "cnn_score": 0.0746,
+      "banded_fraction_myo": 0.1301,
+      "homogeneity": 0.5243,
+      "cnr": 1.94,
+      "temporal_std_sweep": 0.0118,
+      "band_sectors": "none",
+      "verdict": "rejected",
+      "reason": "Severe off-resonance dark banding intersecting myocardium (banded fraction=13.0%); affected sectors: none."
+    },
+    {
+      "image_no": 11,
+      "offset_hz": 100.0,
+      "composite_score": 0.6043,
+      "cnn_score": 0.0734,
+      "banded_fraction_myo": 0.197,
+      "homogeneity": 0.5243,
+      "cnr": 1.51,
+      "temporal_std_sweep": 0.0115,
+      "band_sectors": "none",
+      "verdict": "rejected",
+      "reason": "Severe off-resonance dark banding intersecting myocardium (banded fraction=19.7%); affected sectors: none."
+    },
+    {
+      "image_no": 12,
+      "offset_hz": 125.0,
+      "composite_score": 0.3991,
+      "cnn_score": 0.0729,
+      "banded_fraction_myo": 0.316,
+      "homogeneity": 0.2796,
+      "cnr": 0.88,
+      "temporal_std_sweep": 0.0335,
+      "band_sectors": "none",
+      "verdict": "rejected",
+      "reason": "Severe off-resonance dark banding intersecting myocardium (banded fraction=31.6%); affected sectors: none."
+    },
+    {
+      "image_no": 13,
+      "offset_hz": 150.0,
+      "composite_score": 0.3937,
+      "cnn_score": 0.073,
+      "banded_fraction_myo": 0.3457,
+      "homogeneity": 0.3231,
+      "cnr": 1.88,
+      "temporal_std_sweep": 0.0392,
+      "band_sectors": "none",
+      "verdict": "rejected",
+      "reason": "Severe off-resonance dark banding intersecting myocardium (banded fraction=34.6%); affected sectors: none."
+    }
+  ],
+  "arbitration_detail": {
+    "confidence": "high",
+    "rationale": "Image #8 is selected because it offers the best balance of low banding (BFM 0.052) and high homogeneity (0.671), whereas Image #7, despite a higher CNN score, has a BFM of 0.078 which is dangerously close to the 0.08 rejection threshold for myocardial dark bands.",
+    "audit_notes": []
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "is_passed": true,
+  "section_coverage": 1.0,
+  "missing_sections": [],
+  "faithfulness_hz_score": 1.0,
+  "hallucinated_hz": [],
+  "recommendation_grounded": true,
+  "hallucinated_sectors": [],
+  "total_words": 356,
+  "patient_id": "Patient-SWJ"
+}

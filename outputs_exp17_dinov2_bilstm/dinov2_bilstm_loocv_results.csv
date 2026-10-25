@@ -1,0 +1,27 @@
+patient_id,gt_slice,pred_slice,top3_slices,confidence,is_top1,is_top3,is_within_tol,error_hz
+Patient-BEV,7,7,"[7, 6, 8]",0.10050027072429657,True,True,True,0
+Patient-BGT,7,7,"[7, 8, 6]",0.09372508525848389,True,True,True,0
+Patient-BVE,6,6,"[6, 7, 5]",0.10456772893667221,True,True,True,0
+Patient-CEA,7,6,"[6, 7, 5]",0.08899345248937607,False,True,True,25
+Patient-CEJP,4,6,"[6, 5, 13]",0.08494367450475693,False,False,False,50
+Patient-DEM,9,9,"[9, 8, 7]",0.08712522685527802,True,True,True,0
+Patient-FAJ,9,8,"[8, 7, 9]",0.08821317553520203,False,True,True,25
+Patient-FEC,8,8,"[8, 9, 7]",0.08956091105937958,True,True,True,0
+Patient-GJ,9,9,"[9, 8, 10]",0.08502035588026047,True,True,True,0
+Patient-HMJ,8,7,"[7, 8, 6]",0.09221822023391724,False,True,True,25
+Patient-HRJ,7,9,"[9, 10, 8]",0.09116574376821518,False,False,False,50
+Patient-IAM,8,8,"[8, 7, 9]",0.092584028840065,True,True,True,0
+Patient-INA,11,9,"[9, 10, 11]",0.0916588082909584,False,True,False,50
+Patient-KP,6,5,"[5, 4, 7]",0.14410081505775452,False,False,True,25
+Patient-MJ,7,8,"[8, 7, 9]",0.0971691831946373,False,True,True,25
+Patient-MS,9,13,"[13, 10, 9]",0.07852289080619812,False,True,False,100
+Patient-MSR,10,9,"[9, 10, 8]",0.0871705710887909,False,True,True,25
+Patient-OAF,9,7,"[7, 8, 9]",0.09223271161317825,False,True,False,50
+Patient-PJ,8,9,"[9, 10, 8]",0.09846138954162598,False,True,True,25
+Patient-RAK,7,9,"[9, 8, 10]",0.09164288640022278,False,False,False,50
+Patient-RK,9,7,"[7, 6, 8]",0.0931689664721489,False,False,False,50
+Patient-SK,8,7,"[7, 8, 6]",0.0845484808087349,False,True,True,25
+Patient-SWJ,7,8,"[8, 7, 9]",0.09015201032161713,False,True,True,25
+Patient-TL,9,9,"[9, 8, 10]",0.091631218791008,True,True,True,0
+Patient-WBC,8,8,"[8, 9, 7]",0.09600850194692612,True,True,True,0
+Patient-WMR,8,6,"[6, 5, 7]",0.09020010381937027,False,False,False,50

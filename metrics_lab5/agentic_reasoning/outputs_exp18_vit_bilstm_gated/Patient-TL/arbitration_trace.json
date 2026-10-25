@@ -1,0 +1,10 @@
+{
+  "invoked": true,
+  "audit_passed": true,
+  "recommended_image": 8,
+  "offset_hz": 25.0,
+  "confidence": "high",
+  "rationale": "Image #8 is selected because it possesses the lowest banded_fraction_myo (0.01549) among all viable candidates, ensuring minimal dark-band artifacts in the myocardium, while maintaining high homogeneity (0.67970) and a strong CNN score (0.08814), outperforming Image #7 in artifact reduction and Image #9 which exhibits borderline banding (0.07573).",
+  "audit_notes": [],
+  "raw_response": "{\n\"recommended_image\": 8,\n\"offset_hz\": 25.0,\n\"confidence\": \"high\",\n\"rationale\": \"Image #8 is selected because it possesses the lowest banded_fraction_myo (0.01549) among all viable candidates, ensuring minimal dark-band artifacts in the myocardium, while maintaining high homogeneity (0.67970) and a strong CNN score (0.08814), outperforming Image #7 in artifact reduction and Image #9 which exhibits borderline banding (0.07573).\"\n}"
+}

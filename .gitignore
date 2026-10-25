@@ -57,3 +57,11 @@ mitacs_projects_details.csv
 scraper.py
 
 *.pkl
+*.pkl
+
+# Large datasets and caches
+Dr-Dataset/
+exp5_outputs/
+*.dcm
+*.DCM
+*.xlsx

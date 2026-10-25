@@ -1,0 +1,15 @@
+{
+  "is_passed": false,
+  "section_coverage": 0.57,
+  "missing_sections": [
+    "5. MULTI-SOURCE EVIDENCE RECONCILIATION",
+    "6. TECHNICAL LIMITATIONS",
+    "7. SUMMARY & OPERATOR DIRECTIVE"
+  ],
+  "faithfulness_hz_score": 1.0,
+  "hallucinated_hz": [],
+  "recommendation_grounded": true,
+  "hallucinated_sectors": [],
+  "total_words": 532,
+  "patient_id": "Patient-FEC"
+}

@@ -1,0 +1,11 @@
+{
+  "total_patients": 25,
+  "arb_invoked": 4,
+  "arb_invocation_rate": "16.0%",
+  "arb_passed": 2,
+  "arb_pass_rate": "50.0%",
+  "arb_improved": 1,
+  "arb_same": 1,
+  "arb_worse": 0,
+  "arb_improvement_rate": "50.0%"
+}

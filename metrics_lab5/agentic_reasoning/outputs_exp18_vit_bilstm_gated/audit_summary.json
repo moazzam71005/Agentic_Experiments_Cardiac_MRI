@@ -1,0 +1,8 @@
+{
+  "total_patients": 26,
+  "audit_passed_count": 11,
+  "audit_pass_rate": "42.3%",
+  "mean_section_coverage": 0.785,
+  "mean_hz_faithfulness": 0.99,
+  "hallucination_rate": "0.0%"
+}
